@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS EXPRONTAENTREGADB;
+DROP DATABASE IF EXISTS PRONTAENTREGADB;
 
 CREATE DATABASE IF NOT EXISTS PRONTAENTREGADB;
 
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     nombre VARCHAR(255),
     apellido VARCHAR(255),
     nombreUsuario VARCHAR(255),
-    contrasenia INT,
+    contrasenia VARCHAR(255),
     dni VARCHAR(20),
     telefono VARCHAR(20),
     email VARCHAR(255),
@@ -162,7 +162,7 @@ INSERT INTO Direccion (calle, numero, localidad) VALUES
     ('Calle Fornica', 25, 'Localidad Abedul'),
     ('Calle Ignacio', 103, 'Localidad Betular'),
     ('Calle Gonzalo', 6, 'Localidad Carlos Paz'),
-    ('Calle Martinez', 42, 'Localidad Dildo')
+    ('Calle Martinez', 42, 'Localidad Dildo'),
     ('Calle Sergio', 25, 'Localidad Abedul'),
     ('Calle Roca', 103, 'Localidad Colonia Carolla'),
     ('Calle Menem', 6, 'Localidad La Estanzuela'),
@@ -182,7 +182,7 @@ INSERT INTO TipoUsuario (nombre, descripcion) VALUES
 
 -- Inserciones para la tabla Usuario
 INSERT INTO Usuario (nombre, apellido, contrasenia, nombreUsuario, dni, telefono, email, id_direccion, id_tipoUsuario) VALUES 
-    ('Joaquin', 'Lopez', 'Pa$$word', 'JoaLopez', '12345678A', '25129735', 'JoaquinL@hotmail.com', 1, 3),
+    ('Joaquin', 'Lopez', 'contra', 'JoaLopez', '12345678A', '25129735', 'JoaquinL@hotmail.com', 1, 3),
     ('Timoteo', 'Wuewuan', 'QwerTY', 'TimoelWawan','98765432B', '46505926', 'TimoteoW@gmail.com.com', 3, 2),
     ('Teresa', 'Diaz', '12435687', 'TeresitaD','56789123C', '36007395', 'TereDiaz@gmail.com', 4, 1);
 
