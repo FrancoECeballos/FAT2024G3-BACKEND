@@ -7,10 +7,15 @@ erDiagram
     }
     Organizacion{
         int id_Organizacion PK
-        varchar descripcion
         varchar nombre
+        varchar descripcion
         varchar telefono
         varchar email
+    }
+    TipoDocumento{
+        int id_tipoDocumento PK
+        varchar nombre
+        varchar descripcion
     }
     TipoUsuario{
         int id_tipoUsuario PK
@@ -22,10 +27,11 @@ erDiagram
         varchar nombre
         varchar apellido
         varchar nombreUsuario
-        int contrasenia
-        varchar dni
+        varchar contrasenia        
         varchar telefono
         varchar email
+        varchar documento
+        TipoDocumento tipoDocumento FK
         int id_direccion FK
         int id_tipoUsuario FK
     }
@@ -33,12 +39,13 @@ erDiagram
         int id_casa PK
         varchar nombre
         varchar descripcion
-        int id_Organizacion FK
+        int id_organizacion FK
         int id_direccion FK
     }
     DetalleCasaUsuario{
         int id_detalleCasaUsuario PK
         varchar descripcion
+        date fechaIngreso
         int id_casa FK
         int id_usuario FK
     }
@@ -47,10 +54,17 @@ erDiagram
         varchar nombre
         varchar descripcion
     }
+    Stock{
+        int id_stock PK
+        int id_producto FK
+        int cantidad
+        int id_casa FK
+    }
     CategoriaProducto{
-        int id_categoriaProducto
+        int id_categoriaProducto PK
         varchar nombre
         varchar descripcion
+        int id_stock FK
     }
     Producto{
         int id_producto PK
@@ -58,12 +72,6 @@ erDiagram
         varchar descripcion
         int id_categoriaProducto PK
         int id_unidadMedida PK
-    }
-    StockProducto{
-        int id_stockProducto PK
-        int id_producto FK
-        int cantidad
-        int id_casa FK
     }
     Pedido{
         int id_pedido PK
@@ -112,23 +120,24 @@ erDiagram
         varchar patente
         int kilometraje
         varchar estadoITV
-        date anio
-        int id_Organizacion FK
+        year anio
+        int id_organizacion FK
     }
 
 Organizacion ||--|{ Casa : "tiene"
 Organizacion ||--|{ Transporte : "tiene"
 Casa }|--|| Direccion : "tiene"
-Casa ||--|{ StockProducto : "tiene"
+Casa ||--|{ Stock : "tiene"
 
 TipoUsuario ||--|{ Usuario : "tiene"
 Usuario ||--|{ Pedido : "tiene"
 Usuario ||--|{ Oferta : "tiene"
 Usuario }|--|| Direccion : "tiene"
+TipoDocumento ||--|{ Usuario : "tiene"
 
 Casa ||--|{ Pedido : "tiene"
 Casa ||--|{ Oferta : "tiene"
-Casa ||--|{ StockProducto : "tiene"
+Casa ||--|{ Stock : "tiene"
 
 Casa ||--|{ DetalleCasaUsuario : "tiene"
 Usuario ||--|{ DetalleCasaUsuario : "tiene"
@@ -143,4 +152,4 @@ Producto ||--|{ DetalleOfertaProducto : "tiene"
 CategoriaProducto ||--|{ Producto : "tiene"
 UnidadMedida ||--|{ Producto : "tiene"
 
-Producto ||--|{ StockProducto : "tiene"
+Stock ||--|{ CategoriaProducto : "tiene"

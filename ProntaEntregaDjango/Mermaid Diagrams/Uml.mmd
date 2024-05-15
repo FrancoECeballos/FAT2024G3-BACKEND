@@ -2,7 +2,7 @@ classDiagram
     Organizacion --> Casa : 1..*
     Organizacion --> Transporte : 1..*
     Casa <-- Direccion : 1..*
-    Casa --> StockProducto : 1..*
+    Casa --> Stock : 1..*
 
     TipoUsuario --> Usuario : 1..*
     Usuario <-- Direccion : 1..*
@@ -11,12 +11,12 @@ classDiagram
 
     Casa --> Pedido : 1..*
     Casa --> Oferta : 1..*
-    Casa --> StockProducto : 1..*
+    Casa --> Stock : 1..*
 
     Usuario --> DetalleCasaUsuario : 1..*
     Casa --> DetalleCasaUsuario : 1..*
 
-    Producto --> StockProducto : 1..*
+    Producto --> Stock : 1..*
     CategoriaProducto --> Producto : 1..*
     UnidadMedida --> Producto : 1..*
 
@@ -56,6 +56,16 @@ classDiagram
         +getTelefono()
         +getEmail()
     }
+    class TipoDocumento {
+        - varchar nombre
+        - varchar descripcion
+
+        +setNombre()
+        +setDescripcion()
+
+        +getNombre()
+        +getDescripcion()
+    }
     class TipoUsuario {
         - varchar nombre
         - varchar descripcion
@@ -69,25 +79,34 @@ classDiagram
     class Usuario {
         - varchar nombre
         - varchar apellido
-        - varchar email
         - varchar nombreUsuario
         - varchar contrasenia
+        - varchar telefono
+        - varchar email
+        - varchar documento
+        - TipoDocumento tipoDocumento
         - TipoUsuario tipoUsuario
         - Direccion direccion
 
         +setNombre()
         +setApellido()
-        +setEmail()
         +setNombreUsuario()
         +setContrasenia()
+        +setTelefono()
+        +setEmail()
+        +setDocumento()
+        +setTipoDocumento()
         +setTipoUsuario()
         +setDireccion()
 
         +getNombre()
         +getApellido()
-        +getEmail()
         +getNombreUsuario()
         +getContrasenia()
+        +getTelefono()
+        +getEmail()
+        +getDocumento()
+        +getTipoDocumento()
         +getTipoUsuario()
         +getDireccion()
     }
@@ -107,18 +126,21 @@ classDiagram
         +getOrganizacion()
         +getDireccion()
     }
-    class DetalleCasaUsuario {
+    class DetalleCasaUsuario {      
+        - varchar descripcion
+        - date fechaIngreso
         - Casa casa
         - Usuario usuario
-        - varchar descripcion
 
+        +setDescripcion()
+        +setFechaIngreso()
         +setCasa()
         +setUsuario()
-        +setDescripcion()
 
+        +getDescripcion()
+        +getFechaIngreso()
         +getCasa()
         +getUsuario()
-        +getDescripcion()
     }
     class UnidadMedida {
         - varchar nombre
@@ -130,15 +152,31 @@ classDiagram
         +getNombre()
         +getDescripcion()
     }
+    class Stock {
+        - Producto producto
+        - Casa casa
+        - int cantidad
+
+        +setProducto()
+        +setCantidad()
+        +setCasa()
+
+        +getProducto()
+        +getCantidad()
+        +getCasa()
+    }
     class CategoriaProducto {
         - varchar nombre
         - varchar descripcion
+        - Stock stock
 
         +setNombre()
         +setDescripcion()
+        +setStock()
 
         +getNombre()
         +getDescripcion()
+        +getStock()
     } 
     class Producto {
         - varchar nombre
@@ -155,19 +193,6 @@ classDiagram
         +getDescripcion()
         +getCategoriaProducto()
         +getUnidadMedida()
-    }
-    class StockProducto {
-        - Producto producto
-        - Casa casa
-        - int cantidad
-
-        +setProducto()
-        +setCantidad()
-        +setCasa()
-
-        +getProducto()
-        +getCantidad()
-        +getCasa()
     }
     class Pedido {
         - Casa casa
