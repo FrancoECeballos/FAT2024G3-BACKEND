@@ -1,4 +1,32 @@
 classDiagram
+    Organizacion --> Casa : 1..*
+    Organizacion --> Transporte : 1..*
+    Casa <-- Direccion : 1..*
+    Casa --> StockProducto : 1..*
+
+    TipoUsuario --> Usuario : 1..*
+    Usuario <-- Direccion : 1..*
+    Usuario --> Pedido : 1..*
+    Usuario --> Oferta : 1..*
+
+    Casa --> Pedido : 1..*
+    Casa --> Oferta : 1..*
+    Casa --> StockProducto : 1..*
+
+    Usuario --> DetalleCasaUsuario : 1..*
+    Casa --> DetalleCasaUsuario : 1..*
+
+    Producto --> StockProducto : 1..*
+    CategoriaProducto --> Producto : 1..*
+    UnidadMedida --> Producto : 1..*
+
+    Pedido --> DetallePedidoProducto : 1..*
+    Producto --> DetallePedidoProducto : 1..*
+    EstadoPedidoProducto --> DetallePedidoProducto : 1..*
+    Oferta --> DetalleOfertaProducto : 1..*
+    Producto --> DetalleOfertaProducto : 1..*
+    EstadoOfertaProducto --> DetalleOfertaProducto : 1..*
+
     class Direccion {
         - varchar calle
         - int numero
