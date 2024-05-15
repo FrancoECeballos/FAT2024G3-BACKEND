@@ -1,0 +1,258 @@
+classDiagram
+    class Direccion {
+        - varchar calle
+        - int numero
+        - varchar localidad
+        
+        +setCalle()
+        +setNumero()
+        +setLocalidad()
+
+        +getCalle()
+        +getNumero()
+        +getLocalidad()
+    }
+    class Organizacion {
+        - varchar nombre
+        - Direccion direccion
+        - varchar telefono
+        - varchar email
+
+        +setNombre()
+        +setDireccion()
+        +setTelefono()
+        +setEmail()
+
+        +getNombre()
+        +getDireccion()
+        +getTelefono()
+        +getEmail()
+    }
+    class TipoUsuario {
+        - varchar nombre
+        - varchar descripcion
+
+        +setNombre()
+        +setDescripcion()
+
+        +getNombre()
+        +getDescripcion()
+    }
+    class Usuario {
+        - varchar nombre
+        - varchar apellido
+        - varchar email
+        - varchar nombreUsuario
+        - varchar contrasenia
+        - TipoUsuario tipoUsuario
+        - Direccion direccion
+
+        +setNombre()
+        +setApellido()
+        +setEmail()
+        +setNombreUsuario()
+        +setContrasenia()
+        +setTipoUsuario()
+        +setDireccion()
+
+        +getNombre()
+        +getApellido()
+        +getEmail()
+        +getNombreUsuario()
+        +getContrasenia()
+        +getTipoUsuario()
+        +getDireccion()
+    }
+    class Casa {
+        - varchar nombre
+        - varchar descripcion
+        - Organizacion organizacion
+        - Direccion direccion
+
+        +setNombre()
+        +setDescripcion()
+        +setOrganizacion()
+        +setDireccion()
+
+        +getNombre()
+        +setDescripcion()
+        +getOrganizacion()
+        +getDireccion()
+    }
+    class DetalleCasaUsuario {
+        - Casa casa
+        - Usuario usuario
+        - varchar descripcion
+
+        +setCasa()
+        +setUsuario()
+        +setDescripcion()
+
+        +getCasa()
+        +getUsuario()
+        +getDescripcion()
+    }
+    class UnidadMedida {
+        - varchar nombre
+        - varchar descripcion
+
+        +setNombre()
+        +setDescripcion()
+
+        +getNombre()
+        +getDescripcion()
+    }
+    class CategoriaProducto {
+        - varchar nombre
+        - varchar descripcion
+
+        +setNombre()
+        +setDescripcion()
+
+        +getNombre()
+        +getDescripcion()
+    } 
+    class Producto {
+        - varchar nombre
+        - varchar descripcion
+        - CategoriaProducto categoriaProducto
+        - UnidadMedida unidadMedida
+
+        +setNombre()
+        +setDescripcion()
+        +setCategoriaProducto()
+        +setUnidadMedida()
+
+        +getNombre()
+        +getDescripcion()
+        +getCategoriaProducto()
+        +getUnidadMedida()
+    }
+    class StockProducto {
+        - Producto producto
+        - Casa casa
+        - int cantidad
+
+        +setProducto()
+        +setCantidad()
+        +setCasa()
+
+        +getProducto()
+        +getCantidad()
+        +getCasa()
+    }
+    class Pedido {
+        - Casa casa
+        - Usuario usuario
+        - date fecha
+        - time hora
+
+        +setCasa()
+        +setUsuario()
+        +setFecha()
+        +setHora()
+
+        +getCasa()
+        +getUsuario()
+        +getFecha()
+        +getHora()
+    }
+    class DetallePedidoProducto {
+        - EstadoPedidoProducto estadoPedidoProducto
+        - Pedido pedido
+        - Producto producto
+        - int cantidad
+        - varchar descripcion
+
+        +setEstadoPedidoProducto()
+        +setPedido()
+        +setProducto()
+        +setCantidad()
+        +setDescripcion()
+
+        +getEstadoPedidoProducto()
+        +getPedido()
+        +getProducto()
+        +getCantidad()
+        +getDescripcion()
+    }
+    class Oferta {
+        - Casa casa
+        - Usuario usuario
+        - date fecha
+        - time hora
+
+        +setCasa()
+        +setUsuario()
+        +setFecha()
+        +setHora()
+
+        +getCasa()
+        +getUsuario()
+        +getFecha()
+        +getHora()
+    }
+    class DetalleOfertaProducto {
+        - EstadoOfertaProducto estadoOfertaProducto
+        - Oferta oferta
+        - Producto producto
+        - int cantidad
+        - varchar descripcion
+
+        +setEstadoOfertaProducto()
+        +setOferta()
+        +setProducto()
+        +setCantidad()
+        +setDescripcion()
+
+        +getEstadoOfertaProducto()
+        +getOferta()
+        +getProducto()
+        +getCantidad()
+        +getDescripcion()
+    }
+    class EstadoPedidoProducto {
+        - varchar nombre
+        - varchar descripcion
+
+        +setNombre()
+        +setDescripcion()
+
+        +getNombre()
+        +getDescripcion()
+    }
+    class EstadoOfertaProducto {
+        - varchar nombre
+        - varchar descripcion
+
+        +setNombre()
+        +setDescripcion()
+
+        +getNombre()
+        +getDescripcion()
+    }
+    class Transporte {
+        - varchar marca
+        - varchar modelo
+        - varchar patente
+        - int kilometraje
+        - varchar estadoITV
+        - date anio
+        - Organizacion organizacion
+
+        +setMarca()
+        +setModelo()
+        +setPatente()
+        +setKilometraje()
+        +setEstadoITV()
+        +setAnio()
+        +setOrganizacion()
+
+        +getMarca()
+        +getModelo()
+        +getPatente()
+        +getKilometraje()
+        +getEstadoITV()
+        +getAnio()
+        +getOrganizacion()
+    }

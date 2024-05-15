@@ -1,0 +1,147 @@
+erDiagram
+    Direccion{
+        int id_direccion PK
+        varchar calle
+        int numero
+        varchar localidad  
+    }
+    Organizacion{
+        int id_Organizacion PK
+        varchar descripcion
+        varchar nombre
+        varchar telefono
+        varchar email
+    }
+    TipoUsuario{
+        int id_tipoUsuario PK
+        varchar nombre
+        varchar descripcion
+    }
+    Usuario{
+        int id_usuario PK
+        varchar nombre
+        varchar apellido
+        varchar nombreUsuario
+        int contrasenia
+        varchar dni
+        varchar telefono
+        varchar email
+        int id_direccion FK
+        int id_tipoUsuario FK
+    }
+    Casa{
+        int id_casa PK
+        varchar nombre
+        varchar descripcion
+        int id_Organizacion FK
+        int id_direccion FK
+    }
+    DetalleCasaUsuario{
+        int id_detalleCasaUsuario PK
+        varchar descripcion
+        int id_casa FK
+        int id_usuario FK
+    }
+    UnidadMedida{
+        int id_unidadMedida PK
+        varchar nombre
+        varchar descripcion
+    }
+    CategoriaProducto{
+        int id_categoriaProducto
+        varchar nombre
+        varchar descripcion
+    }
+    Producto{
+        int id_producto PK
+        varchar nombre
+        varchar descripcion
+        int id_categoriaProducto PK
+        int id_unidadMedida PK
+    }
+    StockProducto{
+        int id_stockProducto PK
+        int id_producto FK
+        int cantidad
+        int id_casa FK
+    }
+    Pedido{
+        int id_pedido PK
+        date fecha
+        time hora
+        int id_casa FK
+        int id_usuario FK
+    }
+    DetallePedidoProducto{
+        int id_detallePedidoProducto PK
+        varchar descripcion
+        int cantidad
+        int id_pedido FK
+        int id_producto FK
+        int id_estadoProductoPedido FK
+    }
+    Oferta{
+        int id_oferta PK
+        date fecha
+        time hora
+        int id_usuario FK
+        int id_casa FK
+    }
+    DetalleOfertaProducto{
+        int id_detalleOfertaProducto PK
+        varchar descripcion
+        int cantidad
+        int id_oferta FK
+        int id_producto FK
+        int id_estadoProductoOferta FK
+    }
+    EstadoPedidoProducto{
+        int id_estadoPedidoProducto PK
+        varchar nombre
+        varchar descripcion
+    }
+    EstadoOfertaProducto{
+        int id_estadoOfertaProducto PK
+        varchar nombre
+        varchar descripcion
+    }
+    Transporte{
+        int id_transporte PK
+        varchar marca
+        varchar modelo
+        varchar patente
+        int kilometraje
+        varchar estadoITV
+        date anio
+        int id_Organizacion FK
+    }
+
+Organizacion ||--|{ Casa : "tiene"
+Organizacion ||--|{ Transporte : "tiene"
+Organizacion }|--|| Direccion : "tiene"
+Casa ||--|{ StockProducto : "tiene"
+
+TipoUsuario ||--|{ Usuario : "tiene"
+Usuario ||--|{ Pedido : "tiene"
+Usuario ||--|{ Oferta : "tiene"
+Usuario }|--|| Direccion : "tiene"
+
+Casa ||--|{ Pedido : "tiene"
+Casa ||--|{ Oferta : "tiene"
+Casa ||--|{ StockProducto : "tiene"
+Casa ||--|{ StockProducto : "tiene"
+
+Casa ||--|{ DetalleCasaUsuario : "tiene"
+Usuario ||--|{ DetalleCasaUsuario : "tiene"
+
+Pedido ||--|{ DetallePedidoProducto : "tiene"
+Oferta ||--|{ DetalleOfertaProducto : "tiene"
+EstadoPedidoProducto ||--|{ DetallePedidoProducto : "tiene"
+EstadoOfertaProducto ||--|{ DetalleOfertaProducto : "tiene"
+Producto ||--|{ DetallePedidoProducto : "tiene"
+Producto ||--|{ DetalleOfertaProducto : "tiene"
+
+CategoriaProducto ||--|{ Producto : "tiene"
+UnidadMedida ||--|{ Producto : "tiene"
+
+Producto ||--|{ StockProducto : "tiene"
