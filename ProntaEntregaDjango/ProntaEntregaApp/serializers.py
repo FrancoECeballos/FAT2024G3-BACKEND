@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
 
+
 class CasaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Casa
@@ -90,3 +91,27 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = '__all__'
+
+
+
+class UsuarioRegistroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = '__all__'
+    def create (self, validated_data):
+        user = Usuario.objects.create_user(
+            validated_data['nombre'],
+            validated_data['apellido'],
+            validated_data['email'],
+            validated_data['telefono'],
+            validated_data['direccion'],
+            validated_data['contrasena'],
+            validated_data['tipousuario'],
+            validated_data['organizacion']
+        )
+        return user
+
+class UsuarioLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ['email', 'contrasena']

@@ -12,6 +12,10 @@ from ProntaEntregaApp.models import *
 
 from django.shortcuts import render
 
+class registerView(generics.GenericAPIView):
+    def get(self, request: HttpRequest, *args, **kwargs):
+        return Response ({"message": "Hello, world!"})
+
 class loginView(generics.GenericAPIView):
     def get(self, request: HttpRequest, *args, **kwargs):
         return Response ({"message": "Hello, world!"})

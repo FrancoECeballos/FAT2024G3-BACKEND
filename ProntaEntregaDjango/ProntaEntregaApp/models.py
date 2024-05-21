@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 
 class Casa(models.Model):
@@ -216,7 +217,36 @@ class Unidadmedida(models.Model):
         db_table = 'UnidadMedida'
 
 
-class Usuario(models.Model):
+class UsuarioManager(BaseUserManager):
+    def create_user(self, nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
+        if not nombre:
+            raise ValueError('El usuario debe tener un nombre')
+        if not apellido:
+            raise ValueError('El usuario debe tener un apellido')
+        if not nombreusuario:
+            raise ValueError('El usuario debe tener un nombre de usuario')
+        if not contrasenia:
+            raise ValueError('El usuario debe tener una contraseña')
+        if not documento:
+            raise ValueError('El usuario debe tener un documento')
+        if not telefono:
+            raise ValueError('El usuario debe tener un telefono')
+        if not email:
+            raise ValueError('El usuario debe tener un email')
+        if not id_direccion:
+            raise ValueError('El usuario debe tener una direccion')
+        if not id_tipodocumento:
+            raise ValueError('El usuario debe tener un tipo de documento')
+        usuario = Usuario(nombre=nombre, apellido=apellido, nombreusuario=nombreusuario, contrasenia=contrasenia, documento=documento, telefono=telefono, email=email, id_direccion=id_direccion, id_tipousuario=id_tipousuario, id_tipodocumento=id_tipodocumento)
+        usuario.save()
+        return usuario
+    def create_superuser(self, nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
+        usuario = self.create_user(nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento)
+        usuario.is_superuser
+        return usuario
+
+
+class Usuario(AbstractBaseUser, PermissionsMixin, models.Model):
     id_usuario = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     apellido = models.CharField(max_length=255, blank=True, null=True)
@@ -224,11 +254,18 @@ class Usuario(models.Model):
     contrasenia = models.CharField(max_length=255, blank=True, null=True)
     documento = models.CharField(max_length=20, blank=True, null=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
-    email = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True, unique=True)
+    fechaUnion = models.DateField(db_column='fechaUnion', auto_now_add=True)  # Field name made lowercase.
     id_direccion = models.ForeignKey(Direccion, models.DO_NOTHING, db_column='id_direccion', blank=True, null=True)
     id_tipousuario = models.ForeignKey(Tipousuario, models.DO_NOTHING, db_column='id_tipoUsuario', blank=True, null=True)  # Field name made lowercase.
     id_tipodocumento = models.ForeignKey(Tipodocumento, models.DO_NOTHING, db_column='id_tipoDocumento', blank=True, null=True)  # Field name made lowercase.
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'nombre', 'apellido', 'documento']
+    objects = UsuarioManager()
 
     class Meta:
         managed = False
         db_table = 'Usuario'
+
+    def __str__(self):
+        return self.nombreusuario
