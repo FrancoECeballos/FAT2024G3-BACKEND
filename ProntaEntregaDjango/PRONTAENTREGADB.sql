@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     documento VARCHAR(20),
     telefono VARCHAR(20),
     email VARCHAR(255),
+    genero INT,
     fechaUnion DATE,
     id_direccion INT,
     id_tipoUsuario INT,
