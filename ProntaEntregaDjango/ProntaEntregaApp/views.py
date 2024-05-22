@@ -4,7 +4,11 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework import generics, status, exceptions, permissions
 from rest_framework.response import Response
-from ProntaEntregaApp.serializers import *
+from ProntaEntregaApp.serializers.generalSerializers import *
+from ProntaEntregaApp.serializers.userSerializers import *
+from ProntaEntregaApp.serializers.offerSerializers import *
+from ProntaEntregaApp.serializers.stockSerializers import *
+from ProntaEntregaApp.serializers.requestSerializers import *
 from django.http import HttpRequest
 from ProntaEntregaApp.models import *
 from ProntaEntregaApp.validations import *

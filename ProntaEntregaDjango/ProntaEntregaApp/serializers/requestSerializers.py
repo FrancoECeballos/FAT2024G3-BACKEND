@@ -1,12 +1,7 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
-from ProntaEntregaApp.serializers import *
+from ProntaEntregaApp.serializers.stockSerializers import *
 from django.contrib.auth import authenticate
-
-class DetallepedidoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Detallepedido
-        fields = '__all__'
 
 class EstadopedidoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +11,13 @@ class EstadopedidoSerializer(serializers.ModelSerializer):
 class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
+        fields = '__all__'
+
+class DetallepedidoSerializer(serializers.ModelSerializer):
+    id_pedido = PedidoSerializer(many=False)
+    id_estadopedido = EstadopedidoSerializer(many=False)
+    id_producto = ProductoSerializer(many=False)
+
+    class Meta:
+        model = Detallepedido
         fields = '__all__'

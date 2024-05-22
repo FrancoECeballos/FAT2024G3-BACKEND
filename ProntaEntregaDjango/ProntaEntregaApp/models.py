@@ -256,9 +256,9 @@ class Usuario(AbstractBaseUser, PermissionsMixin, models.Model):
     id_usuario = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     apellido = models.CharField(max_length=255, blank=True, null=True)
-    nombreusuario = models.CharField(db_column='nombreUsuario', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    nombreusuario = models.CharField(db_column='nombreUsuario', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
     contrasenia = models.CharField(max_length=255, blank=True, null=True)
-    documento = models.CharField(max_length=20, blank=True, null=True)
+    documento = models.CharField(max_length=20, blank=True, null=True, unique=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)
     genero = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)

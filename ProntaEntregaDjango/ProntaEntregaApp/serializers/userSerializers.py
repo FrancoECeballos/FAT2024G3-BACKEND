@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
-from ProntaEntregaApp.serializers import *
+from ProntaEntregaApp.serializers.generalSerializers import *
 from django.contrib.auth import authenticate
 
 class TipousuarioSerializer(serializers.ModelSerializer):
