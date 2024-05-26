@@ -8,6 +8,9 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.hashers import make_password
+from django.utils import timezone
+
 
 
 class Casa(models.Model):
@@ -238,8 +241,20 @@ class UsuarioManager(BaseUserManager):
             raise ValueError('El usuario debe tener una direccion')
         if not id_tipodocumento:
             raise ValueError('El usuario debe tener un tipo de documento')
-        usuario = Usuario(nombre=nombre, apellido=apellido, nombreusuario=nombreusuario, contrasenia=contrasenia, documento=documento, telefono=telefono, email=email, id_direccion=id_direccion, id_tipousuario=id_tipousuario, id_tipodocumento=id_tipodocumento)
-        usuario.save()
+
+        usuario = self.model(
+            nombre=nombre,
+            apellido=apellido,
+            nombreusuario=nombreusuario,
+            documento=documento,
+            telefono=telefono,
+            email=self.normalize_email(email),
+            id_direccion=id_direccion,
+            id_tipousuario=id_tipousuario,
+            id_tipodocumento=id_tipodocumento
+        )
+        usuario.set_password(contrasenia)  # Utiliza set_password para encriptar y guardar la contraseña
+        usuario.save(using=self._db)
         return usuario
     def create_superuser(self, nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
         usuario = self.create_user(nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento)
@@ -247,7 +262,7 @@ class UsuarioManager(BaseUserManager):
         return usuario
 
 
-class Usuario(AbstractBaseUser, PermissionsMixin, models.Model):
+class Usuario(AbstractBaseUser, PermissionsMixin):
     GENDER_MALE = 0
     GENDER_FEMALE = 1
     GENDER_UNKOWN = 2
@@ -262,13 +277,19 @@ class Usuario(AbstractBaseUser, PermissionsMixin, models.Model):
     telefono = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)
     genero = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)
-    fechaUnion = models.DateField(db_column='fechaUnion', auto_now_add=True)  # Field name made lowercase.
     id_direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
     id_tipousuario = models.ForeignKey(Tipousuario, on_delete=models.SET_NULL, db_column='id_tipoUsuario', blank=True, null=True)  # Field name made lowercase.
     id_tipodocumento = models.ForeignKey(Tipodocumento, on_delete=models.SET_NULL, db_column='id_tipoDocumento', blank=True, null=True)  # Field name made lowercase.
+    fechaUnion = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
+    is_superuser = models.BooleanField(default=False)
+    
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'nombre', 'apellido', 'documento']
+    REQUIRED_FIELDS = ['nombre', 'apellido', 'documento']
     objects = UsuarioManager()
+
+    class Meta:
+        db_table = 'Usuario'
 
     def __str__(self):
         return self.nombreusuario

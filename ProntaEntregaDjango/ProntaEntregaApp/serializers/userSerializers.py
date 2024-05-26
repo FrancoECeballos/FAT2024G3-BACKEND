@@ -13,38 +13,38 @@ class TipodocumentoSerializer(serializers.ModelSerializer):
         model = Tipodocumento
         fields = '__all__'
 
-class UsuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Usuario
-        fields = '__all__'
 
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = '__all__'
-    def create (self, clean_data):
+        fields = ['nombre', 'apellido', 'nombreusuario', 'contrasenia', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+
+
+    def create(self, validated_data):
         user = Usuario.objects.create_user(
-            clean_data['nombre'],
-            clean_data['apellido'],
-            clean_data['email'],
-            clean_data['telefono'],
-            clean_data['direccion'],
-            clean_data['contrasena'],
-            clean_data['tipousuario'],
-            clean_data['tipodocumento']
+            nombre=validated_data['nombre'],
+            apellido=validated_data['apellido'],
+            nombreusuario=validated_data['nombreusuario'],
+            documento=validated_data['documento'],
+            telefono=validated_data['telefono'],
+            email=validated_data['email'],
+            contrasenia=validated_data['contrasenia'],
+            id_direccion=validated_data['id_direccion'],
+            id_tipousuario=validated_data['id_tipousuario'],
+            id_tipodocumento=validated_data['id_tipodocumento'],
         )
-        user.save()
         return user
+
 
 class UsuarioLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    contrasena = serializers.CharField()
+    contrasenia = serializers.CharField()
 
-    def checkUser(self, clean_data):
-        user = authenticate(
-            email=clean_data['email'],
-            password=clean_data['contrasena']
-        )
+    def validate(self, attrs):
+        email = attrs.get('email')
+        contrasenia = attrs.get('contrasenia')
+
+        user = authenticate(email=email, password=contrasenia)
         if not user:
             raise serializers.ValidationError('Invalid credentials')
-        return user
+        return attrs
