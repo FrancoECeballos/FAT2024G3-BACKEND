@@ -210,7 +210,7 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
     ('Cedula', 'Es un documento de identidad');
 
 -- Inserciones para la tabla Usuario
-INSERT INTO Usuario (nombre, apellido, contrasenia, nombreUsuario, documento, id_tipoDocumento, telefono, email, id_direccion, id_tipoUsuario) VALUES 
+INSERT INTO Usuario (nombre, apellido, password, nombreUsuario, documento, id_tipoDocumento, telefono, email, id_direccion, id_tipoUsuario) VALUES 
     ('Joaquin', 'Lopez', 'contra', 'JoaLopez', '12345678A', 1, '25129735', 'JoaquinL@hotmail.com', 1, 3),
     ('Timoteo', 'Wuewuan', 'QwerTY', 'TimoelWawan','98765432B', 2,'46505926', 'TimoteoW@gmail.com.com', 3, 2),
     ('Teresa', 'Diaz', '12435687', 'TeresitaD','56789123C', 3,'36007395', 'TereDiaz@gmail.com', 4, 1);
