@@ -3,8 +3,10 @@ from . import views
 from ProntaEntregaApp.views import *
 
 
-urlpatterns = [    
-    path('registro/', view=UserRegister, name='usuario_registro'),
-    path('login/', view=UserLogin, name='usuario_login'),
-    path('test/', view=test_token, name='test_token'),
+urlpatterns = [
+    path('', view=index, name='index'),
+    path('register/', UserRegister.as_view(), name='user_register'),
+    path('login/', UserLogin.as_view(), name='user_login'),
+    path('test/', TestToken.as_view(), name='test_token'),
+    path('cambiar_contrasena/', view=CambiarContraseña, name='change_password'),
 ]

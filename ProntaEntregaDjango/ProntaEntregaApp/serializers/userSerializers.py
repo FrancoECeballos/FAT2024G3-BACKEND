@@ -37,8 +37,8 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
 
 
 class UsuarioLoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True)
 
     class Meta:
         model = Usuario
@@ -52,3 +52,8 @@ class UsuarioLoginSerializer(serializers.ModelSerializer):
         if not user:
             raise serializers.ValidationError('Invalid credentials')
         return attrs
+    
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_new_password = serializers.CharField(required=True)
