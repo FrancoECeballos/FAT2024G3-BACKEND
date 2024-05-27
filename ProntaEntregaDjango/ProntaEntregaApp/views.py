@@ -51,4 +51,4 @@ def UserLogin(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def test_token(request):
-    return Response("Exito!!", status=status.HTTP_200_OK)
+    return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)

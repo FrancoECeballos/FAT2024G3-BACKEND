@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS Usuario (
     telefono VARCHAR(20),
     email VARCHAR(255),
     genero INT,
-    fechaUnion DATE,
+    fechaUnion DATETIME,
     last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `is_superuser` BOOLEAN DEFAULT FALSE,  -- Encerrar el nombre de la columna entre comillas invertidas
+    `is_superuser` BOOLEAN DEFAULT FALSE,
     id_direccion INT,
     id_tipoUsuario INT,
     id_tipoDocumento INT,
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario),
     CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipoDocumento) REFERENCES TipoDocumento(id_tipoDocumento)
 );
+
 
 
 
