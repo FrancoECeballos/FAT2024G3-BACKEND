@@ -17,7 +17,7 @@ class TipodocumentoSerializer(serializers.ModelSerializer):
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'contrasenia', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
 
 
     def create(self, validated_data):
@@ -28,7 +28,7 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             documento=validated_data['documento'],
             telefono=validated_data['telefono'],
             email=validated_data['email'],
-            contrasenia=validated_data['contrasenia'],
+            password=validated_data['password'],
             id_direccion=validated_data['id_direccion'],
             id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],
@@ -38,13 +38,13 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
 
 class UsuarioLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    contrasenia = serializers.CharField()
+    password = serializers.CharField()
 
     def validate(self, attrs):
         email = attrs.get('email')
-        contrasenia = attrs.get('contrasenia')
+        password = attrs.get('password')
 
-        user = authenticate(email=email, password=contrasenia)
+        user = authenticate(email=email, password=password)
         if not user:
             raise serializers.ValidationError('Invalid credentials')
         return attrs

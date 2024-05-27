@@ -222,14 +222,14 @@ class Unidadmedida(models.Model):
 
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self, nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
+    def create_user(self, nombre, apellido, nombreusuario, password, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
         if not nombre:
             raise ValueError('El usuario debe tener un nombre')
         if not apellido:
             raise ValueError('El usuario debe tener un apellido')
         if not nombreusuario:
             raise ValueError('El usuario debe tener un nombre de usuario')
-        if not contrasenia:
+        if not password:
             raise ValueError('El usuario debe tener una contraseña')
         if not documento:
             raise ValueError('El usuario debe tener un documento')
@@ -253,7 +253,7 @@ class UsuarioManager(BaseUserManager):
             id_tipousuario=id_tipousuario,
             id_tipodocumento=id_tipodocumento
         )
-        usuario.set_password(contrasenia)  # Utiliza set_password para encriptar y guardar la contraseña
+        usuario.set_password(password)  # Utiliza set_password para encriptar y guardar la contraseña
         usuario.save(using=self._db)
         return usuario
     def create_superuser(self, nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
@@ -272,7 +272,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     apellido = models.CharField(max_length=255, blank=True, null=True)
     nombreusuario = models.CharField(db_column='nombreUsuario', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
-    contrasenia = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255, blank=True, null=True)
     documento = models.CharField(max_length=20, blank=True, null=True, unique=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)

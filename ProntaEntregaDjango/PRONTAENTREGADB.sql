@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     nombre VARCHAR(255),
     apellido VARCHAR(255),
     nombreUsuario VARCHAR(255),
-    contrasenia VARCHAR(255),
+    password VARCHAR(255),
     documento VARCHAR(20),
     telefono VARCHAR(20),
     email VARCHAR(255),
