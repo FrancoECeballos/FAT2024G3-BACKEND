@@ -42,13 +42,17 @@ CREATE TABLE IF NOT EXISTS Usuario (
     email VARCHAR(255),
     genero INT,
     fechaUnion DATE,
+    last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `is_superuser` BOOLEAN DEFAULT FALSE,  -- Encerrar el nombre de la columna entre comillas invertidas
     id_direccion INT,
     id_tipoUsuario INT,
     id_tipoDocumento INT,
     CONSTRAINT fk_direccion FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion),
-	CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario),
+    CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario),
     CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipoDocumento) REFERENCES TipoDocumento(id_tipoDocumento)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS Casa (
     id_casa INT AUTO_INCREMENT PRIMARY KEY,

@@ -280,7 +280,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     id_direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
     id_tipousuario = models.ForeignKey(Tipousuario, on_delete=models.SET_NULL, db_column='id_tipoUsuario', blank=True, null=True)  # Field name made lowercase.
     id_tipodocumento = models.ForeignKey(Tipodocumento, on_delete=models.SET_NULL, db_column='id_tipoDocumento', blank=True, null=True)  # Field name made lowercase.
-    fechaUnion = models.DateTimeField(default=timezone.now)
+    fechaUnion = models.DateTimeField(default=timezone.now().date)
     last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
     is_superuser = models.BooleanField(default=False)
     

@@ -34,9 +34,13 @@ def UserRegister(request):
 @permission_classes([AllowAny])
 def UserLogin(request):
     try:
+        if 'nombreusuario' not in request.data or 'password' not in request.data:
+            return Response({'error': 'Invalid request data'}, status=status.HTTP_400_BAD_REQUEST)
+
         user = Usuario.objects.get(nombreusuario=request.data['nombreusuario'])
         if not user.check_password(request.data['password']):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
         token, created = Token.objects.get_or_create(user=user)
         serializer = UsuarioLoginSerializer(user)
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
