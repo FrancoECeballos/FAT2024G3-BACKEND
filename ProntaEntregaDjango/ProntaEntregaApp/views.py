@@ -110,10 +110,8 @@ class VerStockYProducto(APIView):
 
 class VerUsuarios(APIView):
     def get(self, request):
-        # Obtener todos los usuarios de la base de datos
         usuarios = Usuario.objects.all()
 
-        # Serializar los usuarios a JSON
         usuarios_json = []
         for usuario in usuarios:
             usuario_json = {
@@ -133,6 +131,4 @@ class VerUsuarios(APIView):
                 'id_tipo_documento': usuario.id_tipodocumento_id
             }
             usuarios_json.append(usuario_json)
-
-        # Devolver la respuesta como JSON
         return JsonResponse(usuarios_json, safe=False)
