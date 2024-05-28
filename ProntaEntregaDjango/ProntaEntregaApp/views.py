@@ -24,34 +24,6 @@ from django.http import JsonResponse
 def index(request):
     return render(request, 'index.html')
 
-def ver_usuarios(request):
-    # Obtener todos los usuarios de la base de datos
-    usuarios = Usuario.objects.all()
-
-    # Serializar los usuarios a JSON
-    usuarios_json = []
-    for usuario in usuarios:
-        usuario_json = {
-            'id': usuario.id_usuario,
-            'nombre': usuario.nombre,
-            'apellido': usuario.apellido,
-            'nombre_usuario': usuario.nombreusuario,
-            'documento': usuario.documento,
-            'telefono': usuario.telefono,
-            'email': usuario.email,
-            'genero': usuario.genero,
-            'fecha_union': usuario.fechaUnion,
-            'last_login': usuario.last_login,
-            'is_superuser': usuario.is_superuser,
-            'id_direccion': usuario.id_direccion_id,
-            'id_tipo_usuario': usuario.id_tipousuario_id,
-            'id_tipo_documento': usuario.id_tipodocumento_id
-        }
-        usuarios_json.append(usuario_json)
-
-    # Devolver la respuesta como JSON
-    return JsonResponse(usuarios_json, safe=False)
-
 class UserRegister(APIView):
     permission_classes = [AllowAny]
 
@@ -84,6 +56,7 @@ class UserLogin(APIView):
         except Usuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
+
 class UserPage(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -91,12 +64,14 @@ class UserPage(APIView):
     def get(self, request):
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
 
+
 class TestToken(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
+
 
 class CambiarContrasenia(APIView):
     permission_classes = [IsAuthenticated]
