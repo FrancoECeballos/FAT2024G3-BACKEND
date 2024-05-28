@@ -9,4 +9,5 @@ urlpatterns = [
     path('login/', UserLogin.as_view(), name='user_login'),
     path('test/', TestToken.as_view(), name='test_token'),
     path('cambiar_contrasena/', view=CambiarContraseña, name='change_password'),
+    path('user/', view=ver_usuarios, name='users'),
 ]
