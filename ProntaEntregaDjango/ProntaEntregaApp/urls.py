@@ -1,5 +1,4 @@
 from django.urls import path
-from . import views
 from ProntaEntregaApp.views import *
 
 
@@ -8,5 +7,5 @@ urlpatterns = [
     path('register/', UserRegister.as_view(), name='user_register'),
     path('login/', UserLogin.as_view(), name='user_login'),
     path('test/', TestToken.as_view(), name='test_token'),
-    path('cambiar_contrasena/', view=CambiarContraseña, name='change_password'),
+    path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),
 ]

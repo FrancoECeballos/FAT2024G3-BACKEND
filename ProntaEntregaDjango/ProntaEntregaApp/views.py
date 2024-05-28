@@ -1,6 +1,6 @@
 # Django imports
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpRequest
 
 # Django REST Framework imports
@@ -63,23 +63,31 @@ class TestToken(APIView):
     def get(self, request):
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def CambiarContraseña(request):
-    serializer = ChangePasswordSerializer(data=request.data)
-    if serializer.is_valid():
+class CambiarContrasenia(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
         user = request.user
-        current_password = serializer.validated_data.get('current_password')
-        new_password = serializer.validated_data.get('new_password')
-        confirm_new_password = serializer.validated_data.get('confirm_new_password')
 
-        if not user.check_password(current_password):
-            return Response({'error': 'La contraseña actual no es correcta.'}, status=status.HTTP_400_BAD_REQUEST)
+        # Verificar que los campos necesarios están presentes en la solicitud
+        if 'old_password' not in request.data or 'new_password' not in request.data or 'new_password_repeat' not in request.data:
+            return Response({'error': 'Por favor, proporcione la contraseña antigua, la nueva contraseña y la repetición de la nueva contraseña.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if new_password != confirm_new_password:
-            return Response({'error': 'La nueva contraseña y la confirmación no coinciden.'}, status=status.HTTP_400_BAD_REQUEST)
+        old_password = request.data['old_password']
+        new_password = request.data['new_password']
+        new_password_repeat = request.data['new_password_repeat']
 
+        # Verificar que la contraseña antigua es correcta
+        if not user.check_password(old_password):
+            return Response({'error': 'La contraseña antigua es incorrecta.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verificar que la nueva contraseña se ha introducido correctamente dos veces
+        if new_password != new_password_repeat:
+            return Response({'error': 'Las nuevas contraseñas no coinciden.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Cambiar la contraseña del usuario
         user.set_password(new_password)
         user.save()
-        return Response({'success': 'Contraseña cambiada correctamente.'}, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
+    
