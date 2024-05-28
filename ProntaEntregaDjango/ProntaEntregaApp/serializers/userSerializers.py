@@ -13,12 +13,20 @@ class TipodocumentoSerializer(serializers.ModelSerializer):
         model = Tipodocumento
         fields = '__all__'
 
+class UsuarioSerializer(serializers.ModelSerializer):
+    id_direccion = DireccionSerializer(many = False)
+    id_tipousuario = TipousuarioSerializer(many = False)
+    id_tipodocumento = TipodocumentoSerializer(many = False)
+    
+    class Meta:
+        model = Usuario
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+
 
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
-
 
     def create(self, validated_data):
         user = Usuario.objects.create_user(

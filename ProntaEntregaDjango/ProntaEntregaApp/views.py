@@ -52,6 +52,7 @@ class UserLogin(APIView):
 
             token, created = Token.objects.get_or_create(user=user)
             serializer = UsuarioLoginSerializer(user)
+            request.session['userToken'] = token.key
             return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
@@ -62,8 +63,17 @@ class UserPage(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        token = request.session.get['userToken']
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
 
+class UserByID(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        usuario = Usuario.objects.get(id_usuario = pk)
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data)
 
 class TestToken(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
