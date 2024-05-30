@@ -12,6 +12,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from django.contrib.auth.decorators import login_required
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny
+
 
 # Application-specific imports
 from ProntaEntregaApp.serializers.userSerializers import *
@@ -71,9 +73,12 @@ class UserByID(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        usuario = Usuario.objects.get(id_usuario = pk)
-        serializer = UsuarioSerializer(usuario)
-        return Response(serializer.data)
+        try:
+            usuario = Usuario.objects.get(id_usuario = pk)
+            serializer = UsuarioSerializer(usuario)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Usuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 class TestToken(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
@@ -153,6 +158,7 @@ class VerUsuarios(APIView):
         return JsonResponse(usuarios_json, safe=False)
     
 class verTipoDocumento(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         tipo_documentos = Tipodocumento.objects.all()
 
