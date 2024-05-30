@@ -151,3 +151,16 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
+    
+class verTipoDocumento(APIView):
+    def get(self, request):
+        tipo_documentos = Tipodocumento.objects.all()
+
+        tipo_documentos_json = []
+        for tipo_documento in tipo_documentos:
+            tipo_documento_json = {
+                'id': tipo_documento.id_tipodocumento,
+                'nombre': tipo_documento.nombre
+            }
+            tipo_documentos_json.append(tipo_documento_json)
+        return JsonResponse(tipo_documentos_json, safe=False)
