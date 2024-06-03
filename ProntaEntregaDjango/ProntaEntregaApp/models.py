@@ -233,14 +233,6 @@ class UsuarioManager(BaseUserManager):
             raise ValueError('El usuario debe tener una contraseña')
         if not documento:
             raise ValueError('El usuario debe tener un documento')
-        if not telefono:
-            raise ValueError('El usuario debe tener un telefono')
-        if not email:
-            raise ValueError('El usuario debe tener un email')
-        if not id_direccion:
-            raise ValueError('El usuario debe tener una direccion')
-        if not id_tipodocumento:
-            raise ValueError('El usuario debe tener un tipo de documento')
 
         usuario = self.model(
             nombre=nombre,
@@ -254,11 +246,25 @@ class UsuarioManager(BaseUserManager):
             id_tipodocumento=id_tipodocumento
         )
         usuario.set_password(password)  # Utiliza set_password para encriptar y guardar la contraseña
+        usuario.is_active = True
         usuario.save(using=self._db)
         return usuario
-    def create_superuser(self, nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
-        usuario = self.create_user(nombre, apellido, nombreusuario, contrasenia, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento)
-        usuario.is_superuser
+    def create_superuser(self, nombre, apellido, password, nombreusuario, documento):
+        usuario = self.model(
+            nombre=nombre, 
+            apellido=apellido, 
+            nombreusuario=nombreusuario, 
+            documento=documento, 
+            telefono=None, 
+            email=None, 
+            id_direccion=None, 
+            id_tipousuario=None, 
+            id_tipodocumento=None)
+        usuario.set_password(password)
+        usuario.is_superuser = True
+        usuario.is_staff = True
+        usuario.is_active = True
+        usuario.save(using=self._db)
         return usuario
 
 
@@ -272,7 +278,6 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     apellido = models.CharField(max_length=255, blank=True, null=True)
     nombreusuario = models.CharField(db_column='nombreUsuario', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
-    password = models.CharField(max_length=255, blank=True, null=True)
     documento = models.CharField(max_length=20, blank=True, null=True, unique=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)
@@ -282,14 +287,17 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     id_tipodocumento = models.ForeignKey(Tipodocumento, on_delete=models.SET_NULL, db_column='id_tipoDocumento', blank=True, null=True)  # Field name made lowercase.
     fechaUnion = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
+    is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'nombreusuario'
     REQUIRED_FIELDS = ['nombre', 'apellido', 'documento']
     objects = UsuarioManager()
 
     class Meta:
         db_table = 'Usuario'
+        managed = True
 
     def __str__(self):
         return self.nombreusuario
