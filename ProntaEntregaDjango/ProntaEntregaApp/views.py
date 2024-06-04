@@ -65,10 +65,10 @@ class DeleteUser(APIView):
 
     def post(self, request, pk):
         try:
-            user = CustomUsuario.objects.get(pk=pk)
+            user = Usuario.objects.get(pk=pk)
             user.delete()
             return Response({'success': 'El usuario ha sido eliminado con éxito.'}, status=status.HTTP_200_OK)
-        except CustomUsuario.DoesNotExist:
+        except Usuario.DoesNotExist:
             return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -126,22 +126,6 @@ class CambiarContrasenia(APIView):
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
     
-class VerStock(APIView):
-    def get(self, request):
-        productos = Producto.objects.all()
-        productos_json = []
-        for producto in productos:
-            detalle_stock = Detallestockproducto.objects.filter(id_producto=producto.id_producto).first()
-            cantidad_stock = detalle_stock.cantidad if detalle_stock else 0
-
-            producto_json = {
-                'nombre_producto': producto.nombre,
-                'descripcion': producto.descripcion,
-                'stock_disponible': cantidad_stock
-            }
-            productos_json.append(producto_json)
-        return JsonResponse(productos_json, safe=False)
-
 
 class VerStockYProducto(APIView):
     def get(self, request, categoria_id):
@@ -220,22 +204,41 @@ class CasaGet(APIView):
     
 class EditarCasa(APIView):
     def put(self, request, pk):
+        # Obtener la casa a modificar
         try:
             casa = Casa.objects.get(pk=pk)
         except Casa.DoesNotExist:
             return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
 
+        # Crear un serializador con los datos recibidos y la instancia de la casa
         serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
+
+        # Verificar si los datos son válidos y guardar los cambios si corresponde
         if serializer.is_valid():
+            # Excluir la validación única para el nombre si el nombre no se ha modificado
             if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
                 serializer.fields['nombre'].unique = False
 
             serializer.save()
             return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
+            # Si hay errores en los datos proporcionados, devolver los errores
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserDelete(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            usuario = get_object_or_404(CustomUsuario, id_usuario=pk)
+            usuario.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
         
 class GetDirecciones(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         direcciones = Direccion.objects.all()
         serializer = DireccionSerializer(direcciones, many=True)
