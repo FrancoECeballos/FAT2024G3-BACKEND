@@ -21,6 +21,9 @@ class Direccion(models.Model):
         managed = False
         db_table = 'Direccion'
 
+    def __str__(self):
+        return self.calle
+
 
 class Organizacion(models.Model):
     id_organizacion = models.AutoField(db_column='id_Organizacion', primary_key=True)  # Field name made lowercase.
@@ -33,6 +36,9 @@ class Organizacion(models.Model):
         managed = False
         db_table = 'Organizacion'
 
+    def __str__(self):
+        return self.nombre
+
 
 class Tipodocumento(models.Model):
     id_tipodocumento = models.AutoField(db_column='id_tipoDocumento', primary_key=True)  # Field name made lowercase.
@@ -43,6 +49,9 @@ class Tipodocumento(models.Model):
         managed = False
         db_table = 'TipoDocumento'
 
+    def __str__(self):
+        return self.nombre
+
 
 class Tipousuario(models.Model):
     id_tipousuario = models.AutoField(db_column='id_tipoUsuario', primary_key=True)  # Field name made lowercase.
@@ -52,6 +61,9 @@ class Tipousuario(models.Model):
     class Meta:
         managed = False
         db_table = 'TipoUsuario'
+
+    def __str__(self):
+        return self.nombre
 
 
 class UsuarioManager(BaseUserManager):
@@ -137,6 +149,28 @@ class CustomUsuario(AbstractBaseUser, PermissionsMixin):
         return self.nombreusuario
 
 
+class CasaManager(models.Manager):
+    def create_casa(self, nombre, descripcion, id_organizacion, id_direccion):
+        if not nombre:
+            raise ValueError('La casa debe tener un nombre')
+        if not descripcion:
+            raise ValueError('La casa debe tener una descripción')
+        if not id_organizacion:
+            raise ValueError('La casa debe tener una organización')
+        if not id_direccion:
+            raise ValueError('La casa debe tener una dirección')
+        
+
+        casa = self.model(
+            nombre=nombre,
+            descripcion=descripcion,
+            id_organizacion=id_organizacion,
+            id_direccion=id_direccion,
+        )
+        casa.save(using=self._db)
+        return casa
+    
+
 class Casa(models.Model):
     id_casa = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
@@ -144,9 +178,7 @@ class Casa(models.Model):
     id_organizacion = models.ForeignKey('Organizacion', on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
     id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'Casa'
+    objects = CasaManager()
 
 
 class Detallecasausuario(models.Model):
@@ -170,6 +202,9 @@ class Unidadmedida(models.Model):
         managed = False
         db_table = 'UnidadMedida'
 
+    def __str__(self):
+        return self.nombre
+
 
 class Stock(models.Model):
     id_stock = models.AutoField(primary_key=True)
@@ -179,6 +214,9 @@ class Stock(models.Model):
         managed = False
         db_table = 'Stock'
 
+    def __str__(self):
+        return self.id_stock
+    
 
 class Categoriaproducto(models.Model):
     id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)  # Field name made lowercase.
@@ -188,6 +226,9 @@ class Categoriaproducto(models.Model):
     class Meta:
         managed = False
         db_table = 'CategoriaProducto'
+
+    def __str__(self):
+        return self.nombre
 
 
 class Producto(models.Model):
@@ -200,6 +241,9 @@ class Producto(models.Model):
     class Meta:
         managed = False
         db_table = 'Producto'
+
+    def __str__(self):
+        return self.nombre
 
 
 class Detallestockproducto(models.Model):
@@ -226,6 +270,9 @@ class Pedido(models.Model):
         managed = False
         db_table = 'Pedido'
 
+    def __str__(self):
+        return self.id_pedido
+
 
 class Estadopedido(models.Model):
     id_estadopedido = models.AutoField(db_column='id_estadoPedido', primary_key=True)  # Field name made lowercase.
@@ -235,6 +282,9 @@ class Estadopedido(models.Model):
     class Meta:
         managed = False
         db_table = 'EstadoPedido'
+
+    def __str__(self):
+        return self.nombre
 
 
 class Detallepedido(models.Model):
@@ -263,6 +313,9 @@ class Oferta(models.Model):
         managed = False
         db_table = 'Oferta'
 
+    def __str__(self):
+        return self.id_oferta
+
 
 class Estadooferta(models.Model):
     id_estadooferta = models.AutoField(db_column='id_estadoOferta', primary_key=True)  # Field name made lowercase.
@@ -272,6 +325,9 @@ class Estadooferta(models.Model):
     class Meta:
         managed = False
         db_table = 'EstadoOferta'
+
+    def __str__(self):
+        return self.nombre
 
 
 class Detalleoferta(models.Model):
@@ -300,3 +356,6 @@ class Transporte(models.Model):
     class Meta:
         managed = False
         db_table = 'Transporte'
+
+    def __str__(self):
+        return self.id_transporte

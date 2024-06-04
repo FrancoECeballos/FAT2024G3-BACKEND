@@ -59,6 +59,21 @@ class UserLogin(APIView):
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 
+class DeleteUser(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            user = Usuario.objects.get(pk=pk)
+            user.delete()
+            return Response({'success': 'El usuario ha sido eliminado con éxito.'}, status=status.HTTP_200_OK)
+        except Usuario.DoesNotExist:
+            return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class UserPage(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -169,3 +184,43 @@ class verTipoDocumento(APIView):
             }
             tipo_documentos_json.append(tipo_documento_json)
         return JsonResponse(tipo_documentos_json, safe=False)
+    
+class CasaPost(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        serializer = CasaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class CasaGet(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        casas = Casa.objects.all()
+        serializer = CasaSerializer(casas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class EditarCasa(APIView):
+    def put(self, request, pk):
+        # Obtener la casa a modificar
+        try:
+            casa = Casa.objects.get(pk=pk)
+        except Casa.DoesNotExist:
+            return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Crear un serializador con los datos recibidos y la instancia de la casa
+        serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
+
+        # Verificar si los datos son válidos y guardar los cambios si corresponde
+        if serializer.is_valid():
+            # Excluir la validación única para el nombre si el nombre no se ha modificado
+            if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            # Si hay errores en los datos proporcionados, devolver los errores
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
