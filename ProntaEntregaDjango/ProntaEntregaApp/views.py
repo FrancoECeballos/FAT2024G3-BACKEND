@@ -65,10 +65,10 @@ class DeleteUser(APIView):
 
     def post(self, request, pk):
         try:
-            user = Usuario.objects.get(pk=pk)
+            user = CustomUsuario.objects.get(pk=pk)
             user.delete()
             return Response({'success': 'El usuario ha sido eliminado con éxito.'}, status=status.HTTP_200_OK)
-        except Usuario.DoesNotExist:
+        except CustomUsuario.DoesNotExist:
             return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

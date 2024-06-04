@@ -22,7 +22,7 @@ class Direccion(models.Model):
         db_table = 'Direccion'
 
     def __str__(self):
-        return self.calle
+        return f"{self.calle} {self.numero}"
 
 
 class Organizacion(models.Model):
@@ -67,7 +67,7 @@ class Tipousuario(models.Model):
 
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self, nombre, apellido, nombreusuario, password, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
+    def create_user(self, nombre, apellido, nombreusuario, documento, telefono, email, genero, imagen, id_direccion, id_tipousuario, id_tipodocumento, password):
         if not nombre:
             raise ValueError('El usuario debe tener un nombre')
         if not apellido:
@@ -86,6 +86,8 @@ class UsuarioManager(BaseUserManager):
             documento=documento,
             telefono=telefono,
             email=self.normalize_email(email),
+            genero=genero,
+            imagen=imagen,
             id_direccion=id_direccion,
             id_tipousuario=id_tipousuario,
             id_tipodocumento=id_tipodocumento
@@ -161,14 +163,14 @@ class CasaManager(models.Manager):
             raise ValueError('La casa debe tener una dirección')
         
 
-        casa = self.model(
+        Casa = self.model(
             nombre=nombre,
             descripcion=descripcion,
             id_organizacion=id_organizacion,
             id_direccion=id_direccion,
         )
-        casa.save(using=self._db)
-        return casa
+        Casa.save(using=self._db)
+        return Casa
     
 
 class Casa(models.Model):
@@ -179,6 +181,9 @@ class Casa(models.Model):
     id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
 
     objects = CasaManager()
+
+    def __str__(self):
+        return self.nombre
 
 
 class Detallecasausuario(models.Model):
@@ -215,7 +220,7 @@ class Stock(models.Model):
         db_table = 'Stock'
 
     def __str__(self):
-        return self.id_stock
+        return str(self.id_stock)
     
 
 class Categoriaproducto(models.Model):
@@ -271,7 +276,7 @@ class Pedido(models.Model):
         db_table = 'Pedido'
 
     def __str__(self):
-        return self.id_pedido
+        return str(self.id_pedido)
 
 
 class Estadopedido(models.Model):
@@ -314,7 +319,7 @@ class Oferta(models.Model):
         db_table = 'Oferta'
 
     def __str__(self):
-        return self.id_oferta
+        return str(self.id_oferta)
 
 
 class Estadooferta(models.Model):
@@ -358,4 +363,4 @@ class Transporte(models.Model):
         db_table = 'Transporte'
 
     def __str__(self):
-        return self.id_transporte
+        return str(self.id_transporte)

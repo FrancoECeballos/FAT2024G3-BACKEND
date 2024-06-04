@@ -27,7 +27,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -59,7 +59,7 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             genero=validated_data['genero'],
             password=validated_data['password'],
-            imagen=validated_data['imagen'],
+            imagen='imagen',
             id_direccion=validated_data['id_direccion'],
             id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],
