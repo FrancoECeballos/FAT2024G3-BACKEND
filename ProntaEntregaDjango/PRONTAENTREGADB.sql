@@ -31,30 +31,28 @@ CREATE TABLE IF NOT EXISTS TipoUsuario (
     descripcion VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS Usuario (
+CREATE TABLE IF NOT EXISTS CustomUsuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     apellido VARCHAR(255),
     nombreusuario VARCHAR(255),
-    password VARCHAR(255),
     documento VARCHAR(20),
     telefono VARCHAR(20),
     email VARCHAR(255),
     genero INT,
+    imagen LONGBLOB,
     fechaUnion DATETIME,
     last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `is_active` BOOLEAN DEFAULT FALSE,
-    `is_staff` BOOLEAN DEFAULT FALSE,
     id_direccion INT,
     id_tipoUsuario INT,
     id_tipoDocumento INT,
+    `is_staff` BOOLEAN DEFAULT FALSE,
+    `is_superuser` BOOLEAN DEFAULT FALSE,
+    `is_active` BOOLEAN DEFAULT TRUE,
     CONSTRAINT fk_direccion FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion),
     CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario),
     CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipoDocumento) REFERENCES TipoDocumento(id_tipoDocumento)
 );
-
-
-
 
 CREATE TABLE IF NOT EXISTS Casa (
     id_casa INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,7 +71,7 @@ CREATE TABLE IF NOT EXISTS DetalleCasaUsuario (
     id_casa INT,
     id_usuario INT,
     CONSTRAINT fk_casa_detalle FOREIGN KEY (id_casa) REFERENCES Casa(id_casa),
-    CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+    CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario)
 );
 
 CREATE TABLE IF NOT EXISTS UnidadMedida(
@@ -121,7 +119,7 @@ CREATE TABLE IF NOT EXISTS Pedido (
     horaVencimiento TIME,
     id_casa INT,
     id_usuario INT,
-	CONSTRAINT fk_usuario_pedido FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
+	CONSTRAINT fk_usuario_pedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
     CONSTRAINT fk_casa_pedido FOREIGN KEY (id_casa) REFERENCES Casa(id_casa)
 );
 
@@ -152,7 +150,7 @@ CREATE TABLE IF NOT EXISTS Oferta (
     id_usuario INT,
     id_casa INT,
     CONSTRAINT fk_casa_oferta FOREIGN KEY (id_casa) REFERENCES Casa(id_casa),
-    CONSTRAINT fk_usuario_oferta FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+    CONSTRAINT fk_usuario_oferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario)
 );
 
 CREATE TABLE IF NOT EXISTS EstadoOferta(
@@ -212,10 +210,10 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
     ('Cedula', 'Es un documento de identidad');
 
 -- Inserciones para la tabla Usuario
-INSERT INTO Usuario (nombre, apellido, password, nombreUsuario, documento, id_tipoDocumento, telefono, email, id_direccion, id_tipoUsuario) VALUES 
-    ('Joaquin', 'Lopez', 'contra', 'JoaLopez', '12345678A', 1, '25129735', 'JoaquinL@hotmail.com', 1, 3),
-    ('Timoteo', 'Wuewuan', 'QwerTY', 'TimoelWawan','98765432B', 2,'46505926', 'TimoteoW@gmail.com.com', 3, 2),
-    ('Teresa', 'Diaz', '12435687', 'TeresitaD','56789123C', 3,'36007395', 'TereDiaz@gmail.com', 4, 1);
+INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoUsuario, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
+    ('Joaquin', 'Lopez', 'JoaLopez', '12345678A', '25129735', 'JoaquinL@hotmail.com', 1, NULL, NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
+    ('Timoteo', 'Wuewuan', 'TimoelWawan','98765432B', '46505926', 'TimoteoW@gmail.com', 1, NULL, NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
+    ('Teresa', 'Diaz', 'TeresitaD','56789123C', '36007395', 'TereDiaz@gmail.com', 1, NULL, NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE);
 
 -- Inserciones para la tabla Casa
 INSERT INTO Casa (nombre, descripcion, id_Organizacion, id_direccion) VALUES 

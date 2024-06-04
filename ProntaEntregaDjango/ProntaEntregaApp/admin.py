@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('nombreusuario', 'password')}),
-        ('Personal info', {'fields': ('nombre', 'apellido', 'email', 'documento', 'telefono', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'fecha_union')}),
+        ('Personal info', {'fields': ('nombre', 'apellido', 'email', 'documento', 'telefono', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('nombreusuario', 'nombre', 'apellido', 'email')
     ordering = ('nombreusuario',)
 
-admin.site.register(Usuario, CustomUserAdmin)
+admin.site.register(CustomUsuario, CustomUserAdmin)
 
 # Register your models here.
 

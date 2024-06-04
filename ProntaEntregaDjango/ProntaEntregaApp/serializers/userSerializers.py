@@ -20,13 +20,13 @@ class UsuarioSerializer(serializers.ModelSerializer):
     id_tipodocumento = TipodocumentoSerializer(many = False)
     
     class Meta:
-        model = Usuario
+        model = CustomUsuario
         fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
 
 
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario
+        model = CustomUsuario
         fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
         extra_kwargs = {
             'password': {'write_only': True}
@@ -38,7 +38,7 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
         username = data.get('nombreusuario', '').strip()
         password = data.get('password', '').strip()
 
-        if not email or Usuario.objects.filter(email=email).exists():
+        if not email or CustomUsuario.objects.filter(email=email).exists():
             raise ValidationError('choose another email')
         
         if not password or len(password) < 8:
@@ -50,7 +50,7 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        user = Usuario.objects.create_user(
+        user = CustomUsuario.objects.create_user(
             nombre=validated_data['nombre'],
             apellido=validated_data['apellido'],
             nombreusuario=validated_data['nombreusuario'],
@@ -72,7 +72,7 @@ class UsuarioLoginSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=True)
 
     class Meta:
-        model = Usuario
+        model = CustomUsuario
         fields = ['email', 'password']
     
     def validate(self, attrs):

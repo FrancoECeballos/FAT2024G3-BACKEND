@@ -17,7 +17,7 @@ from rest_framework.permissions import AllowAny
 
 # Application-specific imports
 from ProntaEntregaApp.serializers.userSerializers import *
-from ProntaEntregaApp.models import Usuario
+from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
 
 
@@ -47,7 +47,7 @@ class UserLogin(APIView):
             if 'email' not in request.data or 'password' not in request.data:
                 return Response({'error': 'El email y la contraseña son necesarias.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            user = Usuario.objects.get(email=request.data['email'])
+            user = CustomUsuario.objects.get(email=request.data['email'])
             if not user.check_password(request.data['password']):
                 return Response({'error': 'La contraseña es incorrecta.'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -55,7 +55,7 @@ class UserLogin(APIView):
             serializer = UsuarioLoginSerializer(user)
             request.session['userToken'] = token.key
             return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
-        except Usuario.DoesNotExist:
+        except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 
@@ -73,10 +73,10 @@ class UserByID(APIView):
 
     def get(self, request, pk):
         try:
-            usuario = Usuario.objects.get(id_usuario = pk)
+            usuario = CustomUsuario.objects.get(id_usuario = pk)
             serializer = UsuarioSerializer(usuario)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Usuario.DoesNotExist:
+        except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 class TestToken(APIView):
@@ -133,7 +133,7 @@ class VerStockYProducto(APIView):
 
 class VerUsuarios(APIView):
     def get(self, request):
-        usuarios = Usuario.objects.all()
+        usuarios = CustomUsuario.objects.all()
 
         usuarios_json = []
         for usuario in usuarios:
