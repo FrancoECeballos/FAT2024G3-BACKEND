@@ -19,4 +19,5 @@ urlpatterns = [
     path('casa/', CasaGet.as_view(), name='casa_get'),
     path('editar_casa/<int:pk>/', EditarCasa.as_view(), name='casa_edit'),
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
+    path('editar_direccion/<int:pk>/', EditarDirecciones.as_view(), name='direcciones_edit'),
 ]

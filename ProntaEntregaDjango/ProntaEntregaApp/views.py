@@ -240,3 +240,20 @@ class GetDirecciones(APIView):
         direcciones = Direccion.objects.all()
         serializer = DireccionSerializer(direcciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class EditarDirecciones(APIView):
+    def put(self, request, pk):
+        try:
+            direccion = Direccion.objects.get(pk=pk)
+        except Direccion.DoesNotExist:
+            return Response({'error': 'No se encontró una dirección con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = DireccionSerializer(direccion, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'nombre' in request.data and request.data['nombre'] == direccion.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la dirección han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
