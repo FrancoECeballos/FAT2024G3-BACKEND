@@ -187,13 +187,20 @@ class verTipoDocumento(APIView):
     
 class CasaPost(APIView):
     permission_classes = [AllowAny]
+    
     def post(self, request):
         serializer = CasaSerializer(data=request.data)
         if serializer.is_valid():
+            try:
+                serializer.validate_nombre(serializer.validated_data['nombre'])
+            except serializers.ValidationError as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        
 class CasaGet(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
