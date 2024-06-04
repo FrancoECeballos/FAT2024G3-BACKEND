@@ -236,6 +236,7 @@ class EditarCasa(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class GetDirecciones(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         direcciones = Direccion.objects.all()
         serializer = DireccionSerializer(direcciones, many=True)
