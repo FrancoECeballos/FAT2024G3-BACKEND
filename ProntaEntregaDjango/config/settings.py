@@ -116,7 +116,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'ProntaEntregaApp.Usuario'
+AUTH_USER_MODEL = 'ProntaEntregaApp.CustomUsuario'
 
 
 # Password validation

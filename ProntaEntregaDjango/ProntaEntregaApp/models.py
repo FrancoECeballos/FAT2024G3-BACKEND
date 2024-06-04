@@ -11,105 +11,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 
-
-class CasaManager(models.Manager):
-    def create_casa(self, nombre, descripcion, id_organizacion, id_direccion):
-        if not nombre:
-            raise ValueError('La casa debe tener un nombre')
-        if not descripcion:
-            raise ValueError('La casa debe tener una descripción')
-        if not id_organizacion:
-            raise ValueError('La casa debe tener una organización')
-        if not id_direccion:
-            raise ValueError('La casa debe tener una dirección')
-        
-
-        casa = self.model(
-            nombre=nombre,
-            descripcion=descripcion,
-            id_organizacion=id_organizacion,
-            id_direccion=id_direccion,
-        )
-        casa.save(using=self._db)
-        return casa
-    
-
-class Casa(models.Model):
-    id_casa = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    id_organizacion = models.ForeignKey('Organizacion', on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
-    id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
-
-    objects = CasaManager()
-
-    class Meta:
-        managed = False
-        db_table = 'Casa'
-
-
-class Categoriaproducto(models.Model):
-    id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'CategoriaProducto'
-
-    def __str__(self):
-        return self.nombre
-
-
-class Detallecasausuario(models.Model):
-    id_detallecasausuario = models.AutoField(db_column='id_detalleCasaUsuario', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    fechaingreso = models.DateField(db_column='fechaIngreso', blank=True, null=True)  # Field name made lowercase.
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
-    id_usuario = models.ForeignKey('Usuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'DetalleCasaUsuario'
-
-
-class Detalleoferta(models.Model):
-    id_detalleoferta = models.AutoField(db_column='id_detalleOferta', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    cantidad = models.IntegerField(blank=True, null=True)
-    id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
-    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
-    id_estadooferta = models.ForeignKey('Estadooferta', on_delete=models.SET_NULL, db_column='id_estadoOferta', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'DetalleOferta'
-
-
-class Detallepedido(models.Model):
-    id_detallepedido = models.AutoField(db_column='id_detallePedido', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    cantidad = models.IntegerField(blank=True, null=True)
-    id_pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, db_column='id_pedido', blank=True, null=True)
-    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
-    id_estadopedido = models.ForeignKey('Estadopedido', on_delete=models.SET_NULL, db_column='id_estadoPedido', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'DetallePedido'
-
-
-class Detallestockproducto(models.Model):
-    id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
-    cantidad = models.IntegerField(blank=True, null=True)
-    id_stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, db_column='id_stock', blank=True, null=True)
-    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'DetalleStockProducto'
-
-
 class Direccion(models.Model):
     id_direccion = models.AutoField(primary_key=True)
     calle = models.CharField(max_length=255, blank=True, null=True)
@@ -121,50 +22,7 @@ class Direccion(models.Model):
         db_table = 'Direccion'
 
     def __str__(self):
-        return self.calle
-
-
-class Estadooferta(models.Model):
-    id_estadooferta = models.AutoField(db_column='id_estadoOferta', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'EstadoOferta'
-
-    def __str__(self):
-        return self.nombre
-
-
-class Estadopedido(models.Model):
-    id_estadopedido = models.AutoField(db_column='id_estadoPedido', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'EstadoPedido'
-
-    def __str__(self):
-        return self.nombre
-
-
-class Oferta(models.Model):
-    id_oferta = models.AutoField(primary_key=True)
-    fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
-    horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
-    fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    id_usuario = models.ForeignKey('Usuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'Oferta'
-    
-    def __str__(self):
-        return self.id_oferta
+        return f"{self.calle} {self.numero}"
 
 
 class Organizacion(models.Model):
@@ -182,50 +40,6 @@ class Organizacion(models.Model):
         return self.nombre
 
 
-class Pedido(models.Model):
-    id_pedido = models.AutoField(primary_key=True)
-    fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
-    horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
-    fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
-    id_usuario = models.ForeignKey('Usuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'Pedido'
-
-    def __str__(self):
-        return self.id_pedido
-
-
-class Producto(models.Model):
-    id_producto = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    id_categoriaproducto = models.ForeignKey(Categoriaproducto, on_delete=models.SET_NULL, db_column='id_categoriaProducto', blank=True, null=True)  # Field name made lowercase.
-    id_unidadmedida = models.ForeignKey('Unidadmedida', on_delete=models.SET_NULL, db_column='id_unidadMedida', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Producto'
-        
-    def __str__(self):
-        return self.nombre
-
-
-class Stock(models.Model):
-    id_stock = models.AutoField(primary_key=True)
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'Stock'
-
-    def __str__(self):
-        return self.id_stock
-
-
 class Tipodocumento(models.Model):
     id_tipodocumento = models.AutoField(db_column='id_tipoDocumento', primary_key=True)  # Field name made lowercase.
     nombre = models.CharField(max_length=255, blank=True, null=True)
@@ -234,7 +48,7 @@ class Tipodocumento(models.Model):
     class Meta:
         managed = False
         db_table = 'TipoDocumento'
-    
+
     def __str__(self):
         return self.nombre
 
@@ -252,39 +66,8 @@ class Tipousuario(models.Model):
         return self.nombre
 
 
-class Transporte(models.Model):
-    id_transporte = models.AutoField(primary_key=True)
-    marca = models.CharField(max_length=255, blank=True, null=True)
-    modelo = models.CharField(max_length=255, blank=True, null=True)
-    patente = models.CharField(max_length=20, blank=True, null=True)
-    kilometraje = models.IntegerField(blank=True, null=True)
-    estadoitv = models.CharField(db_column='estadoITV', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    anio = models.TextField(blank=True, null=True)  # This field type is a guess.
-    id_organizacion = models.ForeignKey(Organizacion, on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Transporte'
-
-    def __str__(self):
-        return self.id_transporte
-
-
-class Unidadmedida(models.Model):
-    id_unidadmedida = models.AutoField(db_column='id_unidadMedida', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'UnidadMedida'
-
-    def __str__(self):
-        return self.nombre
-
-
 class UsuarioManager(BaseUserManager):
-    def create_user(self, nombre, apellido, nombreusuario, password, documento, telefono, email, id_direccion, id_tipousuario, id_tipodocumento):
+    def create_user(self, nombre, apellido, nombreusuario, documento, telefono, email, genero, imagen, id_direccion, id_tipousuario, id_tipodocumento, password):
         if not nombre:
             raise ValueError('El usuario debe tener un nombre')
         if not apellido:
@@ -303,6 +86,8 @@ class UsuarioManager(BaseUserManager):
             documento=documento,
             telefono=telefono,
             email=self.normalize_email(email),
+            genero=genero,
+            imagen=imagen,
             id_direccion=id_direccion,
             id_tipousuario=id_tipousuario,
             id_tipodocumento=id_tipodocumento
@@ -330,7 +115,7 @@ class UsuarioManager(BaseUserManager):
         return usuario
 
 
-class Usuario(AbstractBaseUser, PermissionsMixin):
+class CustomUsuario(AbstractBaseUser, PermissionsMixin):
     GENDER_MALE = 0
     GENDER_FEMALE = 1
     GENDER_UNKOWN = 2
@@ -345,11 +130,11 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)
     genero = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)
     imagen = models.ImageField(upload_to='usuarios/', blank=True, null=True)
+    fechaUnion = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
     id_direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
     id_tipousuario = models.ForeignKey(Tipousuario, on_delete=models.SET_NULL, db_column='id_tipoUsuario', blank=True, null=True)  # Field name made lowercase.
     id_tipodocumento = models.ForeignKey(Tipodocumento, on_delete=models.SET_NULL, db_column='id_tipoDocumento', blank=True, null=True)  # Field name made lowercase.
-    fechaUnion = models.DateTimeField(default=timezone.now)
-    last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -364,3 +149,218 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.nombreusuario
+
+
+class CasaManager(models.Manager):
+    def create_casa(self, nombre, descripcion, id_organizacion, id_direccion):
+        if not nombre:
+            raise ValueError('La casa debe tener un nombre')
+        if not descripcion:
+            raise ValueError('La casa debe tener una descripción')
+        if not id_organizacion:
+            raise ValueError('La casa debe tener una organización')
+        if not id_direccion:
+            raise ValueError('La casa debe tener una dirección')
+        
+
+        Casa = self.model(
+            nombre=nombre,
+            descripcion=descripcion,
+            id_organizacion=id_organizacion,
+            id_direccion=id_direccion,
+        )
+        Casa.save(using=self._db)
+        return Casa
+    
+
+class Casa(models.Model):
+    id_casa = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    id_organizacion = models.ForeignKey('Organizacion', on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
+    id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
+
+    objects = CasaManager()
+
+    def __str__(self):
+        return self.nombre
+
+
+class Detallecasausuario(models.Model):
+    id_detallecasausuario = models.AutoField(db_column='id_detalleCasaUsuario', primary_key=True)  # Field name made lowercase.
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    fechaingreso = models.DateField(db_column='fechaIngreso', blank=True, null=True)  # Field name made lowercase.
+    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'DetalleCasaUsuario'
+
+
+class Unidadmedida(models.Model):
+    id_unidadmedida = models.AutoField(db_column='id_unidadMedida', primary_key=True)  # Field name made lowercase.
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'UnidadMedida'
+
+    def __str__(self):
+        return self.nombre
+
+
+class Stock(models.Model):
+    id_stock = models.AutoField(primary_key=True)
+    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Stock'
+
+    def __str__(self):
+        return str(self.id_stock)
+    
+
+class Categoriaproducto(models.Model):
+    id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)  # Field name made lowercase.
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'CategoriaProducto'
+
+    def __str__(self):
+        return self.nombre
+
+
+class Producto(models.Model):
+    id_producto = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    id_categoriaproducto = models.ForeignKey(Categoriaproducto, on_delete=models.SET_NULL, db_column='id_categoriaProducto', blank=True, null=True)  # Field name made lowercase.
+    id_unidadmedida = models.ForeignKey('Unidadmedida', on_delete=models.SET_NULL, db_column='id_unidadMedida', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Producto'
+
+    def __str__(self):
+        return self.nombre
+
+
+class Detallestockproducto(models.Model):
+    id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
+    cantidad = models.IntegerField(blank=True, null=True)
+    id_stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, db_column='id_stock', blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'DetalleStockProducto'
+
+
+class Pedido(models.Model):
+    id_pedido = models.AutoField(primary_key=True)
+    fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
+    horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
+    fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
+    horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
+    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Pedido'
+
+    def __str__(self):
+        return str(self.id_pedido)
+
+
+class Estadopedido(models.Model):
+    id_estadopedido = models.AutoField(db_column='id_estadoPedido', primary_key=True)  # Field name made lowercase.
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'EstadoPedido'
+
+    def __str__(self):
+        return self.nombre
+
+
+class Detallepedido(models.Model):
+    id_detallepedido = models.AutoField(db_column='id_detallePedido', primary_key=True)  # Field name made lowercase.
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+    id_pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, db_column='id_pedido', blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
+    id_estadopedido = models.ForeignKey('Estadopedido', on_delete=models.SET_NULL, db_column='id_estadoPedido', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'DetallePedido'
+
+
+class Oferta(models.Model):
+    id_oferta = models.AutoField(primary_key=True)
+    fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
+    horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
+    fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
+    horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
+    id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
+    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Oferta'
+
+    def __str__(self):
+        return str(self.id_oferta)
+
+
+class Estadooferta(models.Model):
+    id_estadooferta = models.AutoField(db_column='id_estadoOferta', primary_key=True)  # Field name made lowercase.
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'EstadoOferta'
+
+    def __str__(self):
+        return self.nombre
+
+
+class Detalleoferta(models.Model):
+    id_detalleoferta = models.AutoField(db_column='id_detalleOferta', primary_key=True)  # Field name made lowercase.
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+    id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
+    id_estadooferta = models.ForeignKey('Estadooferta', on_delete=models.SET_NULL, db_column='id_estadoOferta', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'DetalleOferta'
+
+
+class Transporte(models.Model):
+    id_transporte = models.AutoField(primary_key=True)
+    marca = models.CharField(max_length=255, blank=True, null=True)
+    modelo = models.CharField(max_length=255, blank=True, null=True)
+    patente = models.CharField(max_length=20, blank=True, null=True)
+    kilometraje = models.IntegerField(blank=True, null=True)
+    estadoitv = models.CharField(db_column='estadoITV', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    anio = models.TextField(blank=True, null=True)  # This field type is a guess.
+    id_organizacion = models.ForeignKey(Organizacion, on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Transporte'
+
+    def __str__(self):
+        return str(self.id_transporte)
