@@ -191,19 +191,36 @@ class CasaPost(APIView):
     def post(self, request):
         serializer = CasaSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                serializer.validate_nombre(serializer.validated_data['nombre'])
-            except serializers.ValidationError as e:
-                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class CasaGet(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         casas = Casa.objects.all()
         serializer = CasaSerializer(casas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class EditarCasa(APIView):
+    def put(self, request, pk):
+        # Obtener la casa a modificar
+        try:
+            casa = Casa.objects.get(pk=pk)
+        except Casa.DoesNotExist:
+            return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Crear un serializador con los datos recibidos y la instancia de la casa
+        serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
+
+        # Verificar si los datos son válidos y guardar los cambios si corresponde
+        if serializer.is_valid():
+            # Excluir la validación única para el nombre si el nombre no se ha modificado
+            if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            # Si hay errores en los datos proporcionados, devolver los errores
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

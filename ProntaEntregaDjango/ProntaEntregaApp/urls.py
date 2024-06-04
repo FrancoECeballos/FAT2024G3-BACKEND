@@ -16,4 +16,5 @@ urlpatterns = [
     path('tipo_documento/', verTipoDocumento.as_view(), name='ver_tipo_documento'),
     path('crear_casa/', CasaPost.as_view(), name='casa_post'),
     path('casa/', CasaGet.as_view(), name='casa_get'),
+    path('editar_casa/<int:pk>/', EditarCasa.as_view(), name='casa_edit'),
 ]
