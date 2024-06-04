@@ -18,7 +18,6 @@ from rest_framework.permissions import AllowAny
 # Application-specific imports
 from ProntaEntregaApp.serializers.userSerializers import *
 from ProntaEntregaApp.models import Usuario
-from ProntaEntregaApp.validations import *
 from django.http import JsonResponse
 
 

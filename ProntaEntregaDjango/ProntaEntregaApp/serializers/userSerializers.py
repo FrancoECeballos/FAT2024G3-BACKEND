@@ -2,6 +2,7 @@ from rest_framework import serializers
 from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers.generalSerializers import *
 from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 class TipousuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,6 +28,26 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def validate(self, data):
+        
+        email = data.get('email', '').strip()
+        username = data.get('nombreusuario', '').strip()
+        password = data.get('password', '').strip()
+
+        if not email or Usuario.objects.filter(email=email).exists():
+            raise ValidationError('choose another email')
+        
+        if not password or len(password) < 8:
+            raise ValidationError('choose another password, min 8 characters')
+        
+        if not username:
+            raise ValidationError('choose another username')
+        
+        return data
 
     def create(self, validated_data):
         user = Usuario.objects.create_user(
@@ -36,7 +57,9 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             documento=validated_data['documento'],
             telefono=validated_data['telefono'],
             email=validated_data['email'],
+            genero=validated_data['genero'],
             password=validated_data['password'],
+            imagen=validated_data['imagen'],
             id_direccion=validated_data['id_direccion'],
             id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],
