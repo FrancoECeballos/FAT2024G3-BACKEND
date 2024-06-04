@@ -126,6 +126,22 @@ class CambiarContrasenia(APIView):
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
     
+class VerStock(APIView):
+    def get(self, request):
+        productos = Producto.objects.all()
+        productos_json = []
+        for producto in productos:
+            detalle_stock = Detallestockproducto.objects.filter(id_producto=producto.id_producto).first()
+            cantidad_stock = detalle_stock.cantidad if detalle_stock else 0
+
+            producto_json = {
+                'nombre_producto': producto.nombre,
+                'descripcion': producto.descripcion,
+                'stock_disponible': cantidad_stock
+            }
+            productos_json.append(producto_json)
+        return JsonResponse(productos_json, safe=False)
+
 
 class VerStockYProducto(APIView):
     def get(self, request, categoria_id):
@@ -204,23 +220,23 @@ class CasaGet(APIView):
     
 class EditarCasa(APIView):
     def put(self, request, pk):
-        # Obtener la casa a modificar
         try:
             casa = Casa.objects.get(pk=pk)
         except Casa.DoesNotExist:
             return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Crear un serializador con los datos recibidos y la instancia de la casa
         serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
-
-        # Verificar si los datos son válidos y guardar los cambios si corresponde
         if serializer.is_valid():
-            # Excluir la validación única para el nombre si el nombre no se ha modificado
             if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
                 serializer.fields['nombre'].unique = False
 
             serializer.save()
             return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
-            # Si hay errores en los datos proporcionados, devolver los errores
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetDirecciones(APIView):
+    def get(self, request):
+        direcciones = Direccion.objects.all()
+        serializer = DireccionSerializer(direcciones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
