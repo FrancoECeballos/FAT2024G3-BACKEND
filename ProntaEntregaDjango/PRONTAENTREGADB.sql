@@ -4,6 +4,12 @@ CREATE DATABASE IF NOT EXISTS PRONTAENTREGADB;
 
 USE PRONTAENTREGADB;
 
+create table if not exists codigos_de_verificacion(
+codigos_id int auto_increment not null,
+codigo int,
+primary key (codigos_id)
+);
+
 CREATE TABLE IF NOT EXISTS Direccion(
     id_direccion INT AUTO_INCREMENT PRIMARY KEY,
     calle VARCHAR(255),
