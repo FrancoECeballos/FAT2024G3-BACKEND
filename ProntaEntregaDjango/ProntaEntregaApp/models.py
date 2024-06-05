@@ -11,11 +11,30 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 
+class DireccionManager(models.Manager):
+    def create_direccion(self, calle, numero, localidad):
+        if not calle:
+            raise ValueError('La dirección debe tener una calle')
+        if not numero:
+            raise ValueError('La dirección debe tener un número')
+        if not localidad:
+            raise ValueError('La dirección debe tener una localidad')
+
+        direccion = self.model(
+            calle=calle,
+            numero=numero,
+            localidad=localidad
+        )
+        direccion.save(using=self._db)
+        return direccion
+    
 class Direccion(models.Model):
     id_direccion = models.AutoField(primary_key=True)
     calle = models.CharField(max_length=255, blank=True, null=True)
     numero = models.IntegerField(blank=True, null=True)
     localidad = models.CharField(max_length=255, blank=True, null=True)
+
+    objects = DireccionManager()
 
     class Meta:
         managed = False

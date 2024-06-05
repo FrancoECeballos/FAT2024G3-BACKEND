@@ -16,6 +16,7 @@ urlpatterns = [
     path('casa/', CasaGet.as_view(), name='casa_get'),
     path('editar_casa/<int:pk>/', EditarCasa.as_view(), name='casa_edit'),
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
+    path('crear_direccion/', CrearDirecciones.as_view(), name='direcciones_post'),
     path('editar_direccion/<int:pk>/', EditarDirecciones.as_view(), name='direcciones_edit'),
     path('user/delete/<int:pk>/', UserDelete.as_view(), name='user_delete'),
 ]

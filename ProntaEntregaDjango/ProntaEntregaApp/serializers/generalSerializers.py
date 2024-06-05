@@ -47,6 +47,14 @@ class DireccionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direccion
         fields = '__all__'
+
+    def create(self, validated_data):
+        direccion = Direccion.objects.create_direccion(
+            calle=validated_data.get('calle'),
+            numero=validated_data.get('numero'),
+            localidad=validated_data.get('localidad'),
+        )
+        return direccion
     
 class OrganizacionSerializer(serializers.ModelSerializer):
     class Meta:
