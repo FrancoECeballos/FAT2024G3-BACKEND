@@ -30,9 +30,9 @@ class DireccionManager(models.Manager):
     
 class Direccion(models.Model):
     id_direccion = models.AutoField(primary_key=True)
-    calle = models.CharField(max_length=255, blank=True, null=True)
-    numero = models.IntegerField(blank=True, null=True)
     localidad = models.CharField(max_length=255, blank=True, null=True)
+    numero = models.IntegerField(blank=True, null=True)
+    calle = models.CharField(max_length=255, blank=True, null=True)
 
     objects = DireccionManager()
 

@@ -50,9 +50,9 @@ class DireccionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         direccion = Direccion.objects.create_direccion(
-            calle=validated_data.get('calle'),
-            numero=validated_data.get('numero'),
             localidad=validated_data.get('localidad'),
+            numero=validated_data.get('numero'),
+            calle=validated_data.get('calle'),
         )
         return direccion
     
