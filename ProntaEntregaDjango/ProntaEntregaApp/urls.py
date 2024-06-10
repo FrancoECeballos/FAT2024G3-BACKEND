@@ -20,4 +20,5 @@ urlpatterns = [
     path('direccion/<str:localidad>/<int:numero>/<str:calle>', GetDireccion.as_view(), name='direccion_get'),
     path('editar_direccion/<int:pk>/', EditarDirecciones.as_view(), name='direcciones_edit'),
     path('user/delete/<int:pk>/', UserDelete.as_view(), name='user_delete'),
+    path('api/usuarios/update/<int:pk>/', UserUpdate.as_view(), name='user-update'),
 ]
