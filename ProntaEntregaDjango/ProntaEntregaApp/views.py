@@ -55,7 +55,7 @@ class UserLogin(APIView):
             serializer = UsuarioLoginSerializer(user)
             return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
-            return Response({'error': 'El usuario o la contraseña es incorrecta.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'El usuario no fue encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class DeleteUser(APIView):
