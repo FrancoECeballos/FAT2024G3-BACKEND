@@ -91,12 +91,16 @@ class UserByEmail(APIView):
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
-class TestToken(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+class UserByToken(APIView):
+    permission_classes = [AllowAny]
 
-    def get(self, request):
-        return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
+    def get(self, request, token):
+        try:
+            usuario = CustomUsuario.objects.get(auth_token = token)
+            serializer = UsuarioSerializer(usuario)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class CambiarContrasenia(APIView):
