@@ -49,14 +49,13 @@ class UserLogin(APIView):
 
             user = CustomUsuario.objects.get(email=request.data['email'])
             if not user.check_password(request.data['password']):
-                return Response({'error': 'La contraseña es incorrecta.'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'error': 'El usuario o la contraseña es incorrecta.'}, status=status.HTTP_401_UNAUTHORIZED)
 
             token, created = Token.objects.get_or_create(user=user)
             serializer = UsuarioLoginSerializer(user)
-            request.session['userToken'] = token.key
             return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
-            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'El usuario o la contraseña es incorrecta.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class DeleteUser(APIView):
@@ -79,7 +78,6 @@ class UserPage(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        token = request.session.get['userToken']
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
 
 class UserByID(APIView):
