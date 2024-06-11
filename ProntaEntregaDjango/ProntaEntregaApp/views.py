@@ -96,7 +96,7 @@ class UserByToken(APIView):
 
     def get(self, request, token):
         try:
-            usuario = CustomUsuario.objects.get(token = token)
+            usuario = CustomUsuario.objects.get(auth_token = token)
             serializer = UsuarioSerializer(usuario)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
