@@ -80,13 +80,12 @@ class UserPage(APIView):
     def get(self, request):
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
 
-class UserByID(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+class UserByEmail(APIView):
+    permission_classes = [AllowAny]
 
-    def get(self, request, pk):
+    def get(self, request, email):
         try:
-            usuario = CustomUsuario.objects.get(id_usuario = pk)
+            usuario = CustomUsuario.objects.get(email = email)
             serializer = UsuarioSerializer(usuario)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
