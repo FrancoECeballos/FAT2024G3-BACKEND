@@ -1,5 +1,0 @@
-Hola <U>
-
-Si le llega este mail significa que se solicito un codigo para cambiar la contraseña
-
-su codigo es <C>

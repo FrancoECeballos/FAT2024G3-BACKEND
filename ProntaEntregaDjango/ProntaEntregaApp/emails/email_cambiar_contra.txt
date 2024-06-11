@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Hola [nombre] </h1>
+    <p>Si le llega este mail significa que se solicito un codigo para cambiar la contraseña</p>
+    <Su codigo:>
+    <h1>[codigo]</h1>
+</body>

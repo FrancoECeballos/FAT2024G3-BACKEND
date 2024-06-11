@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Hola [nombre] </h1>
+    <p>Si le llega este mail significa que se intento usar su mail para registrarse en Pronta Entrega App, si fue usted entre al siguiente link para confirmar su identidad</p>
+    <a href="[link]">apreta aca</a>
+</body>
