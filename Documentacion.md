@@ -11,13 +11,13 @@
 
 2. [Login User](#login-user)
 
-3. [Test Token](#test-token)
+3. [User Token](#user-token)
 
 4. [User Profile](#user-profile)
 
 5. [View Users](#view-users)
 
-6. [View User by ID](#view-user-by-id)
+6. [View User by Email](#view-user-by-email)
 
 7. [Change Password](#change-password)
 
@@ -86,31 +86,18 @@ Registers a new user.
 ### Request Body Example
 
 ```json
-
 {
-
 "nombre": "example",
-
 "apellido": "example",
-
 "nombreusuario": "example",
-
 "password": "example",
-
 "genero": 1,
-
 "documento": "11111111",
-
 "telefono": "3510000000",
-
 "email": "example@gmail.com",
-
 "id_direccion": 1,
-
 "id_tipousuario": 1,
-
 "id_tipodocumento": 1
-
 }
 ```
 
@@ -128,11 +115,8 @@ Registers a new user.
 
 ```json
 {
-
 "nombreusuario": ["This field is required."],
-
 "password": ["This field is required."]
-
 }
 ```
 
@@ -146,9 +130,7 @@ Registers a new user.
 
 ```json
 {
-
 "email": ["A user with that email already exists."]
-
 }
 ```
 
@@ -162,9 +144,7 @@ Registers a new user.
 
 ```json
 {
-
 "nombreusuario": ["A user with that username already exists."]
-
 }
 ```
 
@@ -178,9 +158,7 @@ Registers a new user.
 
 ```json
 {
-
 "password": ["Ensure this field has at least 8 characters."]
-
 }
 ```
 
@@ -196,9 +174,7 @@ Registers a new user.
 
 ```json
 {
-
 "error": "A user with this email or username already exists."
-
 }
 ```
 
@@ -214,10 +190,9 @@ Registers a new user.
 
 ```json
 {
-
 "error": "An unexpected error occurred. Please try again later."
-
 }
+
 ```
 
 - **Cause**: This can be due to a variety of reasons, such as database issues, server misconfigurations, etc.
@@ -248,11 +223,8 @@ User Login.
 
 ```json
 {
-
 "email": "example@gmail.com",
-
 "password": "example"
-
 }
 ```
 
@@ -268,11 +240,8 @@ User Login.
 
 ```json
 {
-
 "email": ["This field is required."],
-
 "password": ["This field is required."]
-
 }
 ```
 
@@ -286,9 +255,7 @@ User Login.
 
 ```json
 {
-
 "error": "El usuario o la contraseña es incorrecta."
-
 }
 ```
 
@@ -304,12 +271,312 @@ User Login.
 
 ```json
 {
-
 "error": 'El usuario no fue encontrado'
+}
+```
 
+- **Cause**:  An attempt to login with a mail that is not correct.
+## User Token
+
+  
+### URL
+
+`/userToken/<str:token>`
+### Method
+
+`GET`
+### Description
+
+User Login.
+
+### Parameters
+
+
+- `email` (str, required): The email of the user.
+
+- `password` (str, required): The password for the user.
+
+### Request Body Example
+
+```json
+{
+"email": "example@gmail.com",
+"password": "example"
+}
+```
+
+  
+
+### Possible Errors
+
+#### 400 Bad Request
+
+- **Invalid Data**: If any required field is missing or has invalid data.
+
+- **Response Example**:
+
+```json
+{
+"email": ["This field is required."],
+"password": ["This field is required."]
+}
+```
+
+- **Cause**: One or more required fields (`email`, `password`) are missing or empty.
+
+#### 401 Unauthorized
+
+- **Wrong Password**: The password is not correct for that mail.
+
+- **Response Example**:
+
+```json
+{
+"error": "El usuario o la contraseña es incorrecta."
+}
+```
+
+- **Cause**: An attempt to login with a password that is not correct.
+
+  
+
+#### 404 Not Found
+
+- **Mail not found**: That mail doesn't exist.
+
+- **Response Example**:
+
+```json
+{
+"error": 'El usuario no fue encontrado'
 }
 ```
 
 - **Cause**:  An attempt to login with a mail that is not correct.
 
+## User Profile
+
+  
+### URL
+
+`/profile/`
+### Method
+
+`GET`
+### Description
+
+Obtener la información del perfil del usuario autenticado.
+
+### Parameters
+
+Ninguno.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+
+### Request Body Example
+
+```json
+{
+ 
+}
+```
+
+
+### Possible Errors
+
+#### 401 Unauthorized
+
+- **Error de autenticación**: Token inválido o no proporcionado.
+
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+## View Users
+
+  
+### URL
+
+`/user/`
+### Method
+
+`GET`
+### Description
+
+Obtener la lista de todos los usuarios. Necesitas estar autenticado.
+
+### Parameters
+
+Ninguno.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+
+### Response Example
+
+```json
+[
+    {
+        "id": 1,
+        "nombre": "John",
+        "apellido": "Doe",
+        "nombre_usuario": "johndoe",
+        "documento": "12345678",
+        "telefono": "3510000000",
+        "email": "johndoe@example.com",
+        "genero": 1,
+        "fecha_union": "2023-01-01",
+        "last_login": "2023-01-10",
+        "is_superuser": false,
+        "id_direccion": 1,
+        "id_tipo_usuario": 1,
+        "id_tipo_documento": 1
+    }
+]
+
+```
+
+
+### Possible Errors
+
+#### 401 Unauthorized
+
+- **Error de autenticación**: Token inválido o no proporcionado.
+
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
+## View Users by Email
+
+  
+### URL
+
+`/user/<str:email>`
+### Method
+
+`GET`
+### Description
+
+Obtener información de un usuario específico por su email.
+
+### Parameters
+
+- `email` (str, requerido): El email del usuario.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+
+### Response Example
+
+```json
+{
+    "id": 1,
+    "nombre": "John",
+    "apellido": "Doe",
+    "nombre_usuario": "johndoe",
+    "documento": "12345678",
+    "telefono": "3510000000",
+    "email": "johndoe@example.com",
+    "genero": 1,
+    "fecha_union": "2023-01-01",
+    "last_login": "2023-01-10",
+    "is_superuser": false,
+    "id_direccion": 1,
+    "id_tipo_usuario": 1,
+    "id_tipo_documento": 1
+}
+```
+
+
+### Possible Errors
+
+#### 404 Not Found
+
+- **Usuario no encontrado**: El email proporcionado no corresponde a ningún usuario.
+
+```json
+{
+  "error": "El usuario no existe."
+}
+```
+
+## Change Password
+
+  
+### URL
+
+`/cambiar_contrasenia/`
+### Method
+
+`POST`
+### Description
+
+Cambiar la contraseña del usuario autenticado.
+
+### Parameters
+
+- `old_password` (str, requerido): La contraseña antigua del usuario.
+- `new_password` (str, requerido): La nueva contraseña del usuario.
+- `new_password_repeat` (str, requerido): Repetición de la nueva contraseña del usuario.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+
+### Request Body Example
+
+```json
+{
+    "old_password": "oldpass",
+    "new_password": "newpass",
+    "new_password_repeat": "newpass"
+}
+```
+
+
+### Possible Errors
+
+#### 400 Bad Request
+
+- **Faltan datos**: No se proporcionaron los datos requeridos.
+
+```json
+{
+  "error": "Por favor, proporcione la contraseña antigua, la nueva contraseña y la repetición de la nueva contraseña."
+}
+```
+
+- **Las nuevas contraseñas no coinciden**: Las nuevas contraseñas proporcionadas no coinciden.
+
+```json
+{
+    "error": "Las nuevas contraseñas no coinciden."
+}
+```
+
+- **Contraseña antigua incorrecta**: La contraseña antigua proporcionada es incorrecta.
+
+```json
+{
+    "error": "La contraseña antigua es incorrecta."
+}
+```
+
+#### 401 Unauthorized
+
+- **Error de autenticación**: Token inválido o no proporcionado.
+
+```json
+{
+    "detail": "Las credenciales de autenticación no se proveyeron."
+}
+```
 
