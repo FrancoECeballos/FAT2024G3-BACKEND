@@ -162,6 +162,7 @@ class VerUsuarios(APIView):
                 'fecha_union': usuario.fechaUnion,
                 'last_login': usuario.last_login,
                 'is_superuser': usuario.is_superuser,
+                'is_verified': usuario.is_verified,
                 'id_direccion': usuario.id_direccion_id,
                 'id_tipo_usuario': usuario.id_tipousuario_id,
                 'id_tipo_documento': usuario.id_tipodocumento_id
