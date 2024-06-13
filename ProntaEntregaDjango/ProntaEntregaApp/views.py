@@ -55,7 +55,7 @@ class UserLogin(APIView):
             serializer = UsuarioLoginSerializer(user)
             return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
-            return Response({'error': 'El usuario o la contraseña es incorrecta.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'El usuario no fue encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class DeleteUser(APIView):
@@ -80,24 +80,27 @@ class UserPage(APIView):
     def get(self, request):
         return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
 
-class UserByID(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+class UserByEmail(APIView):
+    permission_classes = [AllowAny]
 
-    def get(self, request, pk):
+    def get(self, request, email):
         try:
-            usuario = CustomUsuario.objects.get(id_usuario = pk)
+            usuario = CustomUsuario.objects.get(email = email)
             serializer = UsuarioSerializer(usuario)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
-class TestToken(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+class UserByToken(APIView):
+    permission_classes = [AllowAny]
 
-    def get(self, request):
-        return Response("Exito!! {}".format(request.user.email), status=status.HTTP_200_OK)
+    def get(self, request, token):
+        try:
+            usuario = CustomUsuario.objects.get(auth_token = token)
+            serializer = UsuarioSerializer(usuario)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class CambiarContrasenia(APIView):
