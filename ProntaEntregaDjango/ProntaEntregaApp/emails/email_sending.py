@@ -3,6 +3,14 @@ from mailer import Mailer
 
 import os
 
+mail = Mailer(email='prontaentregaappoficial@hotmail.com',password='pedrito1234')
+mail.settings(repeat=1,
+            sleep=0,
+            provider=mail.MICROSOFT,
+            multi=False)
+
+dirname = os.path.dirname(__file__)
+
 def get_codigoVerificacion(pk):
     ran= random.randrange(1000,9999)
     print(ran)
@@ -13,28 +21,37 @@ def get_codigoVerificacion(pk):
 ##para probar:
 ##print(get_codigoVerificacion(65))
 
-def send_pass_mail(email_usuario,nombre):
-    dirname = os.path.dirname(__file__)
-    p = os.path.join(dirname, 'email_template.txt')
+def cambiar_contra(email_usuario,nombre):
+    
+    p = os.path.join(dirname, 'email_cambiar_contra.txt')
 
     with open(p, 'r') as file:
         file_contents = file.read()
     
-    file_contents = file_contents.replace('<U>',nombre)
+    file_contents = file_contents.replace('[nombre]',nombre)
 
-    file_contents = file_contents.replace('<C>',str(get_codigoVerificacion(65)))
+    file_contents = file_contents.replace('[codigo]',str(get_codigoVerificacion(65)))
 
-    mail = Mailer(email='prontaentregaappoficial@hotmail.com',
-                password='pedrito1234')
+    send(email_usuario,file_contents)
 
-    mail.settings(repeat=1,
-                sleep=0,
-                provider=mail.MICROSOFT,
-                multi=False)
+def verificar_register(email_usuario,nombre):
+    
+    p = os.path.join(dirname, 'email_verificar_register.txt')
 
+    with open(p, 'r') as file:
+        file_contents = file.read()
+
+    file_contents = file_contents.replace('[nombre]',nombre)
+    file_contents = file_contents.replace('[link]','https://es.wikipedia.org/wiki/Solanum_lycopersicum') ## ESTO HAY QUE REMPLAZARLO MAS ADELANTE, tiene que dar a una pagina
+
+    send(email_usuario,file_contents)
+    
+def send(email_usuario,file_contents):
     mail.send(receiver=email_usuario,  # Email From Any service Provider
             no_reply='noreplay@example.com', # Redirect receiver to another email when try to reply.
             subject='TEST',
             message=file_contents)
-    
-send_pass_mail('davidandradag@gmail.com','pedrito')
+
+cambiar_contra('davidandradag@gmail.com','pedrito')
+
+#verificar_register('davidandradag@gmail.com','pedrito')
