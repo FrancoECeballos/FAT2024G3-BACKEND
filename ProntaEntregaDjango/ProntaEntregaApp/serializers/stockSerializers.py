@@ -16,12 +16,23 @@ class CategoriaprodutoSerializer(serializers.ModelSerializer):
 class DetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = '__all__'
+        fields = ['id_detallestockproducto','cantidad','id_stock','id_producto']
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        fields = '__all__'
+        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto', 'id_unidadmedida']
+
+    # Optionally, you can add extra validation for foreign key fields
+    def validate_id_categoriaproducto(self, value):
+        if value is None:
+            raise serializers.ValidationError("This field is required.")
+        return value
+
+    def validate_id_unidadmedida(self, value):
+        if value is None:
+            raise serializers.ValidationError("This field is required.")
+        return value
 
 class StockSerializer(serializers.ModelSerializer):
     class Meta:

@@ -206,7 +206,24 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
-    
+
+class PostProducto(APIView):
+    def post(self,request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostDetallestockproducto(APIView):
+    def post(self,request):
+        serializer = DetallestockproductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class verTipoDocumento(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
