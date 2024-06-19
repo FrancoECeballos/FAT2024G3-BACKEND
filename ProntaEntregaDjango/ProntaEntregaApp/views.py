@@ -361,9 +361,11 @@ class Categoria(APIView):
         serializer = CategoriaprodutoSerializer(categorias, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class CategoryGet(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request):
-        categorias = Categoriaproducto.objects.all()
-        serializer = CategoriaprodutoSerializer(categorias, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class CategoriaDelete(APIView):
+    def delete(self, request, pk):
+        try:
+            categoria = Categoriaproducto.objects.get(pk=pk)
+            categoria.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Categoriaproducto.DoesNotExist:
+            return Response({'error': 'La categoría no existe.'}, status=status.HTTP_404_NOT_FOUND)
