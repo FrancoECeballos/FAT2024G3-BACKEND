@@ -21,11 +21,20 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUsuario, CustomUserAdmin)
 
+
+class DetallecasausuarioAdmin(admin.ModelAdmin):
+    list_display = ('id_detallecasausuario', 'descripcion', 'fechaingreso', 'id_casa', 'id_usuario')
+    list_filter = ('id_casa', 'id_usuario')
+    search_fields = ('id_casa__nombre', 'id_usuario__nombreusuario', 'descripcion')
+    ordering = ('id_detallecasausuario',)  # Cambiado de 'id' a 'id_detallecasausuario'
+
+admin.site.register(Detallecasausuario, DetallecasausuarioAdmin)
+
+
 # Register your models here.
 
 admin.site.register(Casa)
 admin.site.register(Categoriaproducto)
-admin.site.register(Detallecasausuario)
 admin.site.register(Detalleoferta)
 admin.site.register(Detallepedido)
 admin.site.register(Detallestockproducto)
