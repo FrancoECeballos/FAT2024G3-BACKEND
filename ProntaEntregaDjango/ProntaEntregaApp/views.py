@@ -1,4 +1,5 @@
 # Django imports
+from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpRequest, JsonResponse
@@ -20,7 +21,10 @@ from ProntaEntregaApp.serializers.userSerializers import *
 from ProntaEntregaApp.serializers.stockSerializers import *
 from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
-
+from django.db.models import Count
+from django.views.decorators.http import require_http_methods
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -127,7 +131,24 @@ class CambiarContrasenia(APIView):
         user.save()
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
-    
+
+class CambiarStock (APIView):
+
+    def put(self, request, pk):
+        try:
+            stock = Stock.objects.get(pk=pk)
+        except Stock.DoesNotExist:
+            return Response({'error': 'No se encontro un stock con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProductoSerializer(stock, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del stock han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class CambiarProducto (APIView):
 
     def put(self, request, pk):
@@ -180,6 +201,57 @@ class VerStockYProducto(APIView):
         
         return JsonResponse(productos_con_stock, safe=False)
 
+class PostStock(APIView):
+    def post(self,request):
+        serializer = Stock(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostProducto(APIView):
+    def post(self,request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostDetallestockproducto(APIView):
+    def post(self,request):
+        serializer = DetallestockproductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteProducto(APIView):
+    def delete(self, request, pk):
+        try:
+            producto = get_object_or_404(Producto, id_producto=pk)
+            producto.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Producto.DoesNotExist:
+            return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+class DeleteDetallestockproducto(APIView):
+    def delete(self, request, pk):
+        try:
+            detallestockproducto = get_object_or_404(Detallestockproducto, id_detallestockproducto=pk)
+            detallestockproducto.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'El Detallestockproducto no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+class DeleteStock(APIView):
+    def delete(self, request, pk):
+        try:
+            stock = get_object_or_404(Stock, id_stock=pk)
+            stock.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Stock.DoesNotExist:
+            return Response({'error': 'El Stock no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 class VerUsuarios(APIView):
     def get(self, request):
@@ -206,23 +278,6 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
-
-class PostProducto(APIView):
-    def post(self,request):
-        serializer = ProductoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class PostDetallestockproducto(APIView):
-    def post(self,request):
-        serializer = DetallestockproductoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class verTipoDocumento(APIView):
     permission_classes = [AllowAny]
@@ -352,9 +407,82 @@ class UserUpdate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 class Categoria(APIView):
     def get(self, request):
         categorias = Categoriaproducto.objects.all()
         serializer = CategoriaprodutoSerializer(categorias, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CategoriaDelete(APIView):
+    def delete(self, request, pk):
+        try:
+            categoria = Categoriaproducto.objects.get(pk=pk)
+            categoria.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Categoriaproducto.DoesNotExist:
+            return Response({'error': 'La categoría no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class CategoriaPost(APIView):
+    def post(self,request):
+        serializer = CategoriaprodutoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def informacion_casas(request):
+    casas_info = Casa.objects.annotate(
+        cantidad_usuarios=Count('detallecasausuario__id_usuario')
+    ).values(
+        'nombre',
+        'descripcion',
+        'cantidad_usuarios',
+        'id_direccion__calle',
+        'id_direccion__numero',
+        'id_direccion__localidad'
+    )
+
+    return JsonResponse(list(casas_info), safe=False)
+
+
+
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def asignar_usuario_a_casa(request):
+    try:
+        data = json.loads(request.body)
+        id_casa = data.get('id_casa')
+        id_usuario = data.get('id_usuario')
+
+        # Debugging: Print received data
+        print(f"Received data: id_casa={id_casa}, id_usuario={id_usuario}")
+
+        casa = Casa.objects.get(id_casa=id_casa)
+        usuario = CustomUsuario.objects.get(id_usuario=id_usuario)
+
+        # Verificar si ya existe una asignación de usuario a casa
+        if Detallecasausuario.objects.filter(id_casa=casa, id_usuario=usuario).exists():
+            return JsonResponse({'error': 'El usuario ya está registrado en esta casa'}, status=400)
+
+        # Crear una instancia de la tabla intermedia
+        Detallecasausuario.objects.create(id_casa=casa, id_usuario=usuario)
+
+        return JsonResponse({'message': 'Usuario asignado a la casa correctamente'}, status=200)
+    except Casa.DoesNotExist:
+        return JsonResponse({'error': 'Casa no encontrada'}, status=404)
+    except CustomUsuario.DoesNotExist:
+        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+    
+
+@csrf_exempt
+def eliminar_detallecasausuario(request, pk):
+    if request.method == 'DELETE':
+        detalle = get_object_or_404(Detallecasausuario, pk=pk)
+        detalle.delete()
+        return JsonResponse({'mensaje': 'Detallecasausuario eliminado correctamente.'}, status=200)
+    else:
+        return JsonResponse({'error': 'Método no permitido.'}, status=405)
