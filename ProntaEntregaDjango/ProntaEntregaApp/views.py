@@ -19,6 +19,9 @@ from rest_framework.permissions import AllowAny
 # Application-specific imports
 from ProntaEntregaApp.serializers.userSerializers import *
 from ProntaEntregaApp.serializers.stockSerializers import *
+from ProntaEntregaApp.serializers.generalSerializers import *
+from ProntaEntregaApp.serializers.offerSerializers import *
+from ProntaEntregaApp.serializers.requestSerializers import *
 from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
 from django.db.models import Count
@@ -30,9 +33,168 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return render(request, 'index.html')
 
+class GetDirecciones(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        direcciones = Direccion.objects.all()
+        serializer = DireccionSerializer(direcciones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class GetDireccion(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, pk):
+        try:
+            direcciones = Direccion.objects.filter(id_direccion=pk)
+        except Direccion.DoesNotExist:
+            return Response({'error': 'No se encontró una dirección con los datos proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = DireccionSerializer(direcciones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+class CrearDirecciones(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = DireccionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarDirecciones(APIView):
+    def put(self, request, pk):
+        try:
+            direccion = Direccion.objects.get(pk=pk)
+        except Direccion.DoesNotExist:
+            return Response({'error': 'No se encontró una dirección con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = DireccionSerializer(direccion, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'nombre' in request.data and request.data['nombre'] == direccion.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la dirección han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetOrganizaciones(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        organizaciones = Organizacion.objects.all()
+        serializer = OrganizacionSerializer(organizaciones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class CrearOrganizaciones(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = OrganizacionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarOrganizaciones(APIView):
+    def put(self, request, pk):
+        try:
+            organizacion = Organizacion.objects.get(pk=pk)
+        except Organizacion.DoesNotExist:
+            return Response({'error': 'No se encontró una organización con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = OrganizacionSerializer(organizacion, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'nombre' in request.data and request.data['nombre'] == organizacion.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la organización han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetTipoDocumento(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        tipo_documentos = Tipodocumento.objects.all()
+
+        tipo_documentos_json = []
+        for tipo_documento in tipo_documentos:
+            tipo_documento_json = {
+                'id': tipo_documento.id_tipodocumento,
+                'nombre': tipo_documento.nombre
+            }
+            tipo_documentos_json.append(tipo_documento_json)
+        return JsonResponse(tipo_documentos_json, safe=False)
+
+class CrearTipoDocumento(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = TipodocumentoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EditarTipoDocumento(APIView):
+    def put(self, request, pk):
+        try:
+            tipo_documento = Tipodocumento.objects.get(pk=pk)
+        except Tipodocumento.DoesNotExist:
+            return Response({'error': 'No se encontró un tipo de documento con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = TipodocumentoSerializer(tipo_documento, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'nombre' in request.data and request.data['nombre'] == tipo_documento.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos del tipo de documento han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetTipoUsuario(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        tipo_usuarios = Tipousuario.objects.all()
+
+        tipo_usuarios_json = []
+        for tipo_usuario in tipo_usuarios:
+            tipo_usuario_json = {
+                'id': tipo_usuario.id_tipousuario,
+                'nombre': tipo_usuario.nombre
+            }
+            tipo_usuarios_json.append(tipo_usuario_json)
+        return JsonResponse(tipo_usuarios_json, safe=False)
+
+class CrearTipoUsuario(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = TipousuarioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarTipoUsuario(APIView):
+    def put(self, request, pk):
+        try:
+            tipo_usuario = Tipousuario.objects.get(pk=pk)
+        except Tipousuario.DoesNotExist:
+            return Response({'error': 'No se encontró un tipo de usuario con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = TipousuarioSerializer(tipo_usuario, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'nombre' in request.data and request.data['nombre'] == tipo_usuario.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos del tipo de usuario han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserRegister(APIView):
     permission_classes = [AllowAny]
-
     def post(self, request):
         serializer = UsuarioRegistroSerializer(data=request.data)
         if serializer.is_valid():
@@ -42,7 +204,6 @@ class UserRegister(APIView):
             token = Token.objects.create(user=user)
             return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class UserLogin(APIView):
     permission_classes = [AllowAny]
@@ -62,7 +223,6 @@ class UserLogin(APIView):
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no fue encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
-
 class DeleteUser(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -76,7 +236,6 @@ class DeleteUser(APIView):
             return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 class UserPage(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
@@ -107,7 +266,6 @@ class UserByToken(APIView):
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
-
 class CambiarContrasenia(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -132,8 +290,416 @@ class CambiarContrasenia(APIView):
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
 
-class CambiarStock (APIView):
 
+class GetCasa(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        casas = Casa.objects.all()
+        serializer = CasaSerializer(casas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+  
+class CrearCasa(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        serializer = CasaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+          
+class EditarCasa(APIView):
+    def put(self, request, pk):
+        # Obtener la casa a modificar
+        try:
+            casa = Casa.objects.get(pk=pk)
+        except Casa.DoesNotExist:
+            return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Crear un serializador con los datos recibidos y la instancia de la casa
+        serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
+
+        # Verificar si los datos son válidos y guardar los cambios si corresponde
+        if serializer.is_valid():
+            # Excluir la validación única para el nombre si el nombre no se ha modificado
+            if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            # Si hay errores en los datos proporcionados, devolver los errores
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetUnidadMedida(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        unidades_medida = Unidadmedida.objects.all()
+
+        unidades_medida_json = []
+        for unidad_medida in unidades_medida:
+            unidad_medida_json = {
+                'id': unidad_medida.id_unidadmedida,
+                'nombre': unidad_medida.nombre
+            }
+            unidades_medida_json.append(unidad_medida_json)
+        return JsonResponse(unidades_medida_json, safe=False)
+
+class CrearUnidadMedida(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = UnidadmedidaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarUnidadMedida(APIView):
+    def put(self, request, pk):
+        try:
+            unidad_medida = Unidadmedida.objects.get(pk=pk)
+        except Unidadmedida.DoesNotExist:
+            return Response({'error': 'No se encontró una unidad de medida con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UnidadmedidaSerializer(unidad_medida, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'nombre' in request.data and request.data['nombre'] == unidad_medida.nombre:
+                serializer.fields['nombre'].unique = False
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la unidad de medida han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetStock(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        stock = Stock.objects.all()
+        serializer = StockSerializer(stock, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class CrearStock(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = StockSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarStock(APIView):
+    def put(self, request, pk):
+        try:
+            stock = Stock.objects.get(pk=pk)
+        except Stock.DoesNotExist:
+            return Response({'error': 'No se encontró un stock con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = StockSerializer(stock, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del stock han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetCategoriaProducto(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        categorias = Categoriaproducto.objects.all()
+        serializer = CategoriaprodutoSerializer(categorias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearCategoriaProducto(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = CategoriaprodutoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EditarCategoriaProducto(APIView):
+    def put(self, request, pk):
+        try:
+            categoria = Categoriaproducto.objects.get(pk=pk)
+        except Categoriaproducto.DoesNotExist:
+            return Response({'error': 'No se encontró una categoría con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = CategoriaprodutoSerializer(categoria, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la categoría han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetProductos(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        productos = Producto.objects.all()
+        serializer = ProductoSerializer(productos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearProductos(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarProducto(APIView):
+    def put(self, request, pk):
+        try:
+            producto = Producto.objects.get(pk=pk)
+        except Producto.DoesNotExist:
+            return Response({'error': 'No se encontró un producto con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProductoSerializer(producto, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del producto han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetPedido(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        pedidos = Pedido.objects.all()
+        serializer = PedidoSerializer(pedidos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearPedido(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = PedidoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarPedido(APIView):
+    def put(self, request, pk):
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+        except Pedido.DoesNotExist:
+            return Response({'error': 'No se encontró un pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = PedidoSerializer(pedido, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetEstadoPedido(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        estados = Estadopedido.objects.all()
+        serializer = EstadopedidoSerializer(estados, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearEstadoPedido(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = EstadopedidoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarEstadoPedido(APIView):
+    def put(self, request, pk):
+        try:
+            estado = Estadopedido.objects.get(pk=pk)
+        except Estadopedido.DoesNotExist:
+            return Response({'error': 'No se encontró un estado de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = EstadopedidoSerializer(estado, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del estado de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetDetallePedido(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        detalles = Detallepedido.objects.all()
+        serializer = DetallepedidoSerializer(detalles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearDetallePedido(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = DetallepedidoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EditarDetallePedido(APIView):
+    def put(self, request, pk):
+        try:
+            detalle = Detallepedido.objects.get(pk=pk)
+        except Detallepedido.DoesNotExist:
+            return Response({'error': 'No se encontró un detalle de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = DetallepedidoSerializer(detalle, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del detalle de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class GetOferta(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        ofertas = Oferta.objects.all()
+        serializer = OfertaSerializer(ofertas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearOferta(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = OfertaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarOferta(APIView):
+    def put(self, request, pk):
+        try:
+            oferta = Oferta.objects.get(pk=pk)
+        except Oferta.DoesNotExist:
+            return Response({'error': 'No se encontró una oferta con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = OfertaSerializer(oferta, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la oferta han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetEstadoOferta(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        estados = Estadooferta.objects.all()
+        serializer = EstadoofertaSerializer(estados, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearEstadoOferta(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = EstadoofertaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EditarEstadoOferta(APIView):
+    def put(self, request, pk):
+        try:
+            estado = Estadooferta.objects.get(pk=pk)
+        except Estadooferta.DoesNotExist:
+            return Response({'error': 'No se encontró un estado de oferta con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = EstadoofertaSerializer(estado, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del estado de oferta han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetDetalleOferta(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        detalles = Detalleoferta.objects.all()
+        serializer = DetalleofertaSerializer(detalles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class CrearDetalleOferta(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = DetalleofertaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EditarDetalleOferta(APIView):
+    def put(self, request, pk):
+        try:
+            detalle = Detalleoferta.objects.get(pk=pk)
+        except Detalleoferta.DoesNotExist:
+            return Response({'error': 'No se encontró un detalle de oferta con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = DetalleofertaSerializer(detalle, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del detalle de oferta han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetTransporte(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        transportes = Transporte.objects.all()
+        serializer = TransporteSerializer(transportes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class CrearTransporte(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = TransporteSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EditarTransporte(APIView):
+    def put(self, request, pk):
+        try:
+            transporte = Transporte.objects.get(pk=pk)
+        except Transporte.DoesNotExist:
+            return Response({'error': 'No se encontró un transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = TransporteSerializer(transporte, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del transporte han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#---------------------------------------------------------------------------------------------------------------------------
+class CambiarStock(APIView):
     def put(self, request, pk):
         try:
             stock = Stock.objects.get(pk=pk)
@@ -280,60 +846,6 @@ class VerUsuarios(APIView):
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
 
-class verTipoDocumento(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request):
-        tipo_documentos = Tipodocumento.objects.all()
-
-        tipo_documentos_json = []
-        for tipo_documento in tipo_documentos:
-            tipo_documento_json = {
-                'id': tipo_documento.id_tipodocumento,
-                'nombre': tipo_documento.nombre
-            }
-            tipo_documentos_json.append(tipo_documento_json)
-        return JsonResponse(tipo_documentos_json, safe=False)
-    
-class CasaPost(APIView):
-    permission_classes = [AllowAny]
-    
-    def post(self, request):
-        serializer = CasaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-class CasaGet(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        casas = Casa.objects.all()
-        serializer = CasaSerializer(casas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-class EditarCasa(APIView):
-    def put(self, request, pk):
-        # Obtener la casa a modificar
-        try:
-            casa = Casa.objects.get(pk=pk)
-        except Casa.DoesNotExist:
-            return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
-
-        # Crear un serializador con los datos recibidos y la instancia de la casa
-        serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
-
-        # Verificar si los datos son válidos y guardar los cambios si corresponde
-        if serializer.is_valid():
-            # Excluir la validación única para el nombre si el nombre no se ha modificado
-            if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
-                serializer.fields['nombre'].unique = False
-
-            serializer.save()
-            return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
-        else:
-            # Si hay errores en los datos proporcionados, devolver los errores
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class UserDelete(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -346,49 +858,6 @@ class UserDelete(APIView):
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
         
-class GetDirecciones(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request):
-        direcciones = Direccion.objects.all()
-        serializer = DireccionSerializer(direcciones, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-class GetDireccion(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request, pk):
-        try:
-            direcciones = Direccion.objects.filter(id_direccion=pk)
-        except Direccion.DoesNotExist:
-            return Response({'error': 'No se encontró una dirección con los datos proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = DireccionSerializer(direcciones, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-        
-
-class CrearDirecciones(APIView):
-    permission_classes = [AllowAny]
-    def post(self, request):
-        serializer = DireccionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class EditarDirecciones(APIView):
-    def put(self, request, pk):
-        try:
-            direccion = Direccion.objects.get(pk=pk)
-        except Direccion.DoesNotExist:
-            return Response({'error': 'No se encontró una dirección con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = DireccionSerializer(direccion, data=request.data, partial=True)
-        if serializer.is_valid():
-            if 'nombre' in request.data and request.data['nombre'] == direccion.nombre:
-                serializer.fields['nombre'].unique = False
-
-            serializer.save()
-            return Response({'success': 'Los atributos de la dirección han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserUpdate(APIView):
