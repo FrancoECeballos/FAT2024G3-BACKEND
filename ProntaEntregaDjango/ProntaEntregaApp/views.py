@@ -339,17 +339,15 @@ class UserUpdate(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def put(self, request, pk):
+    def put(self, request, token):
         try:
-            usuario = CustomUsuario.objects.get(pk=pk)
+            usuario = CustomUsuario.objects.get(auth_token = token)
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
         data = request.data.copy()
-        if 'password' in data:
-            return Response({'error': 'No se puede actualizar la contraseña a través de esta operación. Utiliza el metodo cambiar_contrasenia'}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = UsuarioSerializer(usuario, data=data, partial=True)
+        
+        serializer = UsuarioUpdateSerializer(usuario, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

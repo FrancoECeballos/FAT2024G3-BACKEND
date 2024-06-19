@@ -21,7 +21,28 @@ class UsuarioSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+
+
+class UsuarioUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUsuario
+        fields = ['nombre', 'apellido', 'nombreusuario', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+
+    def update(self, instance, validated_data):
+        instance.nombre = validated_data.get('nombre', instance.nombre)
+        instance.apellido = validated_data.get('apellido', instance.apellido)
+        instance.nombreusuario = validated_data.get('nombreusuario', instance.nombreusuario)
+        instance.documento = validated_data.get('documento', instance.documento)
+        instance.telefono = validated_data.get('telefono', instance.telefono)
+        instance.email = validated_data.get('email', instance.email)
+        instance.genero = validated_data.get('genero', instance.genero)
+        instance.imagen = validated_data.get('imagen', instance.imagen)
+        instance.id_direccion = validated_data.get('id_direccion', instance.id_direccion)
+        instance.id_tipousuario = validated_data.get('id_tipousuario', instance.id_tipousuario)
+        instance.id_tipodocumento = validated_data.get('id_tipodocumento', instance.id_tipodocumento)
+        instance.save()
+        return instance
 
 
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
