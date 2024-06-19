@@ -9,9 +9,14 @@ class UnidadmedidaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CategoriaprodutoSerializer(serializers.ModelSerializer):
+    cantidad_productos = serializers.SerializerMethodField()
+
     class Meta:
         model = Categoriaproducto
-        fields = '__all__'
+        fields = ['nombre', 'cantidad_productos']
+
+    def get_cantidad_productos(self, obj):
+        return Producto.objects.filter(id_categoriaproducto=obj).count()
 
 class DetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:

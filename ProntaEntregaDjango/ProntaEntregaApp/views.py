@@ -355,3 +355,8 @@ class UserUpdate(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class Categoria(APIView):
+    def get(self, request):
+        categorias = Categoriaproducto.objects.all()
+        serializer = CategoriaprodutoSerializer(categorias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
