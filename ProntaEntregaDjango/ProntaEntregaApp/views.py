@@ -131,7 +131,24 @@ class CambiarContrasenia(APIView):
         user.save()
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
-    
+
+class CambiarStock (APIView):
+
+    def put(self, request, pk):
+        try:
+            stock = Stock.objects.get(pk=pk)
+        except Stock.DoesNotExist:
+            return Response({'error': 'No se encontro un stock con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProductoSerializer(stock, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del stock han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class CambiarProducto (APIView):
 
     def put(self, request, pk):
@@ -184,6 +201,57 @@ class VerStockYProducto(APIView):
         
         return JsonResponse(productos_con_stock, safe=False)
 
+class PostStock(APIView):
+    def post(self,request):
+        serializer = Stock(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostProducto(APIView):
+    def post(self,request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostDetallestockproducto(APIView):
+    def post(self,request):
+        serializer = DetallestockproductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteProducto(APIView):
+    def delete(self, request, pk):
+        try:
+            producto = get_object_or_404(Producto, id_producto=pk)
+            producto.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Producto.DoesNotExist:
+            return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+class DeleteDetallestockproducto(APIView):
+    def delete(self, request, pk):
+        try:
+            detallestockproducto = get_object_or_404(Detallestockproducto, id_detallestockproducto=pk)
+            detallestockproducto.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'El Detallestockproducto no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+class DeleteStock(APIView):
+    def delete(self, request, pk):
+        try:
+            stock = get_object_or_404(Stock, id_stock=pk)
+            stock.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Stock.DoesNotExist:
+            return Response({'error': 'El Stock no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 class VerUsuarios(APIView):
     def get(self, request):
@@ -210,23 +278,6 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
-
-class PostProducto(APIView):
-    def post(self,request):
-        serializer = ProductoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class PostDetallestockproducto(APIView):
-    def post(self,request):
-        serializer = DetallestockproductoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class verTipoDocumento(APIView):
     permission_classes = [AllowAny]
