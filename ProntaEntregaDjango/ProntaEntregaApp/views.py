@@ -427,3 +427,13 @@ def asignar_usuario_a_casa(request):
         return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+    
+
+@csrf_exempt
+def eliminar_detallecasausuario(request, pk):
+    if request.method == 'DELETE':
+        detalle = get_object_or_404(Detallecasausuario, pk=pk)
+        detalle.delete()
+        return JsonResponse({'mensaje': 'Detallecasausuario eliminado correctamente.'}, status=200)
+    else:
+        return JsonResponse({'error': 'Método no permitido.'}, status=405)
