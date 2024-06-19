@@ -210,7 +210,24 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
-    
+
+class PostProducto(APIView):
+    def post(self,request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostDetallestockproducto(APIView):
+    def post(self,request):
+        serializer = DetallestockproductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class verTipoDocumento(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
@@ -286,9 +303,9 @@ class GetDirecciones(APIView):
     
 class GetDireccion(APIView):
     permission_classes = [AllowAny]
-    def get(self, request, calle, numero, localidad):
+    def get(self, request, pk):
         try:
-            direcciones = Direccion.objects.filter(localidad=localidad, numero=numero, calle=calle)
+            direcciones = Direccion.objects.filter(id_direccion=pk)
         except Direccion.DoesNotExist:
             return Response({'error': 'No se encontró una dirección con los datos proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = DireccionSerializer(direcciones, many=True)
@@ -342,7 +359,28 @@ class UserUpdate(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+class Categoria(APIView):
+    def get(self, request):
+        categorias = Categoriaproducto.objects.all()
+        serializer = CategoriaprodutoSerializer(categorias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+class CategoriaDelete(APIView):
+    def delete(self, request, pk):
+        try:
+            categoria = Categoriaproducto.objects.get(pk=pk)
+            categoria.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Categoriaproducto.DoesNotExist:
+            return Response({'error': 'La categoría no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class CategoriaPost(APIView):
+    def post(self,request):
+        serializer = CategoriaprodutoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def informacion_casas(request):
     casas_info = Casa.objects.annotate(
         cantidad_usuarios=Count('detallecasausuario__id_usuario')

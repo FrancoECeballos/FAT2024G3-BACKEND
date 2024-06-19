@@ -580,3 +580,154 @@ Cambiar la contraseña del usuario autenticado.
 }
 ```
 
+
+## View Stock and Products by Category
+
+  
+### URL
+
+`/stock/<int:categoria_id>/
+### Method
+
+`GET`
+### Description
+
+Obtener los productos y el stock disponible de una categoría específica.
+
+### Parameters
+
+- `categoria_id` (int, requerido): El ID de la categoría de productos.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+### Request Body Example
+
+```json
+[
+    {
+        "nombre_producto": "Producto 1",
+        "descripcion": "Descripción del producto 1",
+        "stock_disponible": 10
+    },
+    {
+        "nombre_producto": "Producto 2",
+        "descripcion": "Descripción del producto 2",
+        "stock_disponible": 5
+    }
+]
+```
+
+
+### Possible Errors
+
+#### 401 Unauthorized
+
+- **Error de autenticación**: Token inválido o no proporcionado.
+
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
+#### 404 Not Found
+
+- **Error**: Id de categoria no proporcionado.
+
+## View Document Types
+
+  
+### URL
+
+`tipo_documento`
+### Method
+
+`GET`
+### Description
+
+Obtener todos los tipos de documentos disponibles.
+
+### Parameters
+
+Ninguno.
+
+### Request Body Example
+
+```json
+[
+    {
+        "id": 1,
+        "nombre": "DNI"
+    },
+    {
+        "id": 2,
+        "nombre": "Pasaporte"
+    }
+]
+
+```
+
+
+### Possible Errors
+
+#### Ninguno
+## Create House
+
+  
+### URL
+
+`/crear_casa/`
+### Method
+
+`POST`
+### Description
+
+Crear una nueva casa.
+
+### Parameters
+
+- `nombre` (str, requerido): El nombre de la casa.
+- `direccion` (str, requerido): La dirección de la casa.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+### Request Body Example
+
+```json
+{
+    "nombre": "Casa ejemplo",
+    "descripcion": "Descripcion ejemplo",
+    "id_organizacion": 1,
+    "id_direccion": 1
+}
+```
+
+### Response Example
+
+```json
+{
+  "id_casa": 1,
+  "nombre": "Casa ejemplo",
+  "descripcion": "Descripcion ejemplo",
+  "id_organizacion": 1,
+  "id_direccion": 1
+}
+```
+
+### Possible Errors
+
+#### 400 Bad Request
+
+- **Datos inválidos**: Si algún campo requerido falta o es inválido.
+-
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
+#### 404 Not Found
+
+- **Error**: Id de categoria no proporcionado.
