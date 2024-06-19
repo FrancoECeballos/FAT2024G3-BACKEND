@@ -286,3 +286,8 @@ INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id
     ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 1),
     ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1),
     ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1);
+
+insert into DetalleStockProducto (cantidad,id_stock,id_producto) values
+	(100, 1, 2),
+    (200, 3, 1),
+    (300, 2, 3);

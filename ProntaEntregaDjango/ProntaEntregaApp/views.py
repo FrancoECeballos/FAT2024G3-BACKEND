@@ -17,6 +17,7 @@ from rest_framework.permissions import AllowAny
 
 # Application-specific imports
 from ProntaEntregaApp.serializers.userSerializers import *
+from ProntaEntregaApp.serializers.stockSerializers import *
 from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
 
@@ -127,6 +128,39 @@ class CambiarContrasenia(APIView):
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
     
+class CambiarProducto (APIView):
+
+    def put(self, request, pk):
+        try:
+            producto = Producto.objects.get(pk=pk)
+        except Producto.DoesNotExist:
+            return Response({'error': 'No se encontro un producto con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProductoSerializer(producto, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del producto han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class CambiarDetalleStock (APIView):
+
+    def put(self, request, pk):
+        try:
+            stock = Detallestockproducto.objects.get(pk=pk)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'No se encontro un stock con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = DetallestockproductoSerializer(stock, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos del stock han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerStockYProducto(APIView):
     def get(self, request, categoria_id):
@@ -172,7 +206,24 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
-    
+
+class PostProducto(APIView):
+    def post(self,request):
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostDetallestockproducto(APIView):
+    def post(self,request):
+        serializer = DetallestockproductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class verTipoDocumento(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
@@ -304,3 +355,8 @@ class UserUpdate(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class Categoria(APIView):
+    def get(self, request):
+        categorias = Categoriaproducto.objects.all()
+        serializer = CategoriaprodutoSerializer(categorias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -10,7 +10,11 @@ urlpatterns = [
     path('user/', VerUsuarios.as_view(), name='users'),
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
     path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),
+    path('CambiarProducto/<int:pk>/', CambiarProducto.as_view(), name='CambiarProducto'),
+    path('CambiarDetalleStock/<int:pk>/', CambiarDetalleStock.as_view(), name='CambiarDetalleStock'),
     path('stock/<int:categoria_id>/', VerStockYProducto.as_view(), name='ver_stock_producto'),
+    path('PostProducto/', PostProducto.as_view(), name='PostProducto'),
+    path('PostDetallestockproducto/', PostDetallestockproducto.as_view(), name='PostDetallestockproducto'),
     path('tipo_documento/', verTipoDocumento.as_view(), name='ver_tipo_documento'),
     path('crear_casa/', CasaPost.as_view(), name='casa_post'),
     path('casa/', CasaGet.as_view(), name='casa_get'),
@@ -21,4 +25,5 @@ urlpatterns = [
     path('editar_direccion/<int:pk>/', EditarDirecciones.as_view(), name='direcciones_edit'),
     path('user/delete/<int:pk>/', UserDelete.as_view(), name='user_delete'),
     path('api/usuarios/update/<int:pk>/', UserUpdate.as_view(), name='user-update'),
+    path('categoria/', Categoria.as_view(), name='categoria_producto'),
 ]
