@@ -248,9 +248,9 @@ class GetDirecciones(APIView):
     
 class GetDireccion(APIView):
     permission_classes = [AllowAny]
-    def get(self, request, calle, numero, localidad):
+    def get(self, request, pk):
         try:
-            direcciones = Direccion.objects.filter(localidad=localidad, numero=numero, calle=calle)
+            direcciones = Direccion.objects.filter(id_direccion=pk)
         except Direccion.DoesNotExist:
             return Response({'error': 'No se encontró una dirección con los datos proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = DireccionSerializer(direcciones, many=True)
