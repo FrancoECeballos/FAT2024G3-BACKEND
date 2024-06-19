@@ -254,6 +254,7 @@ class DeleteStock(APIView):
 
 
 class VerUsuarios(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         usuarios = CustomUsuario.objects.all()
 
