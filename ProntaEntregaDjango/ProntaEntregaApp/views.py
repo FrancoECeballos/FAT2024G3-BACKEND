@@ -850,9 +850,9 @@ class UserDelete(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request, pk):
+    def delete(self, request, email):
         try:
-            usuario = get_object_or_404(CustomUsuario, id_usuario=pk)
+            usuario = get_object_or_404(CustomUsuario, email=email)
             usuario.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except CustomUsuario.DoesNotExist:
@@ -867,6 +867,24 @@ class UserUpdate(APIView):
     def put(self, request, token):
         try:
             usuario = CustomUsuario.objects.get(auth_token = token)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data.copy()
+        
+        serializer = UsuarioUpdateSerializer(usuario, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserUpdateEmail(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, email):
+        try:
+            usuario = CustomUsuario.objects.get(email = email)
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 

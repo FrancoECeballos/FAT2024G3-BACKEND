@@ -21,7 +21,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
 
 
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
@@ -48,7 +48,7 @@ class UsuarioUpdateSerializer(serializers.ModelSerializer):
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -80,7 +80,7 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             genero=validated_data['genero'],
             password=validated_data['password'],
-            imagen='imagen',
+            imagen=None,
             id_direccion=validated_data['id_direccion'],
             id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],

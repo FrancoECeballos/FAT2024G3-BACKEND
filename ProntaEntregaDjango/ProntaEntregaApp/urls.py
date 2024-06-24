@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from ProntaEntregaApp.views import *
 from . import views
 
@@ -85,11 +87,15 @@ urlpatterns = [
     path('DeleteStock/<int:pk>/', DeleteStock.as_view(), name='DeleteStock'),
     path('DeleteProducto/<int:pk>/', DeleteProducto.as_view(), name='DeleteProducto'),
     path('DeleteDetallestockproducto/<int:pk>/', DeleteDetallestockproducto.as_view(), name='DeleteDetallestockproducto'),
-    path('user/delete/<int:pk>/', UserDelete.as_view(), name='user_delete'),
+    path('user/delete/<str:email>/', UserDelete.as_view(), name='user_delete'),
     path('user/update/<str:token>/', UserUpdate.as_view(), name='user-update'),
+    path('user/updateEmail/<str:email>/', UserUpdateEmail.as_view(), name='user-update-email'),
     path('categoria/delete/<int:pk>/', CategoriaDelete.as_view(), name='categoria_delete'),
     path('categoria/post', CategoriaPost.as_view(), name='categoria_post'),
     path('informacion_casas/', informacion_casas, name='informacion_casas'),
     path('asignar_usuario_a_casa/', asignar_usuario_a_casa, name='asignar_usuario_a_casa'),
     path('eliminar_detallecasausuario/<int:pk>/', views.eliminar_detallecasausuario, name='eliminar_detallecasausuario'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

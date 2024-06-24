@@ -148,7 +148,7 @@ class CustomUsuario(AbstractBaseUser, PermissionsMixin):
     telefono = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)
     genero = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)
-    imagen = models.ImageField(upload_to='usuarios/', blank=True, null=True)
+    imagen = models.ImageField(upload_to='profilePictures/', blank=True, null=True)
     fechaUnion = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
     id_direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
