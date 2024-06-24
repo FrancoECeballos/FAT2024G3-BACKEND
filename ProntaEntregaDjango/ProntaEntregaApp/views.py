@@ -918,6 +918,7 @@ class CategoriaPost(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 def informacion_casas(request):
     casas_info = Casa.objects.annotate(
         cantidad_usuarios=Count('detallecasausuario__id_usuario')
@@ -931,9 +932,6 @@ def informacion_casas(request):
     )
 
     return JsonResponse(list(casas_info), safe=False)
-
-
-
 
 
 @csrf_exempt
@@ -974,3 +972,14 @@ def eliminar_detallecasausuario(request, pk):
         return JsonResponse({'mensaje': 'Detallecasausuario eliminado correctamente.'}, status=200)
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
+    
+
+class CasasAsignadasView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        usuario = request.user
+        detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario)
+        casas = Casa.objects.filter(id_casa__in=[detalle.id_casa.id_casa for detalle in detalle_casas])
+        serializer = CasaSerializer(casas, many=True)
+        return Response(serializer.data)

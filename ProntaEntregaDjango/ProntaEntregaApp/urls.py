@@ -95,6 +95,7 @@ urlpatterns = [
     path('informacion_casas/', informacion_casas, name='informacion_casas'),
     path('asignar_usuario_a_casa/', asignar_usuario_a_casa, name='asignar_usuario_a_casa'),
     path('eliminar_detallecasausuario/<int:pk>/', views.eliminar_detallecasausuario, name='eliminar_detallecasausuario'),
+    path('casas-asignadas/', CasasAsignadasView.as_view(), name='casas-asignadas'),
 ]
 
 if settings.DEBUG:

@@ -67,3 +67,7 @@ class TransporteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     
+class CasaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Casa
+        fields = '__all__'
