@@ -135,9 +135,9 @@ class UsuarioManager(BaseUserManager):
 
 
 class CustomUsuario(AbstractBaseUser, PermissionsMixin):
-    GENDER_MALE = 0
-    GENDER_FEMALE = 1
-    GENDER_UNKOWN = 2
+    GENDER_MALE = 1
+    GENDER_FEMALE = 2
+    GENDER_UNKOWN = 3
     GENDER_CHOICES = [(GENDER_MALE, 'Hombre'), (GENDER_FEMALE, 'Mujer'), (GENDER_UNKOWN, 'Prefiero no decirlo')]
 
     id_usuario = models.AutoField(primary_key=True)
