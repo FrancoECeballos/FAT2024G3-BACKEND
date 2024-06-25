@@ -958,6 +958,8 @@ class PostDetalleCasaUsuario(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CategoriasProductosView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, id_casa):
         categorias = Categoriaproducto.objects.annotate(
             cantidad_productos=Count('producto__detallestockproducto__id_stock', filter=Q(producto__detallestockproducto__id_stock__id_casa=id_casa))
