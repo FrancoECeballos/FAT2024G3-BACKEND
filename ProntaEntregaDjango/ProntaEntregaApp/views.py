@@ -29,6 +29,7 @@ from django.views.decorators.http import require_http_methods
 import json
 from django.views.decorators.csrf import csrf_exempt
 
+from django.db.models import Count, Q 
 
 def index(request):
     return render(request, 'index.html')
@@ -198,12 +199,6 @@ class UserRegister(APIView):
     def post(self, request):
         serializer = UsuarioRegistroSerializer(data=request.data)
         if serializer.is_valid():
-
-
-            # este coso manda un mail a el email puesto en el register
-            #lo marco asi para que no manden mails a lo bruto
-            #email_sending.verificar_register(serializer.validated_data.get('email'), serializer.validated_data.get('nombre'))
-
             user = serializer.save()
             user.set_password(request.data['password'])
             user.save()
@@ -959,10 +954,11 @@ class DeleteDetalleCasaUsuario (APIView):
         try:
             detalle = Detallecasausuario.objects.get(pk=pk)
             detalle.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'La relacion usuario-casa se elimino correctamente'},status=status.HTTP_204_NO_CONTENT)
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
-        
+
+
 class PostDetalleCasaUsuario(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -971,6 +967,15 @@ class PostDetalleCasaUsuario(APIView):
         serializer = DetallecasausuarioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class CategoriasProductosView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, id_casa):
+        categorias = Categoriaproducto.objects.annotate(
+            cantidad_productos=Count('producto__detallestockproducto__id_stock', filter=Q(producto__detallestockproducto__id_stock__id_casa=id_casa))
+        ).values('nombre', 'cantidad_productos')
+
+        return Response(categorias)

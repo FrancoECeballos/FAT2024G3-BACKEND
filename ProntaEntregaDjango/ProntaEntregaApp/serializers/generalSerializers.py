@@ -61,14 +61,27 @@ class TransporteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     
+
 class CasaSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer()
+    usuarios_registrados = serializers.SerializerMethodField()
 
     class Meta:
         model = Casa
-        fields = '__all__'
+        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados']
 
+    def get_usuarios_registrados(self, casa):
+        return casa.detallecasausuario_set.count()
 class DetallecasausuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallecasausuario
         fields = '__all__'
+
+    def validate(self, data):
+        id_casa = data.get('id_casa')
+        id_usuario = data.get('id_usuario')
+
+        if Detallecasausuario.objects.filter(id_casa=id_casa, id_usuario=id_usuario).exists():
+            raise serializers.ValidationError("El usuario ya está registrado en esta casa.")
+        
+        return data
