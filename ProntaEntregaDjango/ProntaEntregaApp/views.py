@@ -940,10 +940,11 @@ class DeleteDetalleCasaUsuario (APIView):
         try:
             detalle = Detallecasausuario.objects.get(pk=pk)
             detalle.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'La relacion usuario-casa se elimino correctamente'},status=status.HTTP_204_NO_CONTENT)
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
-        
+
+
 class PostDetalleCasaUsuario(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -952,6 +953,5 @@ class PostDetalleCasaUsuario(APIView):
         serializer = DetallecasausuarioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

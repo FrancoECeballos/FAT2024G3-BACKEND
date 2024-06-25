@@ -67,7 +67,15 @@ class CasaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DetallecasausuarioSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Detallecasausuario
         fields = '__all__'
+
+    def validate(self, data):
+        id_casa = data.get('id_casa')
+        id_usuario = data.get('id_usuario')
+
+        if Detallecasausuario.objects.filter(id_casa=id_casa, id_usuario=id_usuario).exists():
+            raise serializers.ValidationError("El usuario ya está registrado en esta casa.")
+        
+        return data
