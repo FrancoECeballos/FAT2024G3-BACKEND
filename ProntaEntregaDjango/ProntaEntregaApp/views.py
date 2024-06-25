@@ -198,6 +198,12 @@ class UserRegister(APIView):
     def post(self, request):
         serializer = UsuarioRegistroSerializer(data=request.data)
         if serializer.is_valid():
+
+
+            # este coso manda un mail a el email puesto en el register
+            #lo marco asi para que no manden mails a lo bruto
+            #email_sending.verificar_register(serializer.validated_data.get('email'), serializer.validated_data.get('nombre'))
+
             user = serializer.save()
             user.set_password(request.data['password'])
             user.save()
