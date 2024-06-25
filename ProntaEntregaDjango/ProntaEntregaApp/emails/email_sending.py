@@ -49,9 +49,9 @@ def verificar_register(email_usuario,nombre):
 def send(email_usuario,file_contents):
     mail.send(receiver=email_usuario,  # Email From Any service Provider
             no_reply='noreplay@example.com', # Redirect receiver to another email when try to reply.
-            subject='TEST',
+            subject='verificar cuenta',
             message=file_contents)
 
-cambiar_contra('davidandradag@gmail.com','pedrito')
+##cambiar_contra('davidandradag@gmail.com','pedrito')
 
 #verificar_register('davidandradag@gmail.com','pedrito')
