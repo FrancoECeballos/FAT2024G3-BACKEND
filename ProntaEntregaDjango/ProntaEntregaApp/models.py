@@ -164,8 +164,8 @@ class CustomUsuario(AbstractBaseUser, PermissionsMixin):
     objects = UsuarioManager()
 
     class Meta:
-        db_table = 'Usuario'
-        managed = True
+        db_table = 'CustomUsuario'
+        managed = False
 
     def __str__(self):
         return self.nombreusuario
@@ -201,6 +201,11 @@ class Casa(models.Model):
     id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
 
     objects = CasaManager()
+
+    class Meta:
+        db_table = 'Casa'
+        managed = False
+
 
     def __str__(self):
         return self.nombre

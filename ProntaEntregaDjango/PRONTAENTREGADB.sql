@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS CustomUsuario (
     nombre VARCHAR(255),
     apellido VARCHAR(255),
     nombreusuario VARCHAR(255),
+    password VARCHAR(255),
     documento VARCHAR(20),
     telefono VARCHAR(20),
     email VARCHAR(255),
@@ -55,9 +56,25 @@ CREATE TABLE IF NOT EXISTS CustomUsuario (
     `is_staff` BOOLEAN DEFAULT FALSE,
     `is_superuser` BOOLEAN DEFAULT FALSE,
     `is_active` BOOLEAN DEFAULT TRUE,
+    `is_verified` BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_direccion FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion),
     CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario),
     CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipoDocumento) REFERENCES TipoDocumento(id_tipoDocumento)
+);
+
+CREATE TABLE CustomUsuario_groups (
+    customusuario_id INT,
+    group_id INT,
+    PRIMARY KEY (customusuario_id, group_id),
+    FOREIGN KEY (customusuario_id) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE
+);
+
+-- For user_permissions:
+CREATE TABLE CustomUsuario_user_permissions (
+    customusuario_id INT,
+    permission_id INT,
+    PRIMARY KEY (customusuario_id, permission_id),
+    FOREIGN KEY (customusuario_id) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Casa (
