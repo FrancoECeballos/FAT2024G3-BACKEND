@@ -919,67 +919,39 @@ class CategoriaPost(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-def informacion_casas(request):
-    casas_info = Casa.objects.annotate(
-        cantidad_usuarios=Count('detallecasausuario__id_usuario')
-    ).values(
-        'nombre',
-        'descripcion',
-        'cantidad_usuarios',
-        'id_direccion__calle',
-        'id_direccion__numero',
-        'id_direccion__localidad'
-    )
-
-    return JsonResponse(list(casas_info), safe=False)
-
-
-@csrf_exempt
-@require_http_methods(["POST"])
-def asignar_usuario_a_casa(request):
-    try:
-        data = json.loads(request.body)
-        id_casa = data.get('id_casa')
-        id_usuario = data.get('id_usuario')
-
-        # Debugging: Print received data
-        print(f"Received data: id_casa={id_casa}, id_usuario={id_usuario}")
-
-        casa = Casa.objects.get(id_casa=id_casa)
-        usuario = CustomUsuario.objects.get(id_usuario=id_usuario)
-
-        # Verificar si ya existe una asignación de usuario a casa
-        if Detallecasausuario.objects.filter(id_casa=casa, id_usuario=usuario).exists():
-            return JsonResponse({'error': 'El usuario ya está registrado en esta casa'}, status=400)
-
-        # Crear una instancia de la tabla intermedia
-        Detallecasausuario.objects.create(id_casa=casa, id_usuario=usuario)
-
-        return JsonResponse({'message': 'Usuario asignado a la casa correctamente'}, status=200)
-    except Casa.DoesNotExist:
-        return JsonResponse({'error': 'Casa no encontrada'}, status=404)
-    except CustomUsuario.DoesNotExist:
-        return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=400)
-    
-
-@csrf_exempt
-def eliminar_detallecasausuario(request, pk):
-    if request.method == 'DELETE':
-        detalle = get_object_or_404(Detallecasausuario, pk=pk)
-        detalle.delete()
-        return JsonResponse({'mensaje': 'Detallecasausuario eliminado correctamente.'}, status=200)
-    else:
-        return JsonResponse({'error': 'Método no permitido.'}, status=405)
-    
-
-class CasasAsignadasView(APIView):
+class GetCasasAsignadas(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        usuario = request.user
-        detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario)
-        casas = Casa.objects.filter(id_casa__in=[detalle.id_casa.id_casa for detalle in detalle_casas])
-        serializer = CasaSerializer(casas, many=True)
-        return Response(serializer.data)
+    def get(self, request, token):
+        try:
+            usuario = CustomUsuario.objects.get(auth_token = token)
+            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
+            casas = Casa.objects.filter(id_casa__in=[detalle.id_casa.id_casa for detalle in detalle_casas])
+            serializer = CasaSerializer(casas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Detallecasausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class DeleteDetalleCasaUsuario (APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            detalle = Detallecasausuario.objects.get(pk=pk)
+            detalle.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Detallecasausuario.DoesNotExist:
+            return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class PostDetalleCasaUsuario(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = DetallecasausuarioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

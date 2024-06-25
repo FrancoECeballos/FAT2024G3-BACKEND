@@ -37,12 +37,6 @@ class EditarCasaSerializer(serializers.ModelSerializer):
         )
         return casa
 
-
-class DetallecasausuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Detallecasausuario
-        fields = '__all__'
-
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direccion
@@ -70,4 +64,10 @@ class TransporteSerializer(serializers.ModelSerializer):
 class CasaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Casa
+        fields = '__all__'
+
+class DetallecasausuarioSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Detallecasausuario
         fields = '__all__'

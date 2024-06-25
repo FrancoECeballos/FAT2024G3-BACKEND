@@ -92,10 +92,9 @@ urlpatterns = [
     path('user/updateEmail/<str:email>/', UserUpdateEmail.as_view(), name='user-update-email'),
     path('categoria/delete/<int:pk>/', CategoriaDelete.as_view(), name='categoria_delete'),
     path('categoria/post', CategoriaPost.as_view(), name='categoria_post'),
-    path('informacion_casas/', informacion_casas, name='informacion_casas'),
-    path('asignar_usuario_a_casa/', asignar_usuario_a_casa, name='asignar_usuario_a_casa'),
-    path('eliminar_detallecasausuario/<int:pk>/', views.eliminar_detallecasausuario, name='eliminar_detallecasausuario'),
-    path('casas-asignadas/', CasasAsignadasView.as_view(), name='casas-asignadas'),
+    path('user/casas/post', PostDetalleCasaUsuario.as_view(), name='user-casas-post'),
+    path('user/casas/<str:token>/', GetCasasAsignadas.as_view(), name='user-casas'),
+    path('user/casas/delete/<str:token>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
 ]
 
 if settings.DEBUG:
