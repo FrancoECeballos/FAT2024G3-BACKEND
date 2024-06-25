@@ -63,6 +63,7 @@ class TransporteSerializer(serializers.ModelSerializer):
     
 
 class CasaSerializer(serializers.ModelSerializer):
+    id_direccion = DireccionSerializer()
     usuarios_registrados = serializers.SerializerMethodField()
 
     class Meta:

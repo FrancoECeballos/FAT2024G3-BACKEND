@@ -920,7 +920,20 @@ class CategoriaPost(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class GetCasasAsignadas(APIView):
+class GetCasasAsignadasByEmail(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, email):
+        try:
+            usuario = CustomUsuario.objects.get(email = email)
+            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
+            casas = Casa.objects.filter(id_casa__in=[detalle.id_casa.id_casa for detalle in detalle_casas])
+            serializer = CasaSerializer(casas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Detallecasausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class GetCasasAsignadasByToken(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):
