@@ -731,3 +731,122 @@ Crear una nueva casa.
 #### 404 Not Found
 
 - **Error**: Id de categoria no proporcionado.
+
+## Get Houses
+  
+### URL
+
+`/casa/`
+### Method
+
+`GET`
+### Description
+
+Obtener la lista de todos las casas. Necesitas estar autenticado.
+
+### Parameters
+
+Ninguno.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+
+### Response Example
+
+```json
+[
+  {
+    "id_casa": 1,
+    "nombre": "Mama Antula",
+    "descripcion": "Muy descriptiva :D",
+    "id_organizacion": 1,
+    "id_direccion": 1
+  },
+  {
+    "id_casa": 2,
+    "nombre": "El Aljibe",
+    "descripcion": "Muy descriptiva :D",
+    "id_organizacion": 1,
+    "id_direccion": 2
+  },
+  {
+    "id_casa": 3,
+    "nombre": "La Casa de la Bondad",
+    "descripcion": "Muy descriptiva :D x3",
+    "id_organizacion": 1,
+    "id_direccion": 3
+  }
+]
+```
+
+### Possible Errors
+
+#### 401 Unauthorized
+
+- **Error de autenticación**: Token inválido o no proporcionado.
+
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
+## Edit House
+
+### URL
+
+`/editar_casa/<int:pk>/`
+### Method
+
+`PUT`
+### Description
+
+Editar una casa.
+
+### Parameters
+
+- `nombre` (str, requerido): El nombre de la casa.
+- `direccion` (str, requerido): La dirección de la casa.
+
+### Headers
+
+- `Authorization` (str, requerido): Token de autenticación del usuario.
+### Request Body Example
+
+```json
+{
+    "nombre": "Casa ejemplo",
+    "descripcion": "Descripcion ejemplo",
+    "id_organizacion": 1,
+    "id_direccion": 1
+}
+```
+
+### Response Example
+
+```json
+{
+  "id_casa": 1,
+  "nombre": "Casa ejemplo",
+  "descripcion": "Descripcion ejemplo",
+  "id_organizacion": 1,
+  "id_direccion": 1
+}
+```
+
+### Possible Errors
+
+#### 400 Bad Request
+
+- **Datos inválidos**: Si algún campo requerido falta o es inválido.
+-
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
+#### 404 Not Found
+
+- **Error**: Id de categoria no proporcionado.
