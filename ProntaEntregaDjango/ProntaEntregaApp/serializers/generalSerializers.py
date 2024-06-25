@@ -61,11 +61,16 @@ class TransporteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     
+
 class CasaSerializer(serializers.ModelSerializer):
+    usuarios_registrados = serializers.SerializerMethodField()
+
     class Meta:
         model = Casa
-        fields = '__all__'
+        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados']
 
+    def get_usuarios_registrados(self, casa):
+        return casa.detallecasausuario_set.count()
 class DetallecasausuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallecasausuario
