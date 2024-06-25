@@ -966,3 +966,35 @@ class CategoriasProductosView(APIView):
         ).values('nombre', 'cantidad_productos')
 
         return Response(categorias)
+
+class ProductosPorCategoriaYCasaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_casa, id_categoriaproducto):
+        try:
+            # Verificar si existe la casa
+            casa = get_object_or_404(Stock, id_casa=id_casa)
+
+            # Verificar si existe la categoría de producto
+            categoria = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
+
+            # Obtener los detalles de stock para esa casa y categoría
+            detalles_stock = Detallestockproducto.objects.filter(
+                id_stock__id_casa=id_casa,
+                id_producto__id_categoriaproducto=id_categoriaproducto
+            )
+
+            # Obtener los productos correspondientes a los detalles de stock
+            productos_ids = detalles_stock.values_list('id_producto', flat=True)
+            productos = Producto.objects.filter(id_producto__in=productos_ids)
+
+            # Serializar los datos
+            serializer = ProductoSerializer(productos, many=True)
+
+            return Response(serializer.data)
+        
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
