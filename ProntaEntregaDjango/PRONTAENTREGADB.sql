@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS CustomUsuario (
     telefono VARCHAR(20),
     email VARCHAR(255),
     genero INT,
-    imagen LONGBLOB,
+    imagen VARCHAR(400),
     fechaUnion DATETIME,
     last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_direccion INT,
