@@ -95,6 +95,8 @@ urlpatterns = [
     path('user/casas/post', PostDetalleCasaUsuario.as_view(), name='user-casas-post'),
     path('user/casas/<str:token>/', GetCasasAsignadas.as_view(), name='user-casas'),
     path('user/casas/delete/<str:token>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
+
+    path('categorias-productos/<int:id_casa>/', CategoriasProductosView.as_view(), name='categorias-productos'),
 ]
 
 if settings.DEBUG:
