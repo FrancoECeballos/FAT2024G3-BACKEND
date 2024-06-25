@@ -27,8 +27,9 @@ urlpatterns = [
     path('register/', UserRegister.as_view(), name='user_register'),
     path('login/', UserLogin.as_view(), name='user_login'),
     path('userToken/<str:token>', UserByToken.as_view(), name='userToken'),
-    path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),
-   
+    path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),        
+    path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
+
     path('casa/', GetCasa.as_view(), name='casa_get'),
     path('crear_casa/', CrearCasa.as_view(), name='casa_post'),
     path('editar_casa/<int:pk>', EditarCasa.as_view(), name='casa_edit'),

@@ -28,7 +28,7 @@ from django.db.models import Count
 from django.views.decorators.http import require_http_methods
 import json
 from django.views.decorators.csrf import csrf_exempt
-
+from ProntaEntregaApp.emails import email_sending
 from django.db.models import Count, Q 
 
 def index(request):
@@ -291,6 +291,44 @@ class CambiarContrasenia(APIView):
 
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
 
+
+class CambiarContrasenia_open(APIView): ##no abrir sin consultar que es esto
+    permission_classes = [AllowAny]
+
+    def get(self,request,pk):
+        CodigosDeVerificacion.objects.filter(codigo__startswith=pk).delete()
+        usuario = CustomUsuario.objects.get(pk = pk)
+        codigo= email_sending.get_codigoVerificacion(usuario.pk)
+
+        serializer = CodigosDeVerificacionSerializer(data={'codigo':codigo})
+        if serializer.is_valid():
+            serializer.save()
+
+        email_sending.cambiar_contra(usuario.email,usuario.nombre,codigo)
+
+        return Response({'a introducir':'codigo_necesitado,new_password,new_password_repeat'})
+    
+    def put(self, request,pk):
+        usuario = CustomUsuario.objects.get(pk = pk)
+
+        if 'codigo_necesitado' not in request.data or 'new_password' not in request.data or 'new_password_repeat' not in request.data:
+            return Response({'error': 'Por favor, proporcione el codigo mandado a su mail, la nueva contraseña y la repetición de la nueva contraseña.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        codigo_necesitado = request.data['codigo_necesitado']
+        new_password = request.data['new_password']
+        new_password_repeat = request.data['new_password_repeat']
+
+        cod_obj = CodigosDeVerificacion.objects.filter(codigo__startswith=pk).first()
+        print(cod_obj.codigo)
+        if codigo_necesitado != cod_obj.codigo:
+            return Response({'error': 'El codigo es incorrecto.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_password != new_password_repeat:
+            return Response({'error': 'Las nuevas contraseñas no coinciden.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        usuario.set_password(new_password)
+        usuario.save()
+        return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
 
 class GetCasa(APIView):
     permission_classes = [IsAuthenticated]

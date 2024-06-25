@@ -21,7 +21,7 @@ def get_codigoVerificacion(pk):
 ##para probar:
 ##print(get_codigoVerificacion(65))
 
-def cambiar_contra(email_usuario,nombre):
+def cambiar_contra(email_usuario,nombre,codigo):
     
     p = os.path.join(dirname, 'email_cambiar_contra.txt')
 
@@ -30,7 +30,7 @@ def cambiar_contra(email_usuario,nombre):
     
     file_contents = file_contents.replace('[nombre]',nombre)
 
-    file_contents = file_contents.replace('[codigo]',str(get_codigoVerificacion(65)))
+    file_contents = file_contents.replace('[codigo]',str(codigo))
 
     send(email_usuario,file_contents)
 
