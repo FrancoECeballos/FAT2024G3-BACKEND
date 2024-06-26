@@ -228,10 +228,28 @@ class DeleteUser(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, pk):
+    def delete(self, request, pk):
         try:
-            user = CustomUsuario.objects.get(pk=pk)
-            user.delete()
+            
+            ofertas = Oferta.objects.filter(id_usuario=pk)
+            ids =[]
+            for x in ofertas:
+                ids.append(x.id_oferta)
+            Detalleoferta.objects.filter(id_detalleoferta__in = ids).delete()
+
+            pedidos = Pedido.objects.filter(id_usuario=pk)
+            ids =[]
+            for x in pedidos:
+                ids.append(x.id_pedido)
+            Detallepedido.objects.filter(id_detallepedido__in = ids).delete()
+
+            ofertas.delete()
+            pedidos.delete()
+
+            Detallecasausuario.objects.filter(id_usuario=pk).delete()
+
+            CustomUsuario.objects.get(pk=pk).delete()
+
             return Response({'success': 'El usuario ha sido eliminado con éxito.'}, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
@@ -851,6 +869,7 @@ class DeleteDetallestockproducto(APIView):
 class DeleteStock(APIView):
     def delete(self, request, pk):
         try:
+            Detallestockproducto.objects.filter(id_stock = pk).delete()
             stock = get_object_or_404(Stock, id_stock=pk)
             stock.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -884,20 +903,6 @@ class VerUsuarios(APIView):
             }
             usuarios_json.append(usuario_json)
         return JsonResponse(usuarios_json, safe=False)
-
-class UserDelete(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def delete(self, request, email):
-        try:
-            usuario = get_object_or_404(CustomUsuario, email=email)
-            usuario.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except CustomUsuario.DoesNotExist:
-            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
-        
-
 
 class UserUpdate(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
