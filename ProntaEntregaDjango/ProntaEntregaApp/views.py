@@ -34,6 +34,15 @@ from django.db.models import Count, Q
 def index(request):
     return render(request, 'index.html')
 
+
+class Verificar(APIView):
+    def put(self,request,pk):
+        user = get_object_or_404(CustomUsuario, pk=pk)
+        user.is_verified = True
+        user.save()
+        serializer = UsuarioUpdateSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class GetDirecciones(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
