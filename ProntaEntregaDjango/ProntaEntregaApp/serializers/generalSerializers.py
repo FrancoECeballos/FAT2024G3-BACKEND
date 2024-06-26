@@ -60,8 +60,6 @@ class TransporteSerializer(serializers.ModelSerializer):
         model = Transporte
         fields = '__all__'
 
-    
-
 class CasaSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer()
     usuarios_registrados = serializers.SerializerMethodField()
