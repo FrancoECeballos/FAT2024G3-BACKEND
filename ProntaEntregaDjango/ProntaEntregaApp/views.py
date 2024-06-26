@@ -965,8 +965,7 @@ class GetCasasAsignadasByEmail(APIView):
         try:
             usuario = CustomUsuario.objects.get(email = email)
             detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
-            casas = Casa.objects.filter(id_casa__in=[detalle.id_casa.id_casa for detalle in detalle_casas])
-            serializer = CasaSerializer(casas, many=True)
+            serializer = DetallecasausuarioSerializer(detalle_casas, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
@@ -978,8 +977,7 @@ class GetCasasAsignadasByToken(APIView):
         try:
             usuario = CustomUsuario.objects.get(auth_token = token)
             detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
-            casas = Casa.objects.filter(id_casa__in=[detalle.id_casa.id_casa for detalle in detalle_casas])
-            serializer = CasaSerializer(casas, many=True)
+            serializer = DetallecasausuarioSerializer(detalle_casas, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
@@ -996,13 +994,15 @@ class DeleteDetalleCasaUsuario (APIView):
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
-
 class PostDetalleCasaUsuario(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = DetallecasausuarioSerializer(data=request.data)
+        casa = get_object_or_404(Casa, id_casa=request.data.get('id_casa'))
+        data = request.data.copy()
+        data['id_casa'] = casa
+        serializer = DetallecasausuarioSerializer(data=request.data, id_casa=casa)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -70,7 +70,9 @@ class CasaSerializer(serializers.ModelSerializer):
 
     def get_usuarios_registrados(self, casa):
         return casa.detallecasausuario_set.count()
+    
 class DetallecasausuarioSerializer(serializers.ModelSerializer):
+    id_casa = CasaSerializer()
     class Meta:
         model = Detallecasausuario
         fields = '__all__'

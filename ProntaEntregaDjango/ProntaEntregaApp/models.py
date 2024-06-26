@@ -223,7 +223,7 @@ class Detallecasausuario(models.Model):
         db_table = 'DetalleCasaUsuario'
 
     def __str__(self):
-        return f'Casa: {self.id_casa.nombre}, Usuario: {self.id_usuario.nombreusuario}'
+        return f'{self.id_detallecasausuario}'
 
 class Unidadmedida(models.Model):
     id_unidadmedida = models.AutoField(db_column='id_unidadMedida', primary_key=True)  # Field name made lowercase.
