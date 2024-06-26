@@ -83,3 +83,9 @@ class DetallecasausuarioSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("El usuario ya está registrado en esta casa.")
         
         return data
+    
+class CodigosDeVerificacionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = CodigosDeVerificacion
+        fields = '__all__'

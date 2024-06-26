@@ -27,8 +27,9 @@ urlpatterns = [
     path('register/', UserRegister.as_view(), name='user_register'),
     path('login/', UserLogin.as_view(), name='user_login'),
     path('userToken/<str:token>', UserByToken.as_view(), name='userToken'),
-    path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),
-   
+    path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),        
+    path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
+
     path('casa/', GetCasa.as_view(), name='casa_get'),
     path('crear_casa/', CrearCasa.as_view(), name='casa_post'),
     path('editar_casa/<int:pk>', EditarCasa.as_view(), name='casa_edit'),
@@ -97,6 +98,8 @@ urlpatterns = [
     path('user/casasToken/<str:token>/', GetCasasAsignadasByToken.as_view(), name='user-casasToken'),
     path('user/casas/delete/<int:pk>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
     path('categorias-productos/<int:id_casa>/', CategoriasProductosView.as_view(), name='categorias-productos'),
+    path('casa/<int:id_casa>/categoria/<int:id_categoriaproducto>/', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
+
 ]
 
 if settings.DEBUG:

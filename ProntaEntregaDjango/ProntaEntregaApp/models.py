@@ -391,3 +391,11 @@ class Transporte(models.Model):
 
     def __str__(self):
         return str(self.id_transporte)
+
+class CodigosDeVerificacion(models.Model):
+    codigos_id = models.AutoField(primary_key=True)
+    codigo = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'codigos_de_verificacion'
