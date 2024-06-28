@@ -90,6 +90,7 @@ urlpatterns = [
     path('DeleteProducto/<int:pk>/', DeleteProducto.as_view(), name='DeleteProducto'),
     path('DeleteDetallestockproducto/<int:pk>/', DeleteDetallestockproducto.as_view(), name='DeleteDetallestockproducto'),
     path('user/delete/<str:email>/', UserDelete.as_view(), name='user_delete'),
+    path('user/Verificar/<int:pk>/', Verificar.as_view(), name='Verificar'),
     path('user/update/<str:token>/', UserUpdate.as_view(), name='user-update'),
     path('user/updateEmail/<str:email>/', UserUpdateEmail.as_view(), name='user-update-email'),
     path('categoria/delete/<int:pk>/', CategoriaDelete.as_view(), name='categoria_delete'),

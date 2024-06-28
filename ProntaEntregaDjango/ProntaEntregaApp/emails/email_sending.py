@@ -34,7 +34,7 @@ def cambiar_contra(email_usuario,nombre,codigo):
 
     send(email_usuario,file_contents)
 
-def verificar_register(email_usuario,nombre):
+def verificar_register(email_usuario,nombre,link):
     
     p = os.path.join(dirname, 'email_verificar_register.txt')
 
@@ -42,7 +42,7 @@ def verificar_register(email_usuario,nombre):
         file_contents = file.read()
 
     file_contents = file_contents.replace('[nombre]',nombre)
-    file_contents = file_contents.replace('[link]','https://es.wikipedia.org/wiki/Solanum_lycopersicum') ## ESTO HAY QUE REMPLAZARLO MAS ADELANTE, tiene que dar a una pagina
+    file_contents = file_contents.replace('[link]',link) ## ESTO HAY QUE REMPLAZARLO MAS ADELANTE, tiene que dar a una pagina
 
     send(email_usuario,file_contents)
     

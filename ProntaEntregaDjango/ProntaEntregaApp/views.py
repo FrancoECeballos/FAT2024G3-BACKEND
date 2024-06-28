@@ -34,6 +34,15 @@ from django.db.models import Count, Q
 def index(request):
     return render(request, 'index.html')
 
+
+class Verificar(APIView):
+    def get(self,request,pk):
+        user = get_object_or_404(CustomUsuario, pk=pk)
+        user.is_verified = True
+        user.save()
+        serializer = UsuarioUpdateSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class GetDirecciones(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
@@ -200,6 +209,10 @@ class UserRegister(APIView):
         serializer = UsuarioRegistroSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            
+            link = 'http://127.0.0.1:8000/user/Verificar/' + str(user.id_usuario)
+            ## email_sending.verificar_register(user.email,user.nombre,link)
+            # no borrar la linea de arriba, esta asi solo para mandar mails mas adelante
             user.set_password(request.data['password'])
             user.save()
             token = Token.objects.create(user=user)
