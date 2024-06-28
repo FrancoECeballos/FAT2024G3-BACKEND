@@ -31,6 +31,7 @@ urlpatterns = [
     path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
 
     path('casa/', GetCasa.as_view(), name='casa_get'),
+    path('casa/<int:pk>', GetCasaByID.as_view(), name='casa_get_id'),
     path('crear_casa/', CrearCasa.as_view(), name='casa_post'),
     path('editar_casa/<int:pk>', EditarCasa.as_view(), name='casa_edit'),
 
@@ -88,7 +89,7 @@ urlpatterns = [
     path('DeleteStock/<int:pk>/', DeleteStock.as_view(), name='DeleteStock'),
     path('DeleteProducto/<int:pk>/', DeleteProducto.as_view(), name='DeleteProducto'),
     path('DeleteDetallestockproducto/<int:pk>/', DeleteDetallestockproducto.as_view(), name='DeleteDetallestockproducto'),
-    path('user/delete/<int:pk>/', DeleteUser.as_view(), name='DeleteUser'),
+    path('user/delete/<str:email>/', UserDelete.as_view(), name='user_delete'),
     path('user/update/<str:token>/', UserUpdate.as_view(), name='user-update'),
     path('user/updateEmail/<str:email>/', UserUpdateEmail.as_view(), name='user-update-email'),
     path('categoria/delete/<int:pk>/', CategoriaDelete.as_view(), name='categoria_delete'),

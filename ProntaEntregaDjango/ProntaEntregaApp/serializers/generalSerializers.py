@@ -72,7 +72,7 @@ class CasaSerializer(serializers.ModelSerializer):
         return casa.detallecasausuario_set.count()
     
 class DetallecasausuarioSerializer(serializers.ModelSerializer):
-    id_casa = CasaSerializer()
+    id_casa = serializers.PrimaryKeyRelatedField(queryset=Casa.objects.all())
     class Meta:
         model = Detallecasausuario
         fields = '__all__'
