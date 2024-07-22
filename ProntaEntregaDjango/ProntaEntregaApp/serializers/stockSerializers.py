@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers import *
+from ProntaEntregaApp.serializers.generalSerializers import CasaSerializer
 from django.contrib.auth import authenticate
 
 class UnidadmedidaSerializer(serializers.ModelSerializer):
@@ -18,12 +19,9 @@ class CategoriaprodutoSerializer(serializers.ModelSerializer):
     def get_cantidad_productos(self, obj):
         return Producto.objects.filter(id_categoriaproducto=obj).count()
 
-class DetallestockproductoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Detallestockproducto
-        fields = ['id_detallestockproducto','cantidad','id_stock','id_producto']
-
 class ProductoSerializer(serializers.ModelSerializer):
+    id_unidadmedida = UnidadmedidaSerializer()
+
     class Meta:
         model = Producto
         fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto', 'id_unidadmedida']
@@ -40,6 +38,16 @@ class ProductoSerializer(serializers.ModelSerializer):
         return value
 
 class StockSerializer(serializers.ModelSerializer):
+    id_casa = CasaSerializer()
+    
     class Meta:
         model = Stock
         fields = '__all__'
+
+class DetallestockproductoSerializer(serializers.ModelSerializer):
+    id_stock = StockSerializer()
+    id_producto = ProductoSerializer()
+    
+    class Meta:
+        model = Detallestockproducto
+        fields = ['id_detallestockproducto','cantidad','id_stock','id_producto']

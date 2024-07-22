@@ -1032,7 +1032,7 @@ class CategoriasProductosView(APIView):
     def get(self, request, id_casa):
         categorias = Categoriaproducto.objects.annotate(
             cantidad_productos=Count('producto__detallestockproducto__id_stock', filter=Q(producto__detallestockproducto__id_stock__id_casa=id_casa))
-        ).values('nombre', 'cantidad_productos')
+        ).values('id_categoriaproducto', 'nombre', 'descripcion', 'cantidad_productos')
 
         return Response(categorias)
 
@@ -1055,10 +1055,10 @@ class ProductosPorCategoriaYCasaView(APIView):
 
             # Obtener los productos correspondientes a los detalles de stock
             productos_ids = detalles_stock.values_list('id_producto', flat=True)
-            productos = Producto.objects.filter(id_producto__in=productos_ids)
+            productos = Detallestockproducto.objects.filter(id_producto__in=productos_ids)
 
             # Serializar los datos
-            serializer = ProductoSerializer(productos, many=True)
+            serializer = DetallestockproductoSerializer(productos, many=True)
 
             return Response(serializer.data)
         
