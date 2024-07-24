@@ -247,7 +247,7 @@ class Stock(models.Model):
         db_table = 'Stock'
 
     def __str__(self):
-        return str(self.id_stock)
+        return f'{self.id_casa}, Stock N°{self.id_stock}'
     
 
 class Categoriaproducto(models.Model):
@@ -287,6 +287,9 @@ class Detallestockproducto(models.Model):
     class Meta:
         managed = False
         db_table = 'DetalleStockProducto'
+
+    def __str__(self):
+        return f'{self.id_producto}, {self.id_stock}'
 
 
 class Pedido(models.Model):
