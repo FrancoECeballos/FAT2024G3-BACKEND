@@ -402,3 +402,14 @@ class CodigosDeVerificacion(models.Model):
     class Meta:
         managed = False
         db_table = 'codigos_de_verificacion'
+
+class Notificacion(models.Model):
+    notificacion_id = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=255)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    fecha_creacion = models.DateField(blank=True, null=True)
+    id_usuario = models.ForeignKey(CustomUsuario, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'notificacion'

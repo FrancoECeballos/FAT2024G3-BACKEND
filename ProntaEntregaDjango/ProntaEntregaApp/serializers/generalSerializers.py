@@ -91,3 +91,9 @@ class CodigosDeVerificacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CodigosDeVerificacion
         fields = '__all__'
+
+class NotificacionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Notificacion
+        fields = '__all__'
