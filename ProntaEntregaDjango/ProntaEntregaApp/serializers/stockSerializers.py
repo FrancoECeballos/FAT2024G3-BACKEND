@@ -20,11 +20,10 @@ class CategoriaprodutoSerializer(serializers.ModelSerializer):
         return Producto.objects.filter(id_categoriaproducto=obj).count()
 
 class ProductoSerializer(serializers.ModelSerializer):
-    id_unidadmedida = UnidadmedidaSerializer()
 
     class Meta:
         model = Producto
-        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto', 'id_unidadmedida']
+        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto']
 
     # Optionally, you can add extra validation for foreign key fields
     def validate_id_categoriaproducto(self, value):
@@ -47,7 +46,8 @@ class StockSerializer(serializers.ModelSerializer):
 class DetallestockproductoSerializer(serializers.ModelSerializer):
     id_stock = StockSerializer()
     id_producto = ProductoSerializer()
+    id_unidadmedida = UnidadmedidaSerializer()
     
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto','cantidad','id_stock','id_producto']
+        fields = ['id_detallestockproducto','cantidad','id_stock','id_producto','id_unidadmedida']
