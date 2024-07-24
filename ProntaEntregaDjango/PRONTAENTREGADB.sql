@@ -77,6 +77,16 @@ CREATE TABLE CustomUsuario_user_permissions (
     FOREIGN KEY (customusuario_id) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE
 );
 
+create table if not exists notificacion(
+notificacion_id int auto_increment not null,
+titulo varchar(255) not null,
+descripcion varchar(255),
+fecha_creacion date,
+id_usuario int,
+FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE,
+primary key (notificacion_id)
+);
+
 CREATE TABLE IF NOT EXISTS Casa (
     id_casa INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),

@@ -30,6 +30,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from ProntaEntregaApp.emails import email_sending
 from django.db.models import Count, Q 
+import datetime
 
 def index(request):
     return render(request, 'index.html')
@@ -620,6 +621,15 @@ class EditarDetallePedido(APIView):
         if serializer.is_valid():
 
             serializer.save()
+            
+            print((serializer.data['id_pedido'])['id_pedido'])
+
+            print(str(datetime.datetime.now().date()))
+            dueño = (serializer.data['id_pedido'])['id_pedido']
+            p = (serializer.data['id_producto'])['nombre']
+            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(datetime.datetime.now().date()),'id_usuario':dueño})
+            if serializerN.is_valid():
+                serializerN.save()
             return Response({'success': 'Los atributos del detalle de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
