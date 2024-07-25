@@ -400,7 +400,10 @@ class GetUnidadMedida(APIView):
         for unidad_medida in unidades_medida:
             unidad_medida_json = {
                 'id': unidad_medida.id_unidadmedida,
-                'nombre': unidad_medida.nombre
+                'nombre': unidad_medida.nombre,
+                'descripcion': unidad_medida.descripcion,
+                'identificador': unidad_medida.identificador,
+                'paquete': unidad_medida.paquete
             }
             unidades_medida_json.append(unidad_medida_json)
         return JsonResponse(unidades_medida_json, safe=False)
