@@ -45,8 +45,14 @@ class Verificar(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class GetNotificacionesDeUsr(APIView):
-    def get(self,request,fk_usuario):
-        notif = Notificacion.objects.filter(id_usuario = fk_usuario)
+    def get(self,request,token):
+
+        try:
+            usuario = CustomUsuario.objects.get(auth_token = token)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+        notif = Notificacion.objects.filter(id_usuario = usuario.id_usuario)
         serializer = NotificacionSerializer(notif,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
