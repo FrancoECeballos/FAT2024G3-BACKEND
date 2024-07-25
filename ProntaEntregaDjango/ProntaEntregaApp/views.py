@@ -43,6 +43,12 @@ class Verificar(APIView):
         user.save()
         serializer = UsuarioUpdateSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetNotificacionesDeUsr(APIView):
+    def get(self,request,fk_usuario):
+        notif = Notificacion.objects.filter(id_usuario = fk_usuario)
+        serializer = NotificacionSerializer(notif,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class GetDirecciones(APIView):
     permission_classes = [AllowAny]
@@ -1080,3 +1086,18 @@ class ProductosPorCategoriaYCasaView(APIView):
                 {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+class UpdateCantidadDetallestockproductoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, id_detallestockproducto):
+        try:
+            detalle = Detallestockproducto.objects.get(pk=id_detallestockproducto)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = DetallestockproductoSerializer(detalle, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

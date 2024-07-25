@@ -303,6 +303,8 @@ class Pedido(models.Model):
     horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
     id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+    urgente = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -329,9 +331,8 @@ class Detallepedido(models.Model):
     id_detallepedido = models.AutoField(db_column='id_detallePedido', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
-    id_pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, db_column='id_pedido', blank=True, null=True)
-    id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
-    id_estadopedido = models.ForeignKey('Estadopedido', on_delete=models.SET_NULL, db_column='id_estadoPedido', blank=True, null=True)  # Field name made lowercase.
+    id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
+    id_estadopedido = models.ForeignKey('Estadopedido', models.DO_NOTHING, db_column='id_estadoPedido', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -416,3 +417,6 @@ class Notificacion(models.Model):
     class Meta:
         managed = False
         db_table = 'notificacion'
+
+    def __str__(self):
+        return str(self.notificacion_id)
