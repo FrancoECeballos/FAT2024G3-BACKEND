@@ -77,6 +77,16 @@ CREATE TABLE CustomUsuario_user_permissions (
     FOREIGN KEY (customusuario_id) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS notificacion(
+    notificacion_id INT auto_increment NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255),
+    fecha_creacion DATE,
+    id_usuario INT,
+    FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE,
+    PRIMARY KEY (notificacion_id)
+);
+
 CREATE TABLE IF NOT EXISTS Casa (
     id_casa INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
@@ -100,7 +110,9 @@ CREATE TABLE IF NOT EXISTS DetalleCasaUsuario (
 CREATE TABLE IF NOT EXISTS UnidadMedida(
     id_unidadMedida INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255)
+    descripcion VARCHAR(255),
+    identificador VARCHAR(20),
+    paquete BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS Stock (
@@ -120,18 +132,19 @@ CREATE TABLE IF NOT EXISTS Producto (
     nombre VARCHAR(255),
     descripcion VARCHAR(255),
     id_categoriaProducto INT,
-    id_unidadMedida INT,
-    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoriaProducto) REFERENCES CategoriaProducto(id_categoriaProducto),
-    CONSTRAINT fk_unidadMedida FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida)
+    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoriaProducto) REFERENCES CategoriaProducto(id_categoriaProducto)
 );
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
     cantidad INT,
+    cantidadUnidades INT DEFAULT 1,
     id_stock INT,
     id_producto INT,
-    CONSTRAINT fk_stock_detalle FOREIGN KEY (id_stock) REFERENCES Stock(id_stock),
-    CONSTRAINT fk_producto_detalle_stock FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+    id_unidadMedida INT,
+    CONSTRAINT fk_producto_detalle_stock FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
+    CONSTRAINT fk_unidadMedida FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida),
+    CONSTRAINT fk_stock_detalle FOREIGN KEY (id_stock) REFERENCES Stock(id_stock)
 );
 
 CREATE TABLE IF NOT EXISTS Pedido (
@@ -140,8 +153,11 @@ CREATE TABLE IF NOT EXISTS Pedido (
     horaInicio TIME,
     fechaVencimiento DATE,
     horaVencimiento TIME,
+    cantidad INT,
     id_casa INT,
     id_usuario INT,
+    id_producto INT,
+    CONSTRAINT fk_producto_pedido FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
 	CONSTRAINT fk_usuario_pedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
     CONSTRAINT fk_casa_pedido FOREIGN KEY (id_casa) REFERENCES Casa(id_casa)
 );
@@ -157,10 +173,8 @@ CREATE TABLE IF NOT EXISTS DetallePedido (
     descripcion VARCHAR(255),
     cantidad INT,
     id_pedido INT,
-    id_producto INT,
     id_estadoPedido INT,
     CONSTRAINT fk_pedido_detalle FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
-    CONSTRAINT fk_producto_detalle FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
     CONSTRAINT fk_estado_pedido FOREIGN KEY (id_estadoPedido) REFERENCES EstadoPedido(id_estadoPedido)
 );
 
@@ -170,8 +184,11 @@ CREATE TABLE IF NOT EXISTS Oferta (
     horaInicio TIME,
     fechaVencimiento DATE,
     horaVencimiento TIME,
+    cantidad INT,
     id_usuario INT,
     id_casa INT,
+    id_producto INT,
+    CONSTRAINT fk_producto_oferta FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
     CONSTRAINT fk_casa_oferta FOREIGN KEY (id_casa) REFERENCES Casa(id_casa),
     CONSTRAINT fk_usuario_oferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario)
 );
@@ -187,10 +204,8 @@ CREATE TABLE IF NOT EXISTS DetalleOferta (
     descripcion VARCHAR(255),
     cantidad INT,
     id_oferta INT,
-    id_producto INT,
     id_estadoOferta INT,
     CONSTRAINT fk_oferta_detalle FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
-    CONSTRAINT fk_producto_detalle_oferta FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
     CONSTRAINT fk_estado_oferta FOREIGN KEY (id_estadoOferta) REFERENCES EstadoOferta(id_estadoOferta)
 );
 
@@ -251,10 +266,10 @@ INSERT INTO DetalleCasaUsuario (descripcion, fechaIngreso, id_casa, id_usuario) 
     ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3); 
 
 -- Inserciones para la tabla UnidadMedida
-INSERT INTO UnidadMedida (nombre, descripcion) VALUES 
-    ('Kg', 'Son Kilogramos'),
-    ('Litros', 'Son Litros'),
-    ('Unidad', 'Es cada paquete');
+INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
+    ('Kilogramos', 'Son Kilogramos', 'Kg', FALSE),
+    ('Litros', 'Son Litros', 'l', FALSE),
+    ('Unidad', 'Es cada paquete', 'x', TRUE);
 
 -- Inserciones para la tabla Stock
 INSERT INTO Stock (id_casa) VALUES 
@@ -269,22 +284,22 @@ INSERT INTO CategoriaProducto (nombre, descripcion) VALUES
     ('Elatados', 'Productos en lata.');
 
 -- Inserciones para la tabla Producto
-INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida) VALUES 
-    ('Arroz', 'Paquete de arroz de 1KgArroz', 2, 1),
-    ('Fideos', 'Paquete de fideideos', 2, 3),
-    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 2);
-
+INSERT INTO Producto (nombre, descripcion, id_categoriaProducto) VALUES 
+    ('Arroz', 'Paquete de arroz de 1Kg', 2),
+    ('Fideos', 'Paquete de fideideos', 2),
+    ('Pure de tomate', 'Pure de tomate 500 ml', 1);
+    
 -- Inserciones para la tabla Pedido
-INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, id_casa, id_usuario) VALUES 
-    ('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 1, 1),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 3, 3);
+INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_casa, id_usuario, id_producto) VALUES 
+    ('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 3),
+    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 1),
+    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 2);
 
 -- Inserciones para la tabla Oferta
-INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, id_usuario, id_casa) VALUES 
-    ('2024-01-14', '08:01:31', '2024-01-28', '08:01:31', 1, 1),
-    ('2023-08-10', '16:08:10', '2023-08-17', '16:08:10', 3, 2),
-    ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 2, 3);
+INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_usuario, id_casa, id_producto) VALUES 
+    ('2024-01-14', '08:01:31', '2024-01-28', '08:01:31', 200, 1, 1, 3),
+    ('2023-08-10', '16:08:10', '2023-08-17', '16:08:10', 200, 3, 2, 2),
+    ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 200, 2, 3, 1);
 
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
@@ -304,7 +319,7 @@ INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id
     ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1),
     ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1);
 
-insert into DetalleStockProducto (cantidad,id_stock,id_producto) values
-	(100, 1, 2),
-    (200, 3, 1),
-    (300, 2, 3);
+insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
+	(100, 1, 1, 2, 1),
+    (200, 1, 3, 3, 2),
+    (300, 1, 2, 1, 3);

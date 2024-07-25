@@ -229,6 +229,8 @@ class Unidadmedida(models.Model):
     id_unidadmedida = models.AutoField(db_column='id_unidadMedida', primary_key=True)  # Field name made lowercase.
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
+    identificador = models.CharField(max_length=20, blank=True, null=True)
+    paquete = models.BooleanField(blank=True, default=False)
 
     class Meta:
         managed = False
@@ -268,7 +270,6 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     id_categoriaproducto = models.ForeignKey(Categoriaproducto, on_delete=models.SET_NULL, db_column='id_categoriaProducto', blank=True, null=True)
-    id_unidadmedida = models.ForeignKey('Unidadmedida', on_delete=models.SET_NULL, db_column='id_unidadMedida', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -281,8 +282,10 @@ class Producto(models.Model):
 class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     cantidad = models.IntegerField(blank=True, null=True)
+    cantidadUnidades = models.IntegerField(default=1)
     id_stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, db_column='id_stock', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
+    id_unidadmedida = models.ForeignKey('Unidadmedida', on_delete=models.SET_NULL, db_column='id_unidadMedida', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -402,3 +405,14 @@ class CodigosDeVerificacion(models.Model):
     class Meta:
         managed = False
         db_table = 'codigos_de_verificacion'
+
+class Notificacion(models.Model):
+    notificacion_id = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=255)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    fecha_creacion = models.DateField(blank=True, null=True)
+    id_usuario = models.ForeignKey(CustomUsuario, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'notificacion'
