@@ -1068,7 +1068,8 @@ class ProductosPorCategoriaYCasaView(APIView):
 
             # Obtener los productos correspondientes a los detalles de stock
             productos_ids = detalles_stock.values_list('id_producto', flat=True)
-            productos = Detallestockproducto.objects.filter(id_producto__in=productos_ids)
+            casas_ids = detalles_stock.values_list('id_stock', flat=True)
+            productos = Detallestockproducto.objects.filter(id_producto__in=productos_ids, id_stock__in=casas_ids)
 
             # Serializar los datos
             serializer = DetallestockproductoSerializer(productos, many=True)
