@@ -51,3 +51,4 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
         fields = ['id_detallestockproducto','cantidad','id_stock','id_producto']
+
