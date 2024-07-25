@@ -303,6 +303,8 @@ class Pedido(models.Model):
     horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
     id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+    urgente = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
