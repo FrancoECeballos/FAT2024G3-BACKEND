@@ -80,12 +80,14 @@ erDiagram
     }
     Pedido{
         int id_pedido PK
+        int cantidad
         date fechaInicio
         time horaInicio
         date fechaVencimiento
         date horaVencimiento
         int id_casa FK
         int id_usuario FK
+        int id_producto FK
     }
     DetallePedido{
         int id_detallePedido PK
@@ -184,6 +186,7 @@ UnidadMedida ||--|{ Producto : "tiene"
 
 Stock ||--|{ DetalleStockProducto : "tiene"
 Producto ||--|{ DetalleStockProducto : "tiene"
+Producto ||--|{ Pedido : "tiene"
 
 DetallePedido ||--o{ EntregaPedido : "tiene"
 DetalleOferta ||--o{ EntregaOferta : "tiene"
