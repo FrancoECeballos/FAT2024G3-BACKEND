@@ -44,9 +44,10 @@ class Verificar(APIView):
         serializer = UsuarioUpdateSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class GetNotificacionesDeUsr(APIView):
-    def get(self,request,fk_usuario):
-        notif = Notificacion.objects.filter(id_usuario = fk_usuario)
+class GetNotificacionesDeUser(APIView):
+    permission_classes = [AllowAny]
+    def get(self,request,pk):
+        notif = Notificacion.objects.filter(id_usuario = pk)
         serializer = NotificacionSerializer(notif,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
