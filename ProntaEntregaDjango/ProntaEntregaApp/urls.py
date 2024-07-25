@@ -7,6 +7,8 @@ from . import views
 urlpatterns = [
     path('', view=index, name='index'),
 
+    path('getNotificacion/<int:fk_usuario>', GetNotificacionesDeUsr.as_view(), name='GetNotificacionesDeUsr'),
+    
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
     path('crear_direccion/', CrearDirecciones.as_view(), name='direcciones_post'),
     path('direccion/<int:pk>', GetDireccion.as_view(), name='direccion_get'),
