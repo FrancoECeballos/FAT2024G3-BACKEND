@@ -296,6 +296,8 @@ class Detallestockproducto(models.Model):
 
 
 class Pedido(models.Model):
+    urgencia_choices = [(1,'No es urgente'),(2,'Ligeramente urgente'),(3,'muy urgente'),(4,'inmediato')]
+
     id_pedido = models.AutoField(primary_key=True)
     fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
     horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
@@ -304,7 +306,7 @@ class Pedido(models.Model):
     id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
-    urgente = models.IntegerField(blank=True, null=True)
+    urgente = models.IntegerField(choices=urgencia_choices,blank=True, null=True)
 
     class Meta:
         managed = False
