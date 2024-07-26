@@ -44,9 +44,10 @@ class Verificar(APIView):
         serializer = UsuarioUpdateSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class GetNotificacionesDeUsr(APIView):
-    def get(self,request,fk_usuario):
-        notif = Notificacion.objects.filter(id_usuario = fk_usuario)
+class GetNotificacionesDeUser(APIView):
+    permission_classes = [AllowAny]
+    def get(self,request,pk):
+        notif = Notificacion.objects.filter(id_usuario = pk)
         serializer = NotificacionSerializer(notif,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -1112,7 +1113,8 @@ class ProductosPorCategoriaYCasaView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-class UpdateCantidadDetallestockproductoView(APIView):
+
+class UpdateDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, id_detallestockproducto):
@@ -1121,8 +1123,48 @@ class UpdateCantidadDetallestockproductoView(APIView):
         except Detallestockproducto.DoesNotExist:
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = DetallestockproductoSerializer(detalle, data=request.data, partial=True)
+        allowed_fields = {'cantidad', 'cantidadUnidades', 'id_unidadmedida'}
+        data = request.data
+
+        # Verificar que solo los campos permitidos están en el cuerpo de la solicitud
+        for field in data:
+            if field not in allowed_fields:
+                return Response({'error': f'El campo "{field}" no se puede actualizar.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = DetallestockproductoSerializer(detalle, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class CreateDetallestockproductoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = CrearDetallestockproductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class GetDetallestockproductoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_detallestockproducto):
+        try:
+            detalle = Detallestockproducto.objects.get(pk=id_detallestockproducto)
+            serializer = GETDetallestockproductoSerializer(detalle)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+                
+class DeleteDetallestockproductoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id_detallestockproducto):
+        try:
+            detalle = Detallestockproducto.objects.get(pk=id_detallestockproducto)
+            detalle.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)

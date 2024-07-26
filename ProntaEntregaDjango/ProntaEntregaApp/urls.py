@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     path('', view=index, name='index'),
 
-    path('getNotificacion/<int:fk_usuario>', GetNotificacionesDeUsr.as_view(), name='GetNotificacionesDeUsr'),
+    path('getNotificacion/<int:pk>', GetNotificacionesDeUser.as_view(), name='GetNotificacionesDeUsr'),
     
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
     path('crear_direccion/', CrearDirecciones.as_view(), name='direcciones_post'),
@@ -105,7 +105,12 @@ urlpatterns = [
     path('user/casas/delete/<int:pk>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
     path('categorias-productos/<int:id_stock>/', CategoriasProductosView.as_view(), name='categorias-productos'),
     path('casa/<int:id_casa>/categoria/<int:id_categoriaproducto>/', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
-    path('detallestockproducto/<int:id_detallestockproducto>/', UpdateCantidadDetallestockproductoView.as_view(), name='detallestockproducto-update'),
+    path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
+
+    path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
+    path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
+    path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
+
 
 ]
 

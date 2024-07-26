@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS Pedido (
     fechaVencimiento DATE,
     horaVencimiento TIME,
     cantidad INT,
-    urgente boolean,
+    urgente INT,
     id_casa INT,
     id_usuario INT,
     id_producto INT,

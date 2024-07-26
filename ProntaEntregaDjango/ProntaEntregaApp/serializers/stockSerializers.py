@@ -41,17 +41,46 @@ class StockSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Stock
-        fields = ['id_stock', 'id_casa']
+        fields = '__all__'
 
-    def get_usuarios_registrados(self, stock):
-        return stock.id_casa.detallecasausuario_set.count()
 
 class DetallestockproductoSerializer(serializers.ModelSerializer):
-    id_stock = StockSerializer()
-    id_producto = ProductoSerializer()
-    id_unidadmedida = UnidadmedidaSerializer()
-    
     class Meta:
         model = Detallestockproducto
+        fields = ['cantidad', 'cantidadUnidades', 'id_unidadmedida']
+
+class GETDetallestockproductoSerializer(serializers.ModelSerializer):
+    id_unidadmedida = UnidadmedidaSerializer()
+    id_stock = StockSerializer()
+    id_producto = ProductoSerializer()
+    multiplicacion = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Detallestockproducto
+        fields = ['id_detallestockproducto', 'cantidad', 'cantidadUnidades', 'id_unidadmedida', 'id_producto', 'id_stock', 'multiplicacion']
+    
+    def get_multiplicacion(self, obj):
+        cantidad = obj.cantidad if obj.cantidad else 0
+        cantidad_unidades = obj.cantidadUnidades if obj.cantidadUnidades else 0
+        return cantidad * cantidad_unidades
+
+class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detallestockproducto
+        fields = ['id_detallestockproducto', 'cantidad', 'cantidadUnidades', 'id_unidadmedida', 'id_producto', 'id_stock']
+        extra_kwargs = {
+            'id_producto': {'required': True, 'allow_null': False},
+            'id_stock': {'required': True, 'allow_null': False},
+            'id_unidadmedida': {'required': True, 'allow_null': False},
+            'cantidad': {'required': False, 'allow_null': True},
+            'cantidadUnidades': {'required': False, 'allow_null': True},
+        }
+
+    def validate(self, data):
+        required_fields = ['id_producto', 'id_stock', 'id_unidadmedida']
+        for field in required_fields:
+            if field not in data or data[field] is None:
+                raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})
+        return data
         fields = ['id_detallestockproducto','cantidad','cantidadUnidades','id_stock','id_producto','id_unidadmedida']
 
