@@ -294,9 +294,9 @@ INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida
     
 -- Inserciones para la tabla Pedido
 INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_casa, id_usuario, id_producto, urgente) VALUES 
-    ('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 3,True),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 1,False),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 2,False);
+    ('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 3,1),
+    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 1,2),
+    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 2,3);
 
 -- Inserciones para la tabla Oferta
 INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_usuario, id_casa, id_producto) VALUES 

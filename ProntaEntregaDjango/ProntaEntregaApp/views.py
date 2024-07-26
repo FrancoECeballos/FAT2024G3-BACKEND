@@ -551,6 +551,15 @@ class CrearPedido(APIView):
         serializer = PedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            if serializer.data['urgente'] == 4:
+                idc = serializer.data['id_casa']
+                for usr in CustomUsuario.objects.all():
+                    if usr.id_usuario != serializer.data['id_usuario']:
+                        serializerN = NotificacionSerializer(data={"titulo":"Hay un pedido de urgencia inmediata","descripcion":"La casa "+str(Casa.objects.get(id_casa = idc))+" tiene un pedido urgente","fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
+                        if serializerN.is_valid():
+                            serializerN.save()
+                        else:
+                            return Response(serializerN.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
