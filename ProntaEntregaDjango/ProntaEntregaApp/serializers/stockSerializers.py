@@ -41,7 +41,10 @@ class StockSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Stock
-        fields = '__all__'
+        fields = ['id_stock', 'id_casa']
+
+    def get_usuarios_registrados(self, stock):
+        return stock.id_casa.detallecasausuario_set.count()
 
 class DetallestockproductoSerializer(serializers.ModelSerializer):
     id_stock = StockSerializer()
@@ -50,5 +53,5 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto','cantidad','id_stock','id_producto']
+        fields = ['id_detallestockproducto','cantidad','cantidadUnidades','id_stock','id_producto','id_unidadmedida']
 

@@ -253,7 +253,7 @@ class Stock(models.Model):
     
 
 class Categoriaproducto(models.Model):
-    id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)  # Field name made lowercase.
+    id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
 

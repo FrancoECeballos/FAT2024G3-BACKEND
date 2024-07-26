@@ -100,8 +100,10 @@ urlpatterns = [
     path('user/casas/post/', PostDetalleCasaUsuario.as_view(), name='user-casas-post'),
     path('user/casasEmail/<str:email>/', GetCasasAsignadasByEmail.as_view(), name='user-casasEmail'),
     path('user/casasToken/<str:token>/', GetCasasAsignadasByToken.as_view(), name='user-casasToken'),
+    path('user/stockEmail/<str:email>/', GetStockAsignadoByEmail.as_view(), name='user-stockEmail'),
+    path('user/stockToken/<str:token>/', GetStockAsignadoByToken.as_view(), name='user-stockToken'),
     path('user/casas/delete/<int:pk>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
-    path('categorias-productos/<int:id_casa>/', CategoriasProductosView.as_view(), name='categorias-productos'),
+    path('categorias-productos/<int:id_stock>/', CategoriasProductosView.as_view(), name='categorias-productos'),
     path('casa/<int:id_casa>/categoria/<int:id_categoriaproducto>/', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateCantidadDetallestockproductoView.as_view(), name='detallestockproducto-update'),
 

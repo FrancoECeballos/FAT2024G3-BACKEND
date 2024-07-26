@@ -1021,6 +1021,30 @@ class GetCasasAsignadasByToken(APIView):
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
         
+class GetStockAsignadoByToken(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, email):
+        try:
+            usuario = CustomUsuario.objects.get(email = email)
+            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
+            serializer = StockSerializer(detalle_casas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Detallecasausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class GetStockAsignadoByEmail(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, token):
+        try:
+            usuario = CustomUsuario.objects.get(auth_token = token)
+            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
+            serializer = StockSerializer(detalle_casas, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Detallecasausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        
 class DeleteDetalleCasaUsuario (APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -1048,9 +1072,9 @@ class PostDetalleCasaUsuario(APIView):
 class CategoriasProductosView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, id_casa):
+    def get(self, request, id_stock):
         categorias = Categoriaproducto.objects.annotate(
-            cantidad_productos=Count('producto__detallestockproducto__id_stock', filter=Q(producto__detallestockproducto__id_stock__id_casa=id_casa))
+            cantidad_productos=Count('producto__detallestockproducto__id_stock', filter=Q(producto__detallestockproducto__id_stock=id_stock))
         ).values('id_categoriaproducto', 'nombre', 'descripcion', 'cantidad_productos')
 
         return Response(categorias)
