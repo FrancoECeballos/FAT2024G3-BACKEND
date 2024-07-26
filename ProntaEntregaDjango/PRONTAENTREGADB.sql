@@ -132,7 +132,9 @@ CREATE TABLE IF NOT EXISTS Producto (
     nombre VARCHAR(255),
     descripcion VARCHAR(255),
     id_categoriaProducto INT,
-    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoriaProducto) REFERENCES CategoriaProducto(id_categoriaProducto)
+    id_unidadMedida INT,
+    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoriaProducto) REFERENCES CategoriaProducto(id_categoriaProducto),
+    CONSTRAINT fk_unidadMedida_producto FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida)
 );
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
@@ -285,10 +287,10 @@ INSERT INTO CategoriaProducto (nombre, descripcion) VALUES
     ('Elatados', 'Productos en lata.');
 
 -- Inserciones para la tabla Producto
-INSERT INTO Producto (nombre, descripcion, id_categoriaProducto) VALUES 
-    ('Arroz', 'Paquete de arroz de 1Kg', 2),
-    ('Fideos', 'Paquete de fideideos', 2),
-    ('Pure de tomate', 'Pure de tomate 500 ml', 1);
+INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida) VALUES 
+    ('Arroz', 'Paquete de arroz de 1Kg', 2, 1),
+    ('Fideos', 'Paquete de fideideos', 2, 1),
+    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 1);
     
 -- Inserciones para la tabla Pedido
 INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_casa, id_usuario, id_producto, urgente) VALUES 
@@ -323,4 +325,7 @@ INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id
 insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
 	(100, 1, 1, 2, 1),
     (200, 1, 3, 3, 2),
-    (300, 1, 2, 1, 3);
+    (300, 1, 2, 1, 3),
+	(430, 1, 1, 1, 1),
+    (22, 1, 3, 2, 2),
+    (120, 1, 2, 3, 3);

@@ -270,6 +270,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     id_categoriaproducto = models.ForeignKey(Categoriaproducto, on_delete=models.SET_NULL, db_column='id_categoriaProducto', blank=True, null=True)
+    id_unidadmedida = models.ForeignKey(Unidadmedida, on_delete=models.SET_NULL, db_column='id_unidadMedida', blank=True, null=True)
 
     class Meta:
         managed = False
