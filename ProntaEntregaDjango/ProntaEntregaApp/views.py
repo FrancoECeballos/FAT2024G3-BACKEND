@@ -929,6 +929,7 @@ class VerUsuarios(APIView):
                 'nombre': usuario.nombre,
                 'apellido': usuario.apellido,
                 'nombre_usuario': usuario.nombreusuario,
+                'password': usuario.password,
                 'documento': usuario.documento,
                 'telefono': usuario.telefono,
                 'email': usuario.email,
