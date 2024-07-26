@@ -43,13 +43,7 @@ class StockSerializer(serializers.ModelSerializer):
         model = Stock
         fields = '__all__'
 
-
 class DetallestockproductoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Detallestockproducto
-        fields = ['cantidad', 'cantidadUnidades', 'id_unidadmedida']
-
-class GETDetallestockproductoSerializer(serializers.ModelSerializer):
     id_unidadmedida = UnidadmedidaSerializer()
     id_stock = StockSerializer()
     id_producto = ProductoSerializer()
