@@ -136,3 +136,5 @@ GitHub.sublime-settings
 .history
 
 ProntaEntregaDjango/credentials/
+
+ProntaEntregaDjango/__pycache__/*
