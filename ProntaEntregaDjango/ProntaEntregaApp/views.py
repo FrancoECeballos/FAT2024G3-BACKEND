@@ -1153,7 +1153,7 @@ class GetDetallestockproductoView(APIView):
     def get(self, request, id_detallestockproducto):
         try:
             detalle = Detallestockproducto.objects.get(pk=id_detallestockproducto)
-            serializer = GETDetallestockproductoSerializer(detalle)
+            serializer = DetallestockproductoSerializer(detalle)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Detallestockproducto.DoesNotExist:
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
