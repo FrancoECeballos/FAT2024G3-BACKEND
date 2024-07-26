@@ -133,6 +133,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     descripcion VARCHAR(255),
     id_categoriaProducto INT,
     id_unidadMedida INT,
+    imagen VARCHAR(255),
     CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoriaProducto) REFERENCES CategoriaProducto(id_categoriaProducto),
     CONSTRAINT fk_unidadMedida_producto FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida)
 );

@@ -512,6 +512,16 @@ class GetProductos(APIView):
         productos = Producto.objects.all()
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class GetProductoById(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, pk):
+        try:
+            productos = Producto.objects.filter(id_producto=pk)
+        except Producto.DoesNotExist:
+            return Response({'error': 'No se encontró un producto con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = ProductoSerializer(productos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CrearProductos(APIView):
     permission_classes = [AllowAny]

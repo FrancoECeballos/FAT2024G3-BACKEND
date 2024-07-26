@@ -25,7 +25,7 @@ class ProductoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Producto
-        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto', 'id_unidadmedida']
+        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto', 'id_unidadmedida', 'imagen']
 
     # Optionally, you can add extra validation for foreign key fields
     def validate_id_categoriaproducto(self, value):
