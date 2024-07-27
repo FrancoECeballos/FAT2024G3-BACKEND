@@ -155,7 +155,7 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
+# STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

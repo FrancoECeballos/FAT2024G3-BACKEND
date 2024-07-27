@@ -289,10 +289,10 @@ INSERT INTO CategoriaProducto (nombre, descripcion) VALUES
     ('Elatados', 'Productos en lata.');
 
 -- Inserciones para la tabla Producto
-INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida) VALUES 
-    ('Arroz', 'Paquete de arroz de 1Kg', 2, 1),
-    ('Fideos', 'Paquete de fideideos', 2, 1),
-    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 1);
+INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida, imagen) VALUES 
+    ('Arroz', 'Paquete de arroz de 1Kg', 2, 1, 'productos/Lucchetti_Arroz_Largo_Fino_1_kg__Bolsa_.webp'),
+    ('Fideos', 'Paquete de fideideos', 2, 1, 'productos/spaguetti__70855.jpg'),
+    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 1, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp');
     
 -- Inserciones para la tabla Pedido
 INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_casa, id_usuario, id_producto, urgente) VALUES 
