@@ -256,7 +256,7 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$Arz6Wl7KBnpflLNQKZEQgj$B6QkCJqAPfxFJ5qMlQjji2/FljIRcUwJ+Ein9ZiRXM4=', '25129735', '3517639546', 'JoaquinL@hotmail.com', 1, NULL, NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
     ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$n46xedxl78dbHoQNQFcEZR$5QMT0nscWsbFDAF5SVN6+PUl5Ny67+Gy21rNcfg8jcg=', '46505926', '3517639546', 'TimoteoW@gmail.com', 1, NULL, NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
     ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$xbfFA25MjtQazdXb29CoCA$y0m37r4bKmk29FOVhm6lto6TPn205xxWoWMIiBH77QQ=', '39284767', '3517639546', 'TereDiaz@gmail.com', 1, NULL, NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
-    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$Xnn7isVdjflrs22DQxbsu7$thuhH4VP5lu2yoGCh1JYOpbzFwltxGGROKzoh61cKXY=', '00000000', '00000000', 'admin@admin', 3, NULL, NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
+    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '00000000', 'admin@admin', 3, NULL, NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
 
 -- Inserciones para la tabla Casa
 INSERT INTO Casa (nombre, descripcion, id_Organizacion, id_direccion) VALUES 
@@ -274,7 +274,8 @@ INSERT INTO DetalleCasaUsuario (descripcion, fechaIngreso, id_casa, id_usuario) 
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
     ('Kilogramos', 'Son Kilogramos', 'Kg', FALSE),
     ('Litros', 'Son Litros', 'l', FALSE),
-    ('Unidad', 'Es cada paquete', 'x', TRUE);
+    ('Paquete en Kg', 'Es un paquete en Kilogramos', 'x', TRUE),
+    ('Paquete en l', 'Es un paquete em Litros', 'x', TRUE);
 
 -- Inserciones para la tabla Stock
 INSERT INTO Stock (id_casa) VALUES 
