@@ -311,6 +311,7 @@ class Pedido(models.Model):
     cantidad = models.IntegerField(blank=True, null=True)
     urgente = models.IntegerField(choices=urgencia_choices,blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
+    id_estadoPedido = models.ForeignKey('Estadopedido', models.DO_NOTHING, db_column='id_estadoPedido', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -333,12 +334,11 @@ class Estadopedido(models.Model):
         return self.nombre
 
 
-class Detallepedido(models.Model):
-    id_detallepedido = models.AutoField(db_column='id_detallePedido', primary_key=True)  # Field name made lowercase.
+class AportePedido(models.Model):
+    id_aportePedido = models.AutoField(db_column='id_detallePedido', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
-    id_estadopedido = models.ForeignKey('Estadopedido', models.DO_NOTHING, db_column='id_estadoPedido', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -353,6 +353,7 @@ class Oferta(models.Model):
     horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_estadooferta = models.ForeignKey('Estadooferta', on_delete=models.SET_NULL, db_column='id_estadoOferta', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -375,13 +376,12 @@ class Estadooferta(models.Model):
         return self.nombre
 
 
-class Detalleoferta(models.Model):
-    id_detalleoferta = models.AutoField(db_column='id_detalleOferta', primary_key=True)  # Field name made lowercase.
+class AporteOferta(models.Model):
+    id_aporteOferta = models.AutoField(db_column='id_detalleOferta', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
-    id_estadooferta = models.ForeignKey('Estadooferta', on_delete=models.SET_NULL, db_column='id_estadoOferta', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
