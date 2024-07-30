@@ -417,6 +417,7 @@ class Notificacion(models.Model):
     notificacion_id = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=255)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
+    viewed = models.BooleanField(default=False)
     fecha_creacion = models.DateField(blank=True, null=True)
     id_usuario = models.ForeignKey(CustomUsuario, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
 

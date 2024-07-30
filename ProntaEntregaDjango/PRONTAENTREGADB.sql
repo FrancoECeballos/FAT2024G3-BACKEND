@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS notificacion(
     notificacion_id INT auto_increment NOT NULL,
     titulo VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255),
+    viewed BOOLEAN DEFAULT FALSE,
     fecha_creacion DATE,
     id_usuario INT,
     FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE,
