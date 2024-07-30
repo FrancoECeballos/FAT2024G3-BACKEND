@@ -931,31 +931,11 @@ class DeleteStock(APIView):
 
 class VerUsuarios(APIView):
     permission_classes = [AllowAny]
+
     def get(self, request):
         usuarios = CustomUsuario.objects.all()
-
-        usuarios_json = []
-        for usuario in usuarios:
-            usuario_json = {
-                'id': usuario.id_usuario,
-                'nombre': usuario.nombre,
-                'apellido': usuario.apellido,
-                'nombre_usuario': usuario.nombreusuario,
-                'password': usuario.password,
-                'documento': usuario.documento,
-                'telefono': usuario.telefono,
-                'email': usuario.email,
-                'genero': usuario.genero,
-                'fecha_union': usuario.fechaUnion,
-                'last_login': usuario.last_login,
-                'is_superuser': usuario.is_superuser,
-                'is_verified': usuario.is_verified,
-                'id_direccion': usuario.id_direccion_id,
-                'id_tipo_usuario': usuario.id_tipousuario_id,
-                'id_tipo_documento': usuario.id_tipodocumento_id
-            }
-            usuarios_json.append(usuario_json)
-        return JsonResponse(usuarios_json, safe=False)
+        serializer = UsuarioSerializer(usuarios, many=True)
+        return Response(serializer.data)
 
 class UserDelete(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
