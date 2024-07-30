@@ -9,7 +9,7 @@ class DetalleofertaSerializer(serializers.ModelSerializer):
    
     
     class Meta:
-        model = Detalleoferta
+        model = AporteOferta
         fields = '__all__'
 
 class EstadoofertaSerializer(serializers.ModelSerializer):

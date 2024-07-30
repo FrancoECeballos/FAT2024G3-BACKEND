@@ -23,5 +23,5 @@ class DetallepedidoSerializer(serializers.ModelSerializer):
     id_estadopedido = EstadopedidoSerializer(many=False)
     
     class Meta:
-        model = Detallepedido
+        model = AportePedido
         fields = '__all__'
