@@ -624,7 +624,7 @@ class EditarEstadoPedido(APIView):
 class GetDetallePedido(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        detalles = Detallepedido.objects.all()
+        detalles = AportePedido.objects.all()
         serializer = DetallepedidoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -641,8 +641,8 @@ class CrearDetallePedido(APIView):
 class EditarDetallePedido(APIView):
     def put(self, request, pk):
         try:
-            detalle = Detallepedido.objects.get(pk=pk)
-        except Detallepedido.DoesNotExist:
+            detalle = AportePedido.objects.get(pk=pk)
+        except AportePedido.DoesNotExist:
             return Response({'error': 'No se encontró un detalle de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
         serializer = DetallepedidoSerializer(detalle, data=request.data,partial=True)
@@ -743,7 +743,7 @@ class EditarEstadoOferta(APIView):
 class GetDetalleOferta(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
-        detalles = Detalleoferta.objects.all()
+        detalles = AporteOferta.objects.all()
         serializer = DetalleofertaSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -759,8 +759,8 @@ class CrearDetalleOferta(APIView):
 class EditarDetalleOferta(APIView):
     def put(self, request, pk):
         try:
-            detalle = Detalleoferta.objects.get(pk=pk)
-        except Detalleoferta.DoesNotExist:
+            detalle = AporteOferta.objects.get(pk=pk)
+        except AporteOferta.DoesNotExist:
             return Response({'error': 'No se encontró un detalle de oferta con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
         serializer = DetalleofertaSerializer(detalle, data=request.data,partial=True)
