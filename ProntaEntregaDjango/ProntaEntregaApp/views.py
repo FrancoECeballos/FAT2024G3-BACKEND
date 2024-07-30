@@ -649,16 +649,28 @@ class EditarDetallePedido(APIView):
 
         if serializer.is_valid():
 
-            serializer.save()
+            #print(request.data)
+            #print(serializer)
+            print(int(str(detalle.id_pedido)))
             
-            print((serializer.data['id_pedido'])['id_pedido'])
+            print("---------------------------------------------------------------")
 
-            print(str(datetime.datetime.now().date()))
-            dueño = (serializer.data['id_pedido'])['id_pedido']
-            p = (serializer.data['id_producto'])['nombre']
-            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(datetime.datetime.now().date()),'id_usuario':dueño})
+            serializer.save()
+
+            ## SECCION NOTIFICACION
+            pedido= Pedido.objects.get(pk=int(str(detalle.id_pedido)))
+
+            print(pedido.id_producto.__str__())
+            producto = Producto.objects.get(pk=int(str(pedido.id_producto)))
+            p = producto.nombre
+            
+            
+            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(datetime.datetime.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
+            ##FIN SECCION NOTIFICACION
+
+
             return Response({'success': 'Los atributos del detalle de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

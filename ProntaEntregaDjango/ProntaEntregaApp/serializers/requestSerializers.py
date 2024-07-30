@@ -16,8 +16,7 @@ class PedidoSerializer(serializers.ModelSerializer):
 class DetallepedidoSerializer(serializers.ModelSerializer):
     id_pedido = PedidoSerializer(many=False)
     id_estadopedido = EstadopedidoSerializer(many=False)
-    id_producto = ProductoSerializer(many=False)
-
+    
     class Meta:
         model = Detallepedido
         fields = '__all__'
