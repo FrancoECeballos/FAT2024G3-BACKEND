@@ -27,7 +27,6 @@ class ProductoSerializer(serializers.ModelSerializer):
         model = Producto
         fields = ['id_producto', 'nombre', 'descripcion', 'id_categoriaproducto', 'id_unidadmedida', 'imagen']
 
-    # Optionally, you can add extra validation for foreign key fields
     def validate_id_categoriaproducto(self, value):
         if value is None:
             raise serializers.ValidationError("This field is required.")
@@ -72,11 +71,17 @@ class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
             'cantidadUnidades': {'required': False, 'allow_null': True},
         }
 
+    def to_internal_value(self, data):
+        internal_value = super().to_internal_value(data)
+        internal_value['id_unidadmedida'] = Unidadmedida.objects.get(pk=data.get('id_unidadmedida'))
+        internal_value['id_stock'] = Stock.objects.get(pk=data.get('id_stock'))
+        internal_value['id_producto'] = Producto.objects.get(pk=data.get('id_producto'))
+        return internal_value
+
     def validate(self, data):
         required_fields = ['id_producto', 'id_stock', 'id_unidadmedida']
         for field in required_fields:
             if field not in data or data[field] is None:
                 raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})
         return data
-        fields = ['id_detallestockproducto','cantidad','cantidadUnidades','id_stock','id_producto','id_unidadmedida']
 
