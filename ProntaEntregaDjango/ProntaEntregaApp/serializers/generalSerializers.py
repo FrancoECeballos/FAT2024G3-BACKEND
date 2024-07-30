@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 class CasaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Casa
-        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion']
+        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'imagen']
         
     def validate_nombre(self, value):
         if Casa.objects.filter(nombre=value).exists():
@@ -19,7 +19,8 @@ class CasaSerializer(serializers.ModelSerializer):
             nombre=validated_data.get('nombre'),
             descripcion=validated_data.get('descripcion'),
             id_organizacion=validated_data.get('id_organizacion'),
-            id_direccion=validated_data.get('id_direccion')
+            id_direccion=validated_data.get('id_direccion'),
+            imagen=validated_data.get('imagen')
         )
         return casa
     
