@@ -335,14 +335,14 @@ class Estadopedido(models.Model):
 
 
 class AportePedido(models.Model):
-    id_aportePedido = models.AutoField(db_column='id_detallePedido', primary_key=True)  # Field name made lowercase.
+    id_aportePedido = models.AutoField(db_column='id_aportePedido', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'DetallePedido'
+        db_table = 'AportePedido'
 
 
 class Oferta(models.Model):
@@ -378,14 +378,14 @@ class Estadooferta(models.Model):
 
 
 class AporteOferta(models.Model):
-    id_aporteOferta = models.AutoField(db_column='id_detalleOferta', primary_key=True)  # Field name made lowercase.
+    id_aporteOferta = models.AutoField(db_column='id_aporteOferta', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'DetalleOferta'
+        db_table = 'AporteOferta'
 
 
 class Transporte(models.Model):
