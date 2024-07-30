@@ -333,3 +333,9 @@ insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_produ
 	(430, 1, 1, 1, 1),
     (22, 1, 3, 2, 2),
     (120, 1, 2, 3, 3);
+    
+insert into DetallePedido (descripcion,cantidad,id_pedido,id_estadoPedido) values 
+('desc1',10,1,1),
+('desc2',20,2,2),
+('desc3',30,3,3)
+;
