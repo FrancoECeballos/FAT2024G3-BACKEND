@@ -138,3 +138,6 @@ GitHub.sublime-settings
 ProntaEntregaDjango/credentials/
 
 ProntaEntregaDjango/__pycache__/*
+
+Pipfile
+sPipfile.lock

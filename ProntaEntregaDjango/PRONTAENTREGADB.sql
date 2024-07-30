@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS CustomUsuario (
     telefono VARCHAR(20),
     email VARCHAR(255),
     genero INT,
-    imagen LONGBLOB,
+    imagen VARCHAR(255),
     fechaUnion DATETIME,
     last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_direccion INT,
@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS Casa (
     descripcion VARCHAR(255),
     id_Organizacion INT,
     id_direccion INT,
+    imagen VARCHAR(255),
     CONSTRAINT fk_organizacion_casa FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion),
     CONSTRAINT fk_direccion2 FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion)
 );
@@ -253,16 +254,16 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
 
 -- Inserciones para la tabla Usuario
 INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoUsuario, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
-    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$Arz6Wl7KBnpflLNQKZEQgj$B6QkCJqAPfxFJ5qMlQjji2/FljIRcUwJ+Ein9ZiRXM4=', '25129735', '3517639546', 'JoaquinL@hotmail.com', 1, NULL, NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
-    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$n46xedxl78dbHoQNQFcEZR$5QMT0nscWsbFDAF5SVN6+PUl5Ny67+Gy21rNcfg8jcg=', '46505926', '3517639546', 'TimoteoW@gmail.com', 1, NULL, NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
-    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$xbfFA25MjtQazdXb29CoCA$y0m37r4bKmk29FOVhm6lto6TPn205xxWoWMIiBH77QQ=', '39284767', '3517639546', 'TereDiaz@gmail.com', 1, NULL, NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
-    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '00000000', 'admin@admin', 3, NULL, NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
+    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$Arz6Wl7KBnpflLNQKZEQgj$B6QkCJqAPfxFJ5qMlQjji2/FljIRcUwJ+Ein9ZiRXM4=', '25129735', '3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
+    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$n46xedxl78dbHoQNQFcEZR$5QMT0nscWsbFDAF5SVN6+PUl5Ny67+Gy21rNcfg8jcg=', '46505926', '3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
+    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$xbfFA25MjtQazdXb29CoCA$y0m37r4bKmk29FOVhm6lto6TPn205xxWoWMIiBH77QQ=', '39284767', '3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
+    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
 
 -- Inserciones para la tabla Casa
-INSERT INTO Casa (nombre, descripcion, id_Organizacion, id_direccion) VALUES 
-    ('Mama Antula', 'Descripción', 1, 5),
-    ('El Aljibe', 'Descripción', 1, 7),
-    ('La Casa de la Bondad', 'Descripción', 1, 6);
+INSERT INTO Casa (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
+    ('Mama Antula', 'Descripción', 1, 5, 'casas/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('El Aljibe', 'Descripción', 1, 7, 'casas/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('La Casa de la Bondad', 'Descripción', 1, 6, 'casas/manos_10152900384813092_5921720902835658172_o-300x300.webp');
 
 -- Inserciones para la tabla DetalleCasaUsuario
 INSERT INTO DetalleCasaUsuario (descripcion, fechaIngreso, id_casa, id_usuario) VALUES 
@@ -332,3 +333,9 @@ insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_produ
 	(430, 1, 1, 1, 1),
     (22, 1, 3, 2, 2),
     (120, 1, 2, 3, 3);
+    
+insert into DetallePedido (descripcion,cantidad,id_pedido,id_estadoPedido) values 
+('desc1',10,1,1),
+('desc2',20,2,2),
+('desc3',30,3,3)
+;

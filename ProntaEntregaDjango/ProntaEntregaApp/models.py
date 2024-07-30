@@ -148,7 +148,7 @@ class CustomUsuario(AbstractBaseUser, PermissionsMixin):
     telefono = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True, unique=True)
     genero = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)
-    imagen = models.ImageField(upload_to='profilePictures/', blank=True, null=True)
+    imagen = models.ImageField(upload_to='profilePictures/')
     fechaUnion = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
     id_direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
@@ -199,6 +199,7 @@ class Casa(models.Model):
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     id_organizacion = models.ForeignKey('Organizacion', on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
     id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
+    imagen = models.ImageField(upload_to='casas/')
 
     objects = CasaManager()
 
@@ -278,7 +279,7 @@ class Producto(models.Model):
         db_table = 'Producto'
 
     def __str__(self):
-        return self.nombre
+        return str(self.id_producto)
 
 
 class Detallestockproducto(models.Model):
@@ -300,7 +301,7 @@ class Detallestockproducto(models.Model):
 class Pedido(models.Model):
     urgencia_choices = [(1,'No es urgente'),(2,'Ligeramente urgente'),(3,'muy urgente'),(4,'inmediato')]
 
-    id_pedido = models.AutoField(primary_key=True)
+    id_pedido = models.AutoField(primary_key=True)  
     fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
     horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
     fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
@@ -309,6 +310,7 @@ class Pedido(models.Model):
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     urgente = models.IntegerField(choices=urgencia_choices,blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
 
     class Meta:
         managed = False
