@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('nombreusuario', 'password')}),
-        ('Personal info', {'fields': ('nombre', 'apellido', 'email', 'documento', 'telefono', 'genero', 'id_direccion', 'id_tipousuario', 'id_tipodocumento')}),
+        ('Personal info', {'fields': ('nombre', 'apellido', 'email', 'documento', 'telefono', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
@@ -35,8 +35,8 @@ admin.site.register(Detallecasausuario, DetallecasausuarioAdmin)
 
 admin.site.register(Casa)
 admin.site.register(Categoriaproducto)
-admin.site.register(Detalleoferta)
-admin.site.register(Detallepedido)
+admin.site.register(AporteOferta)
+admin.site.register(AportePedido)
 admin.site.register(Detallestockproducto)
 admin.site.register(Direccion)
 admin.site.register(Estadooferta)

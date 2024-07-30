@@ -14,7 +14,7 @@ class CategoriaprodutoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Categoriaproducto
-        fields = ['nombre', 'cantidad_productos']
+        fields = ['nombre', 'descripcion', 'cantidad_productos']
 
     def get_cantidad_productos(self, obj):
         return Producto.objects.filter(id_categoriaproducto=obj).count()
