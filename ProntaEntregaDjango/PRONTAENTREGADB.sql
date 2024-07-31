@@ -224,6 +224,7 @@ CREATE TABLE IF NOT EXISTS Transporte (
     estadoITV VARCHAR(255),
     anio YEAR,
     id_Organizacion INT,
+    imagen VARCHAR(255),
     CONSTRAINT fk_organizacion FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion)
 );
 

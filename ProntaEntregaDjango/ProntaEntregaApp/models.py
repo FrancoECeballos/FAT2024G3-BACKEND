@@ -398,6 +398,7 @@ class Transporte(models.Model):
     estadoitv = models.CharField(db_column='estadoITV', max_length=255, blank=True, null=True)  # Field name made lowercase.
     anio = models.TextField(blank=True, null=True)  # This field type is a guess.
     id_organizacion = models.ForeignKey(Organizacion, on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
+    imagen = models.ImageField(upload_to='vehiculos/')
 
     class Meta:
         managed = False

@@ -83,6 +83,7 @@ urlpatterns = [
     path('profile/', UserPage.as_view(), name='profile'),
     path('user/', VerUsuarios.as_view(), name='users'),
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
+    path('user/<int:pk>/', UserByID.as_view(), name='userID'),
     path('CambiarStock/<int:pk>/', CambiarStock.as_view(), name='CambiarStock'),
     path('CambiarProducto/<int:pk>/', CambiarProducto.as_view(), name='CambiarProducto'),
     path('CambiarDetalleStock/<int:pk>/', CambiarDetalleStock.as_view(), name='CambiarDetalleStock'),
