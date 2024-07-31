@@ -46,9 +46,13 @@ urlpatterns = [
     path('crear_stock/', CrearStock.as_view(), name='crear_stock'),
     path('editar_stock/<int:pk>/', EditarStock.as_view(), name='editar_stock'),
 
-    path('categoria_producto/', GetCategoriaProducto.as_view(), name='ver_categoria'),
-    path('crear_categoria_producto/', CrearCategoriaProducto.as_view(), name='crear_categoria'),
-    path('editar_categoria_producto/<int:pk>/', EditarCategoriaProducto.as_view(), name='editar_categoria'),
+    path('categoria/', GetCategoria.as_view(), name='ver_categoria'),
+    path('crear_categoria/', CrearCategoria.as_view(), name='crear_categoria'),
+    path('editar_categoria/<int:pk>/', EditarCategoria.as_view(), name='editar_categoria'),
+
+    path('categoria_producto/', GetCategoriaProducto.as_view(), name='ver_categoria_producto'),
+    path('crear_categoria_producto/', CrearCategoriaProducto.as_view(), name='crear_categoria_producto'),
+    path('editar_categoria_producto/<int:pk>/', EditarCategoriaProducto.as_view(), name='editar_categoria_producto'),
 
     path('productos/', GetProductos.as_view(), name='ver_producto'),
     path('producto/<int:pk>/', GetProductoById.as_view(), name='ver_producto_id'),

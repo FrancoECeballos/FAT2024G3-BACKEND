@@ -253,10 +253,24 @@ class Stock(models.Model):
         return f'{self.id_casa}, Stock N°{self.id_stock}'
     
 
+class Categoria(models.Model):
+    id_categoria = models.AutoField(db_column='id_categoria', primary_key=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Categoria'
+
+    def __str__(self):
+        return self.nombre
+    
+
 class Categoriaproducto(models.Model):
     id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
+    id_categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, db_column='id_categoria', blank=True, null=True)
 
     class Meta:
         managed = False

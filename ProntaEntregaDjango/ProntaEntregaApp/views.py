@@ -482,7 +482,39 @@ class EditarStock(APIView):
             return Response({'success': 'Los atributos del stock han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetCategoria(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        categorias = Categoria.objects.all()
+        serializer = CategoriaSerializer(categorias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class CrearCategoria(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = CategoriaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EditarCategoria(APIView):
+    def put(self, request, pk):
+        try:
+            categoria = Categoria.objects.get(pk=pk)
+        except Categoria.DoesNotExist:
+            return Response({'error': 'No se encontró una categoría con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
+        serializer = CategoriaSerializer(categoria, data=request.data,partial=True)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response({'success': 'Los atributos de la categoría han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class GetCategoriaProducto(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
