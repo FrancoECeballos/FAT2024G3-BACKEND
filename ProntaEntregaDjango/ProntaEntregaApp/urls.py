@@ -51,6 +51,7 @@ urlpatterns = [
     path('editar_categoria/<int:pk>/', EditarCategoria.as_view(), name='editar_categoria'),
 
     path('categoria_producto/', GetCategoriaProducto.as_view(), name='ver_categoria_producto'),
+    path('categoria_producto/<int:id_categoria>/', GetCategoriaProductoByCategoria.as_view(), name='ver_categoria_producto_by_categoria'),
     path('crear_categoria_producto/', CrearCategoriaProducto.as_view(), name='crear_categoria_producto'),
     path('editar_categoria_producto/<int:pk>/', EditarCategoriaProducto.as_view(), name='editar_categoria_producto'),
 
@@ -116,6 +117,7 @@ urlpatterns = [
     path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
     path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
+    path('catprod_casa/<int:id_casa>/<int:id_categoriaproducto>/<int:id_producto>/', ProductosPorCategoriaProductoYCasaView.as_view(), name='detallestockproducto-update'),
 
 
 ]
