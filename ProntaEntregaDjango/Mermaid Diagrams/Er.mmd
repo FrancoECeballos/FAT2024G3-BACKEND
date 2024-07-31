@@ -89,8 +89,8 @@ erDiagram
         int id_usuario FK
         int id_producto FK
     }
-    DetallePedido{
-        int id_detallePedido PK
+    AportePedido{
+        int id_AportePedido PK
         varchar descripcion
         int cantidad
         int id_pedido FK
@@ -101,7 +101,7 @@ erDiagram
         int id_entregaPedido PK
         date fechaEntrega
         time horaEntrega
-        int id_detallePedido FK
+        int id_AportePedido FK
         int id_estadoEntrega FK
         int id_direccion FK
     }
@@ -111,11 +111,13 @@ erDiagram
         time horaInicio
         date fechaVencimiento
         date horaVencimiento
+        int id_producto FK
+        int cantidad
         int id_usuario FK
         int id_casa FK
     }
-    DetalleOferta{
-        int id_detalleOferta PK
+    AporteOferra{
+        int id_AporteOferra PK
         varchar descripcion
         int cantidad
         int id_oferta FK
@@ -126,7 +128,7 @@ erDiagram
         int id_entregaOferta PK
         date fechaEntrega
         time horaEntrega
-        int id_detalleOferta FK
+        int id_AporteOferra FK
         int id_estadoEntrega FK
         int id_direccion FK
     }
@@ -174,12 +176,12 @@ Casa ||--|{ Stock : "tiene"
 Casa ||--|{ DetalleCasaUsuario : "tiene"
 Usuario ||--|{ DetalleCasaUsuario : "tiene"
 
-Pedido ||--|{ DetallePedido : "tiene"
-Oferta ||--|{ DetalleOferta : "tiene"
-EstadoPedido ||--|{ DetallePedido : "tiene"
-EstadoOferta ||--|{ DetalleOferta : "tiene"
-Producto ||--|{ DetallePedido : "tiene"
-Producto ||--|{ DetalleOferta : "tiene"
+Pedido ||--|{ AportePedido : "tiene"
+Oferta ||--|{ AporteOferra : "tiene"
+EstadoPedido ||--|{ Pedido : "tiene"
+EstadoOferta ||--|{ Oferta : "tiene"
+Producto ||--|{ AportePedido : "tiene"
+Producto ||--|{ AporteOferra : "tiene"
 
 CategoriaProducto ||--|{ Producto : "tiene"
 UnidadMedida ||--|{ Producto : "tiene"
@@ -188,8 +190,8 @@ Stock ||--|{ DetalleStockProducto : "tiene"
 Producto ||--|{ DetalleStockProducto : "tiene"
 Producto ||--|{ Pedido : "tiene"
 
-DetallePedido ||--o{ EntregaPedido : "tiene"
-DetalleOferta ||--o{ EntregaOferta : "tiene"
+AportePedido ||--o{ EntregaPedido : "tiene"
+AporteOferra ||--o{ EntregaOferta : "tiene"
 EstadoEntrega ||--|{ EntregaPedido : "tiene"
 EstadoEntrega ||--|{ EntregaOferta : "tiene"
 Direccion ||--|{ EntregaPedido : "tiene"
