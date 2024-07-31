@@ -5,6 +5,12 @@ from ProntaEntregaApp.serializers.generalSerializers import CasaSerializer
 from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 from django.contrib.auth import authenticate
 
+class DetallepedidoSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = AportePedido
+        fields = '__all__'
+
 class EstadopedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estadopedido
@@ -13,15 +19,9 @@ class EstadopedidoSerializer(serializers.ModelSerializer):
 class PedidoSerializer(serializers.ModelSerializer):
     id_casa = CasaSerializer()
     id_usuario = UsuarioSerializer()
+    id_estadopedido = EstadopedidoSerializer()
+    id_producto = ProductoSerializer()
 
     class Meta:
         model = Pedido
-        fields = '__all__'
-
-class DetallepedidoSerializer(serializers.ModelSerializer):
-    id_pedido = PedidoSerializer(many=False)
-    id_estadopedido = EstadopedidoSerializer(many=False)
-    
-    class Meta:
-        model = AportePedido
         fields = '__all__'
