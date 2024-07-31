@@ -23,12 +23,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = CustomUsuario
         fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
 
-
-class getUsuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUsuario
-        fields = '__all__'
-
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario

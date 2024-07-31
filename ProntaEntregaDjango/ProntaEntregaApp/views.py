@@ -283,7 +283,7 @@ class UserByID(APIView):
 
     def get(self, request, pk):
         usuario = get_object_or_404(CustomUsuario, pk=pk)
-        serializer = getUsuarioSerializer(usuario)
+        serializer = UsuarioSerializer(usuario)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserByToken(APIView):
