@@ -521,6 +521,13 @@ class GetCategoriaProducto(APIView):
         categoria_productos = Categoriaproducto.objects.all()
         serializer = CategoriaprodutoSerializer(categoria_productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class GetCategoriaProductoByCategoria(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, id_categoria):
+        categoria_productos = Categoriaproducto.objects.filter(id_categoria = id_categoria)
+        serializer = CategoriaprodutoSerializer(categoria_productos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CrearCategoriaProducto(APIView):
     permission_classes = [AllowAny]

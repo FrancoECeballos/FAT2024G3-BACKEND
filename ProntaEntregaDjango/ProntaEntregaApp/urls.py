@@ -51,6 +51,7 @@ urlpatterns = [
     path('editar_categoria/<int:pk>/', EditarCategoria.as_view(), name='editar_categoria'),
 
     path('categoria_producto/', GetCategoriaProducto.as_view(), name='ver_categoria_producto'),
+    path('categoria_producto/<int:id_categoria>/', GetCategoriaProductoByCategoria.as_view(), name='ver_categoria_producto_by_categoria'),
     path('crear_categoria_producto/', CrearCategoriaProducto.as_view(), name='crear_categoria_producto'),
     path('editar_categoria_producto/<int:pk>/', EditarCategoriaProducto.as_view(), name='editar_categoria_producto'),
 
