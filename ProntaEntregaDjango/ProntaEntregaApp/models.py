@@ -413,6 +413,7 @@ class Transporte(models.Model):
     anio = models.TextField(blank=True, null=True)  # This field type is a guess.
     id_organizacion = models.ForeignKey(Organizacion, on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
     imagen = models.ImageField(upload_to='vehiculos/')
+    necesita_mantenimiento = models.BooleanField(default=False)
 
     class Meta:
         managed = False
