@@ -19,7 +19,6 @@ class EstadopedidoSerializer(serializers.ModelSerializer):
 class PedidoSerializer(serializers.ModelSerializer):
     id_casa = CasaSerializer()
     id_usuario = UsuarioSerializer()
-    id_estadopedido = EstadopedidoSerializer()
     id_producto = ProductoSerializer()
 
     class Meta:
