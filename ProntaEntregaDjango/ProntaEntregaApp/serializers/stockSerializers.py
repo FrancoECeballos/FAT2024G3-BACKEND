@@ -10,10 +10,9 @@ class UnidadmedidaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CategoriaSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Categoria
-        fields = ['nombre', 'descripcion']
+        fields = '__all__'
 
 class CategoriaprodutoSerializer(serializers.ModelSerializer):
     cantidad_productos = serializers.SerializerMethodField()
