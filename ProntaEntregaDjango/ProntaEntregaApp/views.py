@@ -277,6 +277,15 @@ class UserByEmail(APIView):
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
+
+class UserByID(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        usuario = get_object_or_404(CustomUsuario, pk=pk)
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class UserByToken(APIView):
     permission_classes = [AllowAny]
 

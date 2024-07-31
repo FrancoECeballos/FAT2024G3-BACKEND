@@ -232,6 +232,7 @@ CREATE TABLE IF NOT EXISTS Transporte (
     estadoITV VARCHAR(255),
     anio YEAR,
     id_Organizacion INT,
+    imagen VARCHAR(255),
     CONSTRAINT fk_organizacion FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion)
 );
 
@@ -337,10 +338,10 @@ INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 200, 2, 3, 1, 3);
 
 -- Inserciones para la tabla Transporte
-INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id_Organizacion) VALUES 
-    ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 1),
-    ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1),
-    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1);
+INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id_Organizacion, imagen) VALUES 
+    ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 1, 'vehiculos/toyota-hilux-on-the-road.webp'),
+    ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1, 'vehiculos/renault-sandero-y-logan-1269058.webp'),
+    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1, 'vehiculos/zaatogjy9axfzmntave4.webp');
 
 insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
 	(100, 1, 1, 2, 1),
