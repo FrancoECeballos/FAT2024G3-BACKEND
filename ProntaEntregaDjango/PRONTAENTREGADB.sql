@@ -123,10 +123,18 @@ CREATE TABLE IF NOT EXISTS Stock (
 	CONSTRAINT fk_casa_stock FOREIGN KEY (id_casa) REFERENCES Casa(id_casa)
 );
 
+CREATE TABLE IF NOT EXISTS Categoria (
+	id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    descripcion VARCHAR(255)
+);
+
 CREATE TABLE IF NOT EXISTS CategoriaProducto (
     id_categoriaProducto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255)
+    descripcion VARCHAR(255),
+    id_categoria INT,
+    CONSTRAINT fk_categoria_categoriaproducto FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
 );
 
 CREATE TABLE IF NOT EXISTS Producto (
@@ -277,7 +285,8 @@ INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES
     ('Kilogramos', 'Son Kilogramos', 'Kg', FALSE),
     ('Litros', 'Son Litros', 'l', FALSE),
     ('Paquete en Kg', 'Es un paquete en Kilogramos', 'x', TRUE),
-    ('Paquete en l', 'Es un paquete em Litros', 'x', TRUE);
+    ('Paquete en l', 'Es un paquete em Litros', 'x', TRUE),
+    ('Unidad', 'Un objecto', '', FALSE);
 
 -- Inserciones para la tabla Stock
 INSERT INTO Stock (id_casa) VALUES 
@@ -285,11 +294,17 @@ INSERT INTO Stock (id_casa) VALUES
     (2),
     (3);
 
+-- Inserciones para la tabla Categoria
+INSERT INTO Categoria (nombre, descripcion) VALUES 
+    ('Comida', 'Alimentos, enlatados, percederos y no percederos,etc.'),
+    ('Medicina', 'Pastillas y Tabletas.'),
+    ('Muebles', 'Muebles que pueden ser ofrecidos.');
+
 -- Inserciones para la tabla CategoriaProducto
-INSERT INTO CategoriaProducto (nombre, descripcion) VALUES 
-    ('Perecedero', 'Productos con fecha de vencimiento.'),
-    ('No perecederos', 'Productos in fecha de vencimiento.'),
-    ('Elatados', 'Productos en lata.');
+INSERT INTO CategoriaProducto (nombre, descripcion, id_categoria) VALUES 
+    ('Perecedero', 'Productos con fecha de vencimiento.', 1),
+    ('No perecederos', 'Productos in fecha de vencimiento.', 1),
+    ('Elatados', 'Productos en lata.', 1);
 
 -- Inserciones para la tabla Producto
 INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida, imagen) VALUES 

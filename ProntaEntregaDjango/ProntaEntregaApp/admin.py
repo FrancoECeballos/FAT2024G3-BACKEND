@@ -34,6 +34,7 @@ admin.site.register(Detallecasausuario, DetallecasausuarioAdmin)
 # Register your models here.
 
 admin.site.register(Casa)
+admin.site.register(Categoria)
 admin.site.register(Categoriaproducto)
 admin.site.register(AporteOferta)
 admin.site.register(AportePedido)
