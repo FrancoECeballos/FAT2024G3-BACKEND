@@ -1164,7 +1164,7 @@ class ProductosPorCategoriaYCasaView(APIView):
             # Obtener los detalles de stock para esa casa y categoría
             detalles_stock = Detallestockproducto.objects.filter(
                 id_stock__id_casa=id_casa,
-                id_producto__id_categoria=id_categoria
+                id_producto__id_categoriaproducto__id_categoria=id_categoria
             )
 
             # Obtener los productos correspondientes a los detalles de stock
