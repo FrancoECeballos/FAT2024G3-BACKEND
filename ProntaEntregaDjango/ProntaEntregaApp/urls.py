@@ -117,6 +117,7 @@ urlpatterns = [
     path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
     path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
+    path('catprod_casa/<int:id_casa>/<int:id_categoria>/<int:id_producto>/', ProductosPorCategoriaProductoYCasaView.as_view(), name='detallestockproducto-update'),
 
 
 ]

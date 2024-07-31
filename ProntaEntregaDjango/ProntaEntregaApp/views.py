@@ -943,9 +943,32 @@ class PostProducto(APIView):
 
 class PostDetallestockproducto(APIView):
     def post(self,request):
-        serializer = DetallestockproductoSerializer(data=request.data)
+        data_conjunta = request.data
+
+        cantidadTotal = 0
+        cantidadTotalUnidades = 0
+        unidad = Unidadmedida.objects.get(pk = request.data['id_unidadmedida'])
+        for x in Detallestockproducto.objects.filter(id_stock=request.data['id_stock']):
+            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto']:
+                cantidadTotal= cantidadTotal + x.__dict__['cantidad']
+                if unidad.paquete == True and x.__dict__['cantidad'] == request.data['cantidad']:
+                    cantidadTotalUnidades= cantidadTotalUnidades + x.__dict__['cantidadUnidades']
+                    x.delete()
+                if cantidadTotal != 0 and unidad.paquete == False:
+                    x.delete()
+                    
+        if cantidadTotal >0:
+            print(unidad.paquete)
+            if unidad.paquete == True:
+                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades+request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+            if unidad.paquete == False:
+                data_conjunta = {"cantidad":cantidadTotal+ request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+            #data_conjunta = {"cantidad":cantidadTotal + request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades+request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+        
+        serializer = CrearDetallestockproductoSerializer(data=data_conjunta)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save() 
+            print(serializer.data) ## por alguna razon este print hizo que me ande la view
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -1190,6 +1213,37 @@ class ProductosPorCategoriaYCasaView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+class ProductosPorCategoriaProductoYCasaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_casa, id_categoria, id_producto):
+        try:
+            # Verificar si existe la casa
+            casa = get_object_or_404(Stock, id_casa=id_casa)
+
+            # Verificar si existe la categoría de producto
+            categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+
+            # Verificar si existe el producto
+            producto = get_object_or_404(Producto, id_producto=id_producto)
+
+            # Obtener los detalles de stock para esa casa, categoría y producto
+            detalles_stock = Detallestockproducto.objects.filter(
+                id_stock__id_casa=id_casa,
+                id_producto__id_categoriaproducto__id_categoria=id_categoria,
+                id_producto=id_producto
+            )
+
+            # Serializar los datos
+            serializer = DetallestockproductoSerializer(detalles_stock, many=True)
+
+            return Response(serializer.data)
+        
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class UpdateDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
