@@ -1213,25 +1213,21 @@ class ProductosPorCategoriaYCasaView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-class ProductosPorCategoriaProductoYCasaView(APIView):
-    permission_classes = [IsAuthenticated]
+class CategoriaProductosPorCategoria(APIView):
+    permission_classes = [AllowAny]
 
-    def get(self, request, id_stock, id_categoria):
+    def get(self, request, id_categoria):
         try:
-            # Verificar si existe la casa
-            casa = get_object_or_404(Stock, id_stock=id_stock)
-
             # Verificar si existe la categoría de producto
             categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
 
             # Obtener los detalles de stock para esa casa, categoría y producto
-            detalles_stock = Detallestockproducto.objects.filter(
-                id_stock=id_stock,
-                id_producto__id_categoriaproducto__id_categoriaproducto=id_categoria
+            categoria_producto = Categoriaproducto.objects.filter(
+                id_categoria=id_categoria
             )
 
             # Serializar los datos
-            serializer = DetallestockproductoSerializer(detalles_stock, many=True)
+            serializer = CategoriaprodutoSerializer(categoria_producto, many=True)
 
             return Response(serializer.data)
         
