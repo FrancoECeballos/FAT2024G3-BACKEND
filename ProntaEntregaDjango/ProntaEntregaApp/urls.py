@@ -111,7 +111,7 @@ urlpatterns = [
     path('user/stockToken/<str:token>/', GetStockAsignadoByToken.as_view(), name='user-stockToken'),
     path('user/casas/delete/<int:pk>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
     path('categorias-productos/<int:id_stock>/', CategoriasProductosView.as_view(), name='categorias-productos'),
-    path('casa/<int:id_casa>/categoria/<int:id_categoria>/', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
+    path('casa/<int:id_casa>/categoria/<int:id_categoria>/categoria_producto/<int:id_categoriaproducto>', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
 
     path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
