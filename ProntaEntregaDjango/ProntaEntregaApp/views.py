@@ -1216,22 +1216,18 @@ class ProductosPorCategoriaYCasaView(APIView):
 class ProductosPorCategoriaProductoYCasaView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id_casa, id_categoriaproducto, id_producto):
+    def get(self, request, id_stock, id_categoria):
         try:
             # Verificar si existe la casa
-            casa = get_object_or_404(Stock, id_casa=id_casa)
+            casa = get_object_or_404(Stock, id_stock=id_stock)
 
             # Verificar si existe la categoría de producto
-            categoriaproducto = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
-
-            # Verificar si existe el producto
-            producto = get_object_or_404(Producto, id_producto=id_producto)
+            categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
 
             # Obtener los detalles de stock para esa casa, categoría y producto
             detalles_stock = Detallestockproducto.objects.filter(
-                id_stock__id_casa=id_casa,
-                id_producto__id_categoriaproducto__id_categoriaproducto=id_categoriaproducto,
-                id_producto=id_producto
+                id_stock=id_stock,
+                id_producto__id_categoriaproducto__id_categoriaproducto=id_categoria
             )
 
             # Serializar los datos
