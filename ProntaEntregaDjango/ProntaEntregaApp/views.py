@@ -1183,52 +1183,44 @@ class CategoriasProductosView(APIView):
 class ProductosPorCategoriaYCasaView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id_casa, id_categoriaproducto):
+    def get(self, request, id_stock, id_categoriaproducto, id_categoria):
         try:
-            # Verificar si existe la casa
-            casa = get_object_or_404(Stock, id_casa=id_casa)
+            casa = get_object_or_404(Stock, id_stock=id_stock)
 
-            # Verificar si existe la categoría de producto
+            if id_categoriaproducto != 'Todos':
+                categoria_producto = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
 
-            categoria_producto = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
+                detalles_stock = Detallestockproducto.objects.filter(
+                    id_stock=id_stock,
+                    id_producto__id_categoriaproducto=id_categoriaproducto
+                )
 
-            # Obtener los detalles de stock para esa casa y categoría
-            detalles_stock = Detallestockproducto.objects.filter(
-                id_stock__id_casa=id_casa,
-                id_producto__id_categoriaproducto__id_categoriaproducto=id_categoriaproducto
-            )
+                categorias_ids = detalles_stock.values_list('id_producto__id_categoriaproducto', flat=True)
+                casas_ids = detalles_stock.values_list('id_stock', flat=True)
+                
+                productos = Detallestockproducto.objects.filter(id_producto__id_categoriaproducto__in=categorias_ids, id_stock__in=casas_ids)
+            else:
+                categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+                productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto__id_categoriaproducto__id_categoria=id_categoria)
 
-            # Obtener los productos correspondientes a los detalles de stock
-            productos_ids = detalles_stock.values_list('id_producto', flat=True)
-            casas_ids = detalles_stock.values_list('id_stock', flat=True)
-            
-            productos = Detallestockproducto.objects.filter(id_producto__in=productos_ids, id_stock__in=casas_ids)
-
-            # Serializar los datos
             serializer = DetallestockproductoSerializer(productos, many=True)
 
             return Response(serializer.data)
         
         except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response([], status=status.HTTP_200_OK)
 
 class CategoriaProductosPorCategoria(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, id_categoria):
         try:
-            # Verificar si existe la categoría de producto
             categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
 
-            # Obtener los detalles de stock para esa casa, categoría y producto
             categoria_producto = Categoriaproducto.objects.filter(
                 id_categoria=id_categoria
             )
 
-            # Serializar los datos
             serializer = CategoriaprodutoSerializer(categoria_producto, many=True)
 
             return Response(serializer.data)
@@ -1261,7 +1253,15 @@ class UpdateDetallestockproductoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+class DetallestockproductoView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        detalles = Detallestockproducto.objects.all()
+        serializer = DetallestockproductoSerializer(detalles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class CreateDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
 

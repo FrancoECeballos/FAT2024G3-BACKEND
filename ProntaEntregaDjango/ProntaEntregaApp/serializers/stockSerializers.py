@@ -20,7 +20,7 @@ class CategoriaprodutoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Categoriaproducto
-        fields = ['nombre', 'descripcion', 'id_categoria', 'cantidad_productos']
+        fields = ['id_categoriaproducto', 'nombre', 'descripcion', 'id_categoria', 'cantidad_productos']
 
     def get_cantidad_productos(self, obj):
         return Producto.objects.filter(id_categoriaproducto=obj).count()
@@ -59,6 +59,9 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
         fields = ['id_detallestockproducto', 'cantidad', 'cantidadUnidades', 'id_unidadmedida', 'id_producto', 'id_stock', 'multiplicacion']
+
+    def get_multiplicacion(self, obj):
+        return obj.cantidad * obj.cantidadUnidades if obj.cantidad and obj.cantidadUnidades else None
     
     def get_multiplicacion(self, obj):
         cantidad = obj.cantidad if obj.cantidad else 0
