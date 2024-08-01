@@ -67,7 +67,7 @@ class CasaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Casa
-        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados']
+        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados', 'imagen']
 
     def get_usuarios_registrados(self, casa):
         return casa.detallecasausuario_set.count()
