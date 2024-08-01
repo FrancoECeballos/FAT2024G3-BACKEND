@@ -971,7 +971,44 @@ class PostDetallestockproducto(APIView):
             print(serializer.data) ## por alguna razon este print hizo que me ande la view
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+class RestarDetallestockproducto(APIView):
+    def post(self,request):
+        data_conjunta = {}
+
+        cantidadTotal = 0
+        cantidadTotalUnidades = 0
+        unidad = Unidadmedida.objects.get(pk = request.data['id_unidadmedida'])
+        for x in Detallestockproducto.objects.filter(id_stock=request.data['id_stock']):
+            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto']:
+                cantidadTotal= cantidadTotal + x.__dict__['cantidad']
+                if unidad.paquete == True and x.__dict__['cantidad'] == request.data['cantidad']:
+                    cantidadTotalUnidades= cantidadTotalUnidades + x.__dict__['cantidadUnidades']
+                    x.delete()
+                if cantidadTotal != 0 and unidad.paquete == False:
+                    x.delete()
+                    
+        if cantidadTotal >0:
+            print(unidad.paquete)
+            if unidad.paquete == True:
+                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                if data_conjunta['cantidadUnidades'] < 0:
+                    data_conjunta['cantidadUnidades'] = 0
+            if unidad.paquete == False:
+                data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                if data_conjunta['cantidad'] < 0:
+                    data_conjunta['cantidad'] = 0
+        
+        if data_conjunta != {}:
+            serializer = CrearDetallestockproductoSerializer(data=data_conjunta)
+            if serializer.is_valid():
+                serializer.save() 
+                print(serializer.data)
+                return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error':'no se encontro detalle que concuerde con los parametros'})
+
 class DeleteProducto(APIView):
     def delete(self, request, pk):
         try:

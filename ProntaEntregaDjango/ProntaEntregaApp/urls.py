@@ -115,6 +115,7 @@ urlpatterns = [
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
 
     path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
+    path('restardetallestockproducto/', RestarDetallestockproducto.as_view(), name='RestarDetallestockproducto'),
     path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
     path('catprod_casa/<int:id_categoria>/', CategoriaProductosPorCategoria.as_view(), name='detallestockproducto-categoria'),
