@@ -94,7 +94,6 @@ urlpatterns = [
     path('CambiarDetalleStock/<int:pk>/', CambiarDetalleStock.as_view(), name='CambiarDetalleStock'),
     path('PostStock/', PostStock.as_view(), name='PostStock'),
     path('PostProducto/', PostProducto.as_view(), name='PostProducto'),
-    path('PostDetallestockproducto/', PostDetallestockproducto.as_view(), name='PostDetallestockproducto'),
     path('DeleteStock/<int:pk>/', DeleteStock.as_view(), name='DeleteStock'),
     path('DeleteProducto/<int:pk>/', DeleteProducto.as_view(), name='DeleteProducto'),
     path('DeleteDetallestockproducto/<int:pk>/', DeleteDetallestockproducto.as_view(), name='DeleteDetallestockproducto'),
@@ -113,6 +112,9 @@ urlpatterns = [
     path('categorias-productos/<int:id_stock>/', CategoriasProductosView.as_view(), name='categorias-productos'),
     path('casa/<int:id_stock>/categoria_producto/<str:id_categoriaproducto>/<int:id_categoria>/', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
+    
+    path('AddDetallestockproducto/', PostDetallestockproducto.as_view(), name='AddDetallestockproducto'),
+    path('SubtractDetallestockproducto/', RestarDetallestockproducto.as_view(), name='SubtractDetallestockproducto'),
 
     path('detallestock/', DetallestockproductoView.as_view(), name='detallestockproducto'),
     path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
