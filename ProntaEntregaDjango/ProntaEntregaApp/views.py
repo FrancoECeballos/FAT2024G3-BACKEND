@@ -1126,6 +1126,11 @@ class CategoriaPost(APIView):
         serializer = CategoriaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+            for usr in CustomUsuario.objects.all():
+                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
+                if serializerN.is_valid():
+                    serializerN.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
