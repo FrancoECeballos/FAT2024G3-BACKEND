@@ -3,6 +3,8 @@ from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers.generalSerializers import *
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+from google.cloud import storage
+import uuid
 
 class TipousuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,7 +55,6 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
-        
         email = data.get('email', '').strip()
         username = data.get('nombreusuario', '').strip()
         password = data.get('password', '').strip()
@@ -70,6 +71,11 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        image = validated_data.pop('imagen', None)
+        if image:
+            image_url = self.upload_image_to_gcs(image)
+            validated_data['imagen'] = image_url
+
         user = CustomUsuario.objects.create_user(
             nombre=validated_data['nombre'],
             apellido=validated_data['apellido'],
@@ -79,12 +85,31 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             genero=validated_data['genero'],
             password=validated_data['password'],
-            imagen=validated_data['imagen'],
+            imagen=validated_data.get('imagen'),
             id_direccion=validated_data['id_direccion'],
             id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],
         )
         return user
+
+    def upload_image_to_gcs(self, image):
+        # Initialize a client
+        storage_client = storage.Client()
+        bucket_name = 'bucket-django-pronta-entrega'
+        bucket = storage_client.bucket(bucket_name)
+
+        # Create a unique filename
+        blob_name = f"profile_pics/{uuid.uuid4()}.jpg"
+        blob = bucket.blob(blob_name)
+
+        # Upload the image
+        blob.upload_from_file(image, content_type=image.content_type)
+
+        # Make the blob publicly viewable
+        blob.make_public()
+
+        # Return the public URL
+        return blob.public_url
 
 
 class UsuarioLoginSerializer(serializers.ModelSerializer):
