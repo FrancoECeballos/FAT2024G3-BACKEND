@@ -343,7 +343,9 @@ INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 6, 3, 3),
 	('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 7, 1, 1),
     ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 8, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 9, 3, 3);
+    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 9, 3, 3),
+    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 1, 2, 1, 10, 2, 2),
+    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 1, 3, 1, 11, 3, 3);
 
 -- Inserciones para la tabla EstadoOferta
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 
@@ -361,7 +363,9 @@ INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 30, 2, 3, 6, 3),
     ('2024-01-10', '02:10:01', '2024-02-10', '08:01:31', 20, 1, 1, 7, 1),
     ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 15, 3, 2, 8, 2),
-    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 5, 2, 3, 9, 3);
+    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 5, 2, 3, 9, 3),
+    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 1, 1, 3, 10, 2),
+    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 1, 1, 2, 11, 3);
 
 -- Inserciones para la tabla Transporte
 INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id_Organizacion, imagen, necesita_mantenimiento) VALUES 
@@ -378,7 +382,9 @@ insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_produ
     (400, 30, 3, 6, 6),
 	(500, 20, 2, 7, 8),
     (400, 15, 2, 8, 8),
-    (500, 5, 1, 9, 8);
+    (500, 5, 1, 9, 8),
+    (1, 1, 1, 10, 7),
+    (1, 1, 1, 11, 7);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
