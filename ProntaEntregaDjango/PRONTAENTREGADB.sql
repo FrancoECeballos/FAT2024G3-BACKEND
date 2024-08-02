@@ -286,8 +286,10 @@ INSERT INTO DetalleCasaUsuario (descripcion, fechaIngreso, id_casa, id_usuario) 
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
     ('Kilogramos', 'Son Kilogramos', 'Kg', FALSE),
     ('Litros', 'Son Litros', 'l', FALSE),
+    ('Gramos', 'Son Gramos', 'g', FALSE),
     ('Paquete en Kg', 'Es un paquete en Kilogramos', 'x', TRUE),
-    ('Paquete en l', 'Es un paquete em Litros', 'x', TRUE),
+    ('Paquete en l', 'Es un paquete en Litros', 'x', TRUE),
+    ('Paquete en g', 'Es un paquete en Gramos', 'x', TRUE),
     ('Unidad', 'Un objecto', '', FALSE);
 
 -- Inserciones para la tabla Stock
@@ -305,14 +307,17 @@ INSERT INTO Categoria (nombre, descripcion) VALUES
 -- Inserciones para la tabla CategoriaProducto
 INSERT INTO CategoriaProducto (nombre, descripcion, id_categoria) VALUES 
     ('Perecedero', 'Productos con fecha de vencimiento.', 1),
-    ('No perecederos', 'Productos in fecha de vencimiento.', 1),
+    ('No perecederos', 'Productos sin fecha de vencimiento.', 1),
     ('Elatados', 'Productos en lata.', 1);
 
 -- Inserciones para la tabla Producto
 INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida, imagen) VALUES 
     ('Arroz', 'Paquete de arroz de 1Kg', 2, 1, 'productos/Lucchetti_Arroz_Largo_Fino_1_kg__Bolsa_.webp'),
     ('Fideos', 'Paquete de fideideos', 2, 1, 'productos/spaguetti__70855.jpg'),
-    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 1, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp');
+    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 1, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp'),
+	('Yerba', 'Paquete de Yerba de 1Kg', 1, 4, 'productos/yerba.jpg'),
+    ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 2, 1, 'productos/queso.jpg'),
+    ('Avena', 'Paquete de avena de 400 g', 2, 6, 'productos/avena.jpg');
 
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
@@ -336,7 +341,10 @@ INSERT INTO EstadoOferta (nombre, descripcion) VALUES
 INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_usuario, id_casa, id_producto, id_estadoOferta) VALUES 
     ('2024-01-14', '08:01:31', '2024-01-28', '08:01:31', 200, 1, 1, 3, 1),
     ('2023-08-10', '16:08:10', '2023-08-17', '16:08:10', 200, 3, 2, 2, 2),
-    ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 200, 2, 3, 1, 3);
+    ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 200, 2, 3, 1, 3),
+    ('2024-01-10', '02:10:01', '2024-02-10', '08:01:31', 20, 1, 1, 4, 1),
+    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 12, 3, 2, 5, 2),
+    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 30, 2, 3, 6, 3);
 
 -- Inserciones para la tabla Transporte
 INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id_Organizacion, imagen, necesita_mantenimiento) VALUES 
@@ -348,9 +356,9 @@ insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_produ
 	(100, 1, 1, 2, 1),
     (200, 1, 3, 3, 1),
     (300, 1, 2, 1, 3),
-	(430, 1, 1, 1, 3),
-    (22, 1, 3, 2, 1),
-    (120, 1, 2, 3, 3);
+	(1, 20, 1, 4, 3),
+    (16, 1, 3, 5, 1),
+    (400, 30, 2, 6, 6);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
