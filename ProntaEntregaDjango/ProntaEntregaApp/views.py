@@ -1017,11 +1017,11 @@ class RestarDetallestockproducto(APIView):
             if unidad.paquete == True:
                 data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidadUnidades'] < 0:
-                    data_conjunta['cantidadUnidades'] = 0
+                    data_conjunta = {}
             if unidad.paquete == False:
                 data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidad'] < 0:
-                    data_conjunta['cantidad'] = 0
+                    data_conjunta = {}
             detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             serializer = CrearDetallestockproductoSerializer(detalle,data=data_conjunta,partial=True)
         
@@ -1133,6 +1133,11 @@ class CategoriaPost(APIView):
         serializer = CategoriaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+            for usr in CustomUsuario.objects.all():
+                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
+                if serializerN.is_valid():
+                    serializerN.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
