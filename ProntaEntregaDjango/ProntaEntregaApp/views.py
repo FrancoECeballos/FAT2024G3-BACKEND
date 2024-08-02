@@ -1010,11 +1010,11 @@ class RestarDetallestockproducto(APIView):
             if unidad.paquete == True:
                 data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidadUnidades'] < 0:
-                    data_conjunta['cantidadUnidades'] = 0
+                    data_conjunta = {}
             if unidad.paquete == False:
                 data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidad'] < 0:
-                    data_conjunta['cantidad'] = 0
+                    data_conjunta = {}
             detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             serializer = CrearDetallestockproductoSerializer(detalle,data=data_conjunta,partial=True)
         
