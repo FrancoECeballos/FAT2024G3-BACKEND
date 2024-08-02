@@ -457,6 +457,13 @@ class GetStock(APIView):
         stock = Stock.objects.all()
         serializer = StockSerializer(stock, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetStockByID(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id_casa):
+        stock = Stock.objects.filter(id_casa=id_casa)
+        serializer = StockSerializer(stock, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CrearStock(APIView):
     permission_classes = [AllowAny]
@@ -1176,7 +1183,7 @@ class GetCasasAsignadasByToken(APIView):
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
         
-class GetStockAsignadoByToken(APIView):
+class GetStockAsignadoByEmail(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, email):
@@ -1188,7 +1195,7 @@ class GetStockAsignadoByToken(APIView):
         except Detallecasausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
         
-class GetStockAsignadoByEmail(APIView):
+class GetStockAsignadoByToken(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):

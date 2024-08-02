@@ -42,6 +42,7 @@ urlpatterns = [
     path('editar_unidad_medida/<int:pk>/', EditarUnidadMedida.as_view(), name='editar_unidad_medida'),
 
     path('stock/', GetStock.as_view(), name='ver_stock'),
+    path('stock/<int:id_casa>/', GetStockByID.as_view(), name='ver_stock_id'),
     path('stock/<int:categoria_id>/', VerStockYProducto.as_view(), name='ver_stock_producto'),
     path('crear_stock/', CrearStock.as_view(), name='crear_stock'),
     path('editar_stock/<int:pk>/', EditarStock.as_view(), name='editar_stock'),

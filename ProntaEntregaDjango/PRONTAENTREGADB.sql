@@ -265,9 +265,9 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
 
 -- Inserciones para la tabla Usuario
 INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoUsuario, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
-    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$Arz6Wl7KBnpflLNQKZEQgj$B6QkCJqAPfxFJ5qMlQjji2/FljIRcUwJ+Ein9ZiRXM4=', '25129735', '3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
-    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$n46xedxl78dbHoQNQFcEZR$5QMT0nscWsbFDAF5SVN6+PUl5Ny67+Gy21rNcfg8jcg=', '46505926', '3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
-    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$xbfFA25MjtQazdXb29CoCA$y0m37r4bKmk29FOVhm6lto6TPn205xxWoWMIiBH77QQ=', '39284767', '3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
+    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$YhTJvHuwsFAQd867ql9QqT$PGkJ7Kf5VZm+zs88wp4egcQmwGMqTAhYOmlT0udP9bs=', '25129735', '3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
+    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$YhTJvHuwsFAQd867ql9QqT$PGkJ7Kf5VZm+zs88wp4egcQmwGMqTAhYOmlT0udP9bs=', '46505926', '3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
+    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$YhTJvHuwsFAQd867ql9QqT$PGkJ7Kf5VZm+zs88wp4egcQmwGMqTAhYOmlT0udP9bs=', '39284767', '3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
 
 -- Inserciones para la tabla Casa
