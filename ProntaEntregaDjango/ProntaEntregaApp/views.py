@@ -360,49 +360,49 @@ class CambiarContrasenia_open(APIView): ##no abrir sin consultar que es esto
         usuario.save()
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
 
-class GetCasa(APIView):
+class GetObra(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        casas = Casa.objects.all()
-        serializer = CasaSerializer(casas, many=True)
+        obras = Obra.objects.all()
+        serializer = ObraSerializer(obras, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-class GetCasaByID(APIView):
+class GetObraByID(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, pk):
-        casas = Casa.objects.filter(id_casa=pk)
-        serializer = CasaSerializer(casas, many=True)
+        obras = Obra.objects.filter(id_obra=pk)
+        serializer = ObraSerializer(obras, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
   
-class CrearCasa(APIView):
+class CrearObra(APIView):
     permission_classes = [AllowAny]
     
     def post(self, request):
-        serializer = CasaSerializer(data=request.data)
+        serializer = ObraSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
           
-class EditarCasa(APIView):
+class EditarObra(APIView):
     def put(self, request, pk):
-        # Obtener la casa a modificar
+        # Obtener la obra a modificar
         try:
-            casa = Casa.objects.get(pk=pk)
-        except Casa.DoesNotExist:
-            return Response({'error': 'No se encontró una casa con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+            obra = Obra.objects.get(pk=pk)
+        except Obra.DoesNotExist:
+            return Response({'error': 'No se encontró una obra con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Crear un serializador con los datos recibidos y la instancia de la casa
-        serializer = EditarCasaSerializer(casa, data=request.data, partial=True)
+        # Crear un serializador con los datos recibidos y la instancia de la obra
+        serializer = EditarObraSerializer(obra, data=request.data, partial=True)
 
         # Verificar si los datos son válidos y guardar los cambios si corresponde
         if serializer.is_valid():
             # Excluir la validación única para el nombre si el nombre no se ha modificado
-            if 'nombre' in request.data and request.data['nombre'] == casa.nombre:
+            if 'nombre' in request.data and request.data['nombre'] == obra.nombre:
                 serializer.fields['nombre'].unique = False
 
             serializer.save()
-            return Response({'success': 'Los atributos de la casa han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+            return Response({'success': 'Los atributos de la obra han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             # Si hay errores en los datos proporcionados, devolver los errores
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -460,8 +460,8 @@ class GetStock(APIView):
 
 class GetStockByID(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request, id_casa):
-        stock = Stock.objects.filter(id_casa=id_casa)
+    def get(self, request, id_obra):
+        stock = Stock.objects.filter(id_obra=id_obra)
         serializer = StockSerializer(stock, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -617,10 +617,10 @@ class CrearPedido(APIView):
         if serializer.is_valid():
             serializer.save()
             if serializer.data['urgente'] == 4:
-                idc = serializer.data['id_casa']
+                idc = serializer.data['id_obra']
                 for usr in CustomUsuario.objects.all():
                     if usr.id_usuario != serializer.data['id_usuario']:
-                        serializerN = NotificacionSerializer(data={"titulo":"Hay un pedido de urgencia inmediata","descripcion":"La casa "+str(Casa.objects.get(id_casa = idc))+" tiene un pedido urgente","fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
+                        serializerN = NotificacionSerializer(data={"titulo":"Hay un pedido de urgencia inmediata","descripcion":"La obra "+str(Obra.objects.get(id_obra = idc))+" tiene un pedido urgente","fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
                         if serializerN.is_valid():
                             serializerN.save()
                         else:
@@ -1014,15 +1014,17 @@ class RestarDetallestockproducto(APIView):
                 Detallestockproducto.objects.get(pk=y).delete()
 
         if cantidadTotal >0:
+            detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             if unidad.paquete == True:
-                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
-                if data_conjunta['cantidadUnidades'] < 0:
-                    data_conjunta = {}
+                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['   '],"id_unidadmedida":request.data['id_unidadmedida']}
+                if data_conjunta['cantidadUnidades'] < 1:
+                    detalle.delete()
+                    return Response({'delete':'se borro el producto'})
             if unidad.paquete == False:
                 data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
-                if data_conjunta['cantidad'] < 0:
-                    data_conjunta = {}
-            detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
+                if data_conjunta['cantidad'] < 1:
+                    detalle.delete()
+                    return Response({'delete':'se borro el producto'})
             serializer = CrearDetallestockproductoSerializer(detalle,data=data_conjunta,partial=True)
         
         if data_conjunta != {}:
@@ -1164,29 +1166,29 @@ class CategoriaProductoPost(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class GetCasasAsignadasByEmail(APIView):
+class GetObrasAsignadasByEmail(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, email):
         try:
             usuario = CustomUsuario.objects.get(email = email)
-            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = DetallecasausuarioSerializer(detalle_casas, many=True)
+            detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
+            serializer = DetalleobrausuarioSerializer(detalle_obras, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Detallecasausuario.DoesNotExist:
-            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
-class GetCasasAsignadasByToken(APIView):
+class GetObrasAsignadasByToken(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):
         try:
             usuario = CustomUsuario.objects.get(auth_token = token)
-            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = DetallecasausuarioSerializer(detalle_casas, many=True)
+            detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
+            serializer = DetalleobrausuarioSerializer(detalle_obras, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Detallecasausuario.DoesNotExist:
-            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
 class GetStockAsignadoByEmail(APIView):
     permission_classes = [IsAuthenticated]
@@ -1194,11 +1196,11 @@ class GetStockAsignadoByEmail(APIView):
     def get(self, request, email):
         try:
             usuario = CustomUsuario.objects.get(email = email)
-            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = StockSerializer(detalle_casas, many=True)
+            detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
+            serializer = StockSerializer(detalle_obras, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Detallecasausuario.DoesNotExist:
-            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
 class GetStockAsignadoByToken(APIView):
     permission_classes = [IsAuthenticated]
@@ -1206,31 +1208,31 @@ class GetStockAsignadoByToken(APIView):
     def get(self, request, token):
         try:
             usuario = CustomUsuario.objects.get(auth_token = token)
-            detalle_casas = Detallecasausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = StockSerializer(detalle_casas, many=True)
+            detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
+            serializer = StockSerializer(detalle_obras, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Detallecasausuario.DoesNotExist:
-            return Response({'error': 'El usuario no pertenece a ninguna casa.'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrausuario.DoesNotExist:
+            return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
-class DeleteDetalleCasaUsuario (APIView):
+class DeleteDetalleObraUsuario (APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, pk):
         try:
-            detalle = Detallecasausuario.objects.get(pk=pk)
+            detalle = Detalleobrausuario.objects.get(pk=pk)
             detalle.delete()
-            return Response({'La relacion usuario-casa se elimino correctamente'},status=status.HTTP_204_NO_CONTENT)
-        except Detallecasausuario.DoesNotExist:
+            return Response({'La relacion usuario-obra se elimino correctamente'},status=status.HTTP_204_NO_CONTENT)
+        except Detalleobrausuario.DoesNotExist:
             return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class PostDetalleCasaUsuario(APIView):
+class PostDetalleObraUsuario(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = DetallecasausuarioSerializer(data=request.data)
+        serializer = DetalleobrausuarioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -1246,12 +1248,12 @@ class CategoriasProductosView(APIView):
 
         return Response(categorias)
 
-class ProductosPorCategoriaYCasaView(APIView):
+class ProductosPorCategoriaYObraView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_stock, id_categoriaproducto, id_categoria):
         try:
-            casa = get_object_or_404(Stock, id_stock=id_stock)
+            obra = get_object_or_404(Stock, id_stock=id_stock)
 
             if id_categoriaproducto != 'Todos':
                 categoria_producto = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
@@ -1262,9 +1264,9 @@ class ProductosPorCategoriaYCasaView(APIView):
                 )
 
                 categorias_ids = detalles_stock.values_list('id_producto__id_categoriaproducto', flat=True)
-                casas_ids = detalles_stock.values_list('id_stock', flat=True)
+                obras_ids = detalles_stock.values_list('id_stock', flat=True)
                 
-                productos = Detallestockproducto.objects.filter(id_producto__id_categoriaproducto__in=categorias_ids, id_stock__in=casas_ids)
+                productos = Detallestockproducto.objects.filter(id_producto__id_categoriaproducto__in=categorias_ids, id_stock__in=obras_ids)
             else:
                 categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
                 productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto__id_categoriaproducto__id_categoria=id_categoria)

@@ -171,40 +171,40 @@ class CustomUsuario(AbstractBaseUser, PermissionsMixin):
         return self.nombreusuario
 
 
-class CasaManager(models.Manager):
-    def create_casa(self, nombre, descripcion, id_organizacion, id_direccion):
+class ObraManager(models.Manager):
+    def create_obra(self, nombre, descripcion, id_organizacion, id_direccion):
         if not nombre:
-            raise ValueError('La casa debe tener un nombre')
+            raise ValueError('La obra debe tener un nombre')
         if not descripcion:
-            raise ValueError('La casa debe tener una descripción')
+            raise ValueError('La obra debe tener una descripción')
         if not id_organizacion:
-            raise ValueError('La casa debe tener una organización')
+            raise ValueError('La obra debe tener una organización')
         if not id_direccion:
-            raise ValueError('La casa debe tener una dirección')
+            raise ValueError('La obra debe tener una dirección')
         
 
-        Casa = self.model(
+        Obra = self.model(
             nombre=nombre,
             descripcion=descripcion,
             id_organizacion=id_organizacion,
             id_direccion=id_direccion,
         )
-        Casa.save(using=self._db)
-        return Casa
+        Obra.save(using=self._db)
+        return Obra
     
 
-class Casa(models.Model):
-    id_casa = models.AutoField(primary_key=True)
+class Obra(models.Model):
+    id_obra = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     id_organizacion = models.ForeignKey('Organizacion', on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
     id_direccion = models.ForeignKey('Direccion', on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
-    imagen = models.ImageField(upload_to='casas/')
+    imagen = models.ImageField(upload_to='obras/')
 
-    objects = CasaManager()
+    objects = ObraManager()
 
     class Meta:
-        db_table = 'Casa'
+        db_table = 'Obra'
         managed = False
 
 
@@ -212,19 +212,19 @@ class Casa(models.Model):
         return self.nombre
 
 
-class Detallecasausuario(models.Model):
-    id_detallecasausuario = models.AutoField(db_column='id_detalleCasaUsuario', primary_key=True)  # Field name made lowercase.
+class Detalleobrausuario(models.Model):
+    id_detalleobrausuario = models.AutoField(db_column='id_detalleObraUsuario', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     fechaingreso = models.DateField(db_column='fechaIngreso', blank=True, null=True)  # Field name made lowercase.
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'DetalleCasaUsuario'
+        db_table = 'DetalleObraUsuario'
 
     def __str__(self):
-        return f'{self.id_detallecasausuario}'
+        return f'{self.id_detalleobrausuario}'
 
 class Unidadmedida(models.Model):
     id_unidadmedida = models.AutoField(db_column='id_unidadMedida', primary_key=True)  # Field name made lowercase.
@@ -243,14 +243,14 @@ class Unidadmedida(models.Model):
 
 class Stock(models.Model):
     id_stock = models.AutoField(primary_key=True)
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Stock'
 
     def __str__(self):
-        return f'{self.id_casa}, Stock N°{self.id_stock}'
+        return f'{self.id_obra}, Stock N°{self.id_stock}'
     
 
 class Categoria(models.Model):
@@ -320,7 +320,7 @@ class Pedido(models.Model):
     horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
     fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
     horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     urgente = models.IntegerField(choices=urgencia_choices,blank=True, null=True)
@@ -366,7 +366,7 @@ class Oferta(models.Model):
     fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
     horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
-    id_casa = models.ForeignKey(Casa, on_delete=models.SET_NULL, db_column='id_casa', blank=True, null=True)
+    id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
     id_estadooferta = models.ForeignKey('Estadooferta', on_delete=models.SET_NULL, db_column='id_estadoOferta', blank=True, null=True)  # Field name made lowercase.
     id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, db_column='id_producto', blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
