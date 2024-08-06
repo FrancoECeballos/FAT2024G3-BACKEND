@@ -414,6 +414,7 @@ class Transporte(models.Model):
     id_organizacion = models.ForeignKey(Organizacion, on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
     imagen = models.ImageField(upload_to='vehiculos/')
     necesita_mantenimiento = models.BooleanField(default=False)
+    descripcion_mantenimiento = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         managed = False
