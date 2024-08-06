@@ -56,6 +56,11 @@ class OrganizacionSerializer(serializers.ModelSerializer):
         model = Organizacion
         fields = '__all__'
 
+class DetalleobrapedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detalleobrapedido
+        fields = '__all__'
+
 class TransporteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transporte

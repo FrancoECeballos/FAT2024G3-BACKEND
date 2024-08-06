@@ -211,6 +211,14 @@ class Obra(models.Model):
     def __str__(self):
         return self.nombre
 
+class Detalleobrapedido(models.Model):
+    id_detalleobrapedido = models.AutoField(db_column='id_DetalleObraPedido', primary_key=True)  # Field name made lowercase.
+    id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
+    id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'DetalleObraPedido'
 
 class Detalleobrausuario(models.Model):
     id_detalleobrausuario = models.AutoField(db_column='id_detalleObraUsuario', primary_key=True)  # Field name made lowercase.

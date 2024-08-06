@@ -237,6 +237,14 @@ CREATE TABLE IF NOT EXISTS Transporte (
     CONSTRAINT fk_organizacion FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion)
 );
 
+CREATE TABLE IF NOT EXISTS DetalleObraPedido (
+    id_DetalleObraPedido INT AUTO_INCREMENT PRIMARY KEY,
+    id_obra int,
+    id_pedido int,
+    CONSTRAINT fk_obra_detalle_2 FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_pedido_detalle_2 FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
+);
+
 -- Inserciones para la tabla Direccion
 INSERT INTO Direccion (calle, numero, localidad) VALUES 
     ('Calle Fornica', 25, 'Localidad Abedul'),
