@@ -281,9 +281,9 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
-    ('Mama Antula', 'Descripción', 1, 5, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('El Aljibe', 'Descripción', 1, 7, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('La Obra de la Bondad', 'Descripción', 1, 6, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp');
+    ('Mama Antula', 'Descripción', 1, 5, 'obras/logo.png'),
+    ('El Aljibe', 'Descripción', 1, 7, 'obras/logo.png'),
+    ('La Obra de la Bondad', 'Descripción', 1, 6, 'obras/logo.png');
 
 -- Inserciones para la tabla DetalleObraUsuario
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario) VALUES 
