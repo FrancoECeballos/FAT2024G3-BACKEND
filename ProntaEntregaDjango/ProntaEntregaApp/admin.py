@@ -22,18 +22,18 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUsuario, CustomUserAdmin)
 
 
-class DetallecasausuarioAdmin(admin.ModelAdmin):
-    list_display = ('id_detallecasausuario', 'descripcion', 'fechaingreso', 'id_casa', 'id_usuario')
-    list_filter = ('id_casa', 'id_usuario')
-    search_fields = ('id_casa__nombre', 'id_usuario__nombreusuario', 'descripcion')
-    ordering = ('id_detallecasausuario',)  # Cambiado de 'id' a 'id_detallecasausuario'
+class DetalleobrausuarioAdmin(admin.ModelAdmin):
+    list_display = ('id_detalleobrausuario', 'descripcion', 'fechaingreso', 'id_obra', 'id_usuario')
+    list_filter = ('id_obra', 'id_usuario')
+    search_fields = ('id_obra__nombre', 'id_usuario__nombreusuario', 'descripcion')
+    ordering = ('id_detalleobrausuario',)  # Cambiado de 'id' a 'id_detalleobrausuario'
 
-admin.site.register(Detallecasausuario, DetallecasausuarioAdmin)
+admin.site.register(Detalleobrausuario, DetalleobrausuarioAdmin)
 
 
 # Register your models here.
 
-admin.site.register(Casa)
+admin.site.register(Obra)
 admin.site.register(Categoria)
 admin.site.register(Categoriaproducto)
 admin.site.register(AporteOferta)
