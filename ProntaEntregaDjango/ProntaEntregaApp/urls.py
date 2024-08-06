@@ -32,17 +32,17 @@ urlpatterns = [
     path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),        
     path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
 
-    path('casa/', GetCasa.as_view(), name='casa_get'),
-    path('casa/<int:pk>', GetCasaByID.as_view(), name='casa_get_id'),
-    path('crear_casa/', CrearCasa.as_view(), name='casa_post'),
-    path('editar_casa/<int:pk>', EditarCasa.as_view(), name='casa_edit'),
+    path('obra/', GetObra.as_view(), name='obra_get'),
+    path('obra/<int:pk>', GetObraByID.as_view(), name='obra_get_id'),
+    path('crear_obra/', CrearObra.as_view(), name='obra_post'),
+    path('editar_obra/<int:pk>', EditarObra.as_view(), name='obra_edit'),
 
     path('unidad_medida/', GetUnidadMedida.as_view(), name='ver_unidad_medida'),
     path('crear_unidad_medida/', CrearUnidadMedida.as_view(), name='crear_unidad_medida'),
     path('editar_unidad_medida/<int:pk>/', EditarUnidadMedida.as_view(), name='editar_unidad_medida'),
 
     path('stock/', GetStock.as_view(), name='ver_stock'),
-    path('stock/<int:id_casa>/', GetStockByID.as_view(), name='ver_stock_id'),
+    path('stock/<int:id_obra>/', GetStockByID.as_view(), name='ver_stock_id'),
     path('stock/<int:categoria_id>/', VerStockYProducto.as_view(), name='ver_stock_producto'),
     path('crear_stock/', CrearStock.as_view(), name='crear_stock'),
     path('editar_stock/<int:pk>/', EditarStock.as_view(), name='editar_stock'),
@@ -104,14 +104,14 @@ urlpatterns = [
     path('user/updateEmail/<str:email>/', UserUpdateEmail.as_view(), name='user-update-email'),
     path('categoria/delete/<int:pk>/', CategoriaDelete.as_view(), name='categoria_delete'),
     path('categoria/post', CategoriaPost.as_view(), name='categoria_post'),
-    path('user/casas/post/', PostDetalleCasaUsuario.as_view(), name='user-casas-post'),
-    path('user/casasEmail/<str:email>/', GetCasasAsignadasByEmail.as_view(), name='user-casasEmail'),
-    path('user/casasToken/<str:token>/', GetCasasAsignadasByToken.as_view(), name='user-casasToken'),
+    path('user/obras/post/', PostDetalleObraUsuario.as_view(), name='user-obras-post'),
+    path('user/obrasEmail/<str:email>/', GetObrasAsignadasByEmail.as_view(), name='user-obrasEmail'),
+    path('user/obrasToken/<str:token>/', GetObrasAsignadasByToken.as_view(), name='user-obrasToken'),
     path('user/stockEmail/<str:email>/', GetStockAsignadoByEmail.as_view(), name='user-stockEmail'),
     path('user/stockToken/<str:token>/', GetStockAsignadoByToken.as_view(), name='user-stockToken'),
-    path('user/casas/delete/<int:pk>/', DeleteDetalleCasaUsuario.as_view(), name='user-casas-delete'),
+    path('user/obras/delete/<int:pk>/', DeleteDetalleObraUsuario.as_view(), name='user-obras-delete'),
     path('categorias-productos/<int:id_stock>/', CategoriasProductosView.as_view(), name='categorias-productos'),
-    path('casa/<int:id_stock>/categoria_producto/<str:id_categoriaproducto>/<int:id_categoria>/', ProductosPorCategoriaYCasaView.as_view(), name='productos-por-categoria-y-casa'),
+    path('obra/<int:id_stock>/categoria_producto/<str:id_categoriaproducto>/<int:id_categoria>/', ProductosPorCategoriaYObraView.as_view(), name='productos-por-categoria-y-obra'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
     
     path('AddDetallestockproducto/', PostDetallestockproducto.as_view(), name='AddDetallestockproducto'),
@@ -122,7 +122,7 @@ urlpatterns = [
     path('restardetallestockproducto/', RestarDetallestockproducto.as_view(), name='RestarDetallestockproducto'),
     path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
-    path('catprod_casa/<int:id_categoria>/', CategoriaProductosPorCategoria.as_view(), name='detallestockproducto-categoria'),
+    path('catprod_obra/<int:id_categoria>/', CategoriaProductosPorCategoria.as_view(), name='detallestockproducto-categoria'),
 
 
 ]

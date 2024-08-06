@@ -4,39 +4,39 @@ from ProntaEntregaApp.serializers import *
 from django.contrib.auth import authenticate
 
 
-class CasaSerializer(serializers.ModelSerializer):
+class ObraSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Casa
-        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'imagen']
+        model = Obra
+        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'imagen']
         
     def validate_nombre(self, value):
-        if Casa.objects.filter(nombre=value).exists():
-            raise serializers.ValidationError("Ya existe una casa con este nombre")
+        if Obra.objects.filter(nombre=value).exists():
+            raise serializers.ValidationError("Ya existe una obra con este nombre")
         return value
     
     def create(self, validated_data):
-        casa = Casa.objects.create_casa(
+        obra = Obra.objects.create_obra(
             nombre=validated_data.get('nombre'),
             descripcion=validated_data.get('descripcion'),
             id_organizacion=validated_data.get('id_organizacion'),
             id_direccion=validated_data.get('id_direccion'),
             imagen=validated_data.get('imagen')
         )
-        return casa
+        return obra
     
-class EditarCasaSerializer(serializers.ModelSerializer):
+class EditarObraSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Casa
-        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion']
+        model = Obra
+        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion']
     
     def create(self, validated_data):
-        casa = Casa.objects.create_casa(
+        obra = Obra.objects.create_obra(
             nombre=validated_data.get('nombre'),
             descripcion=validated_data.get('descripcion'),
             id_organizacion=validated_data.get('id_organizacion'),
             id_direccion=validated_data.get('id_direccion')
         )
-        return casa
+        return obra
 
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,29 +61,29 @@ class TransporteSerializer(serializers.ModelSerializer):
         model = Transporte
         fields = '__all__'
 
-class CasaSerializer(serializers.ModelSerializer):
+class ObraSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer()
     usuarios_registrados = serializers.SerializerMethodField()
 
     class Meta:
-        model = Casa
-        fields = ['id_casa', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados', 'imagen']
+        model = Obra
+        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados', 'imagen']
 
-    def get_usuarios_registrados(self, casa):
-        return casa.detallecasausuario_set.count()
+    def get_usuarios_registrados(self, obra):
+        return obra.detalleobrausuario_set.count()
     
-class DetallecasausuarioSerializer(serializers.ModelSerializer):
-    id_casa = serializers.PrimaryKeyRelatedField(queryset=Casa.objects.all())
+class DetalleobrausuarioSerializer(serializers.ModelSerializer):
+    id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
     class Meta:
-        model = Detallecasausuario
+        model = Detalleobrausuario
         fields = '__all__'
 
     def validate(self, data):
-        id_casa = data.get('id_casa')
+        id_obra = data.get('id_obra')
         id_usuario = data.get('id_usuario')
 
-        if Detallecasausuario.objects.filter(id_casa=id_casa, id_usuario=id_usuario).exists():
-            raise serializers.ValidationError("El usuario ya está registrado en esta casa.")
+        if Detalleobrausuario.objects.filter(id_obra=id_obra, id_usuario=id_usuario).exists():
+            raise serializers.ValidationError("El usuario ya está registrado en esta obra.")
         
         return data
     

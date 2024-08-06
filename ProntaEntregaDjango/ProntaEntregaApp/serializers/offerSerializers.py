@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers import *
-from ProntaEntregaApp.serializers.generalSerializers import CasaSerializer
+from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
 from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 from ProntaEntregaApp.serializers.stockSerializers import ProductoSerializer
 from django.contrib.auth import authenticate
@@ -19,7 +19,7 @@ class EstadoofertaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OfertaSerializer(serializers.ModelSerializer):
-    id_casa = CasaSerializer()
+    id_obra = ObraSerializer()
     id_usuario = UsuarioSerializer()
     id_estadooferta = EstadoofertaSerializer()
     id_producto = ProductoSerializer()

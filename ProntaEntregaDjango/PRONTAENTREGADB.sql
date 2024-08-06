@@ -88,24 +88,24 @@ CREATE TABLE IF NOT EXISTS notificacion(
     PRIMARY KEY (notificacion_id)
 );
 
-CREATE TABLE IF NOT EXISTS Casa (
-    id_casa INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Obra (
+    id_obra INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     descripcion VARCHAR(255),
     id_Organizacion INT,
     id_direccion INT,
     imagen VARCHAR(255),
-    CONSTRAINT fk_organizacion_casa FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion),
+    CONSTRAINT fk_organizacion_obra FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion),
     CONSTRAINT fk_direccion2 FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion)
 );
 
-CREATE TABLE IF NOT EXISTS DetalleCasaUsuario (
-    id_detalleCasaUsuario INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS DetalleObraUsuario (
+    id_detalleObraUsuario INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255),
     fechaIngreso DATE,
-    id_casa INT,
+    id_obra INT,
     id_usuario INT,
-    CONSTRAINT fk_casa_detalle FOREIGN KEY (id_casa) REFERENCES Casa(id_casa),
+    CONSTRAINT fk_obra_detalle FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
     CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario)
 );
 
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS UnidadMedida(
 
 CREATE TABLE IF NOT EXISTS Stock (
     id_stock INT AUTO_INCREMENT PRIMARY KEY,
-    id_casa INT,
-	CONSTRAINT fk_casa_stock FOREIGN KEY (id_casa) REFERENCES Casa(id_casa)
+    id_obra INT,
+	CONSTRAINT fk_obra_stock FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
 );
 
 CREATE TABLE IF NOT EXISTS Categoria (
@@ -174,13 +174,13 @@ CREATE TABLE IF NOT EXISTS Pedido (
     horaVencimiento TIME,
     cantidad INT,
     urgente INT,
-    id_casa INT,
+    id_obra INT,
     id_usuario INT,
     id_producto INT,
     id_estadoPedido INT,
     CONSTRAINT fk_producto_pedido FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
 	CONSTRAINT fk_usuario_pedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
-    CONSTRAINT fk_casa_pedido FOREIGN KEY (id_casa) REFERENCES Casa(id_casa),
+    CONSTRAINT fk_obra_pedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
     CONSTRAINT fk_estado_pedido FOREIGN KEY (id_estadoPedido) REFERENCES EstadoPedido(id_estadoPedido)
 );
 
@@ -206,11 +206,11 @@ CREATE TABLE IF NOT EXISTS Oferta (
     horaVencimiento TIME,
     cantidad INT,
     id_usuario INT,
-    id_casa INT,
+    id_obra INT,
     id_producto INT,
     id_estadoOferta INT,
     CONSTRAINT fk_producto_oferta FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
-    CONSTRAINT fk_casa_oferta FOREIGN KEY (id_casa) REFERENCES Casa(id_casa),
+    CONSTRAINT fk_obra_oferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
     CONSTRAINT fk_usuario_oferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
 	CONSTRAINT fk_estado_oferta FOREIGN KEY (id_estadoOferta) REFERENCES EstadoOferta(id_estadoOferta)
 );
@@ -270,14 +270,14 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
 
--- Inserciones para la tabla Casa
-INSERT INTO Casa (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
-    ('Mama Antula', 'Descripción', 1, 5, 'casas/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('El Aljibe', 'Descripción', 1, 7, 'casas/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('La Casa de la Bondad', 'Descripción', 1, 6, 'casas/manos_10152900384813092_5921720902835658172_o-300x300.webp');
+-- Inserciones para la tabla Obra
+INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
+    ('Mama Antula', 'Descripción', 1, 5, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('El Aljibe', 'Descripción', 1, 7, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('La Obra de la Bondad', 'Descripción', 1, 6, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp');
 
--- Inserciones para la tabla DetalleCasaUsuario
-INSERT INTO DetalleCasaUsuario (descripcion, fechaIngreso, id_casa, id_usuario) VALUES 
+-- Inserciones para la tabla DetalleObraUsuario
+INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario) VALUES 
     ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1),
     ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2),
     ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3); 
@@ -294,7 +294,7 @@ INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES
     ('Miligramos', 'Son Gramos', 'g', TRUE);
 
 -- Inserciones para la tabla Stock
-INSERT INTO Stock (id_casa) VALUES 
+INSERT INTO Stock (id_obra) VALUES 
     (1),
     (2),
     (3);
@@ -331,10 +331,10 @@ INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
     ('Pendiente', 'Solo es un pedido y no se hizo nada'),
     ('En Proceso', 'Transporte se encarga de llevar este pedido que ahora esta en procesosta en proceso el pedido'),
-    ('Finalizado', 'El pedido llego a la casal pedido ya esta finalizado.');
+    ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.');
 
 -- Inserciones para la tabla Pedido
-INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_casa, id_usuario, id_producto, urgente, id_estadoPedido) VALUES 
+INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_obra, id_usuario, id_producto, urgente, id_estadoPedido) VALUES 
     ('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 3, 1, 1),
     ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 1, 2, 2),
     ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 2, 3, 3),
@@ -351,10 +351,10 @@ INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 
     ('Disponible', 'La oferta aun esta disponible y los usuarios pueden verla para reservarla'),
     ('Reservado', 'La oferta esta reservada y los usuarios dejan verla'),
-    ('Reclamado', 'La oferta que etaba en reserva ya fue transportada hasta la casa que la reclamo');
+    ('Reclamado', 'La oferta que etaba en reserva ya fue transportada hasta la obra que la reclamo');
 
 -- Inserciones para la tabla Oferta
-INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_usuario, id_casa, id_producto, id_estadoOferta) VALUES 
+INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_usuario, id_obra, id_producto, id_estadoOferta) VALUES 
     ('2024-01-14', '08:01:31', '2024-01-28', '08:01:31', 200, 1, 1, 3, 1),
     ('2023-08-10', '16:08:10', '2023-08-17', '16:08:10', 200, 3, 2, 2, 2),
     ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 200, 2, 3, 1, 3),

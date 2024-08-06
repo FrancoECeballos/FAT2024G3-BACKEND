@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers import *
-from ProntaEntregaApp.serializers.generalSerializers import CasaSerializer
+from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
 from django.contrib.auth import authenticate
 
 class UnidadmedidaSerializer(serializers.ModelSerializer):
@@ -44,7 +44,7 @@ class ProductoSerializer(serializers.ModelSerializer):
         return value
 
 class StockSerializer(serializers.ModelSerializer):
-    id_casa = CasaSerializer()
+    id_obra = ObraSerializer()
     
     class Meta:
         model = Stock
