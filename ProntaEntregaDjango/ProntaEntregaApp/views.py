@@ -1014,15 +1014,17 @@ class RestarDetallestockproducto(APIView):
                 Detallestockproducto.objects.get(pk=y).delete()
 
         if cantidadTotal >0:
+            detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             if unidad.paquete == True:
-                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
-                if data_conjunta['cantidadUnidades'] < 0:
-                    data_conjunta = {}
+                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['   '],"id_unidadmedida":request.data['id_unidadmedida']}
+                if data_conjunta['cantidadUnidades'] < 1:
+                    detalle.delete()
+                    return Response({'delete':'se borro el producto'})
             if unidad.paquete == False:
                 data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
-                if data_conjunta['cantidad'] < 0:
-                    data_conjunta = {}
-            detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
+                if data_conjunta['cantidad'] < 1:
+                    detalle.delete()
+                    return Response({'delete':'se borro el producto'})
             serializer = CrearDetallestockproductoSerializer(detalle,data=data_conjunta,partial=True)
         
         if data_conjunta != {}:
