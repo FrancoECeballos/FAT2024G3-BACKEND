@@ -980,7 +980,7 @@ class PostDetallestockproducto(APIView):
         unidad = Unidadmedida.objects.get(pk = request.data['id_unidadmedida'])
         ids = {}
         for x in Detallestockproducto.objects.filter(id_stock=request.data['id_stock']):
-            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto']:
+            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto'] and x.__dict__['titulo'] == request.data['titulo']:
                 cantidadTotal= cantidadTotal + x.__dict__['cantidad']
                 
                 if unidad.paquete == True and x.__dict__['cantidad'] == request.data['cantidad']:
@@ -998,9 +998,9 @@ class PostDetallestockproducto(APIView):
 
         if cantidadTotal >0:
             if unidad.paquete == True:
-                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades+request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades+request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
             if unidad.paquete == False:
-                data_conjunta = {"cantidad":cantidadTotal+ request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":cantidadTotal+ request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
             detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             serializer = CrearDetallestockproductoSerializer(detalle,data=data_conjunta,partial=True)
         
@@ -1019,7 +1019,7 @@ class RestarDetallestockproducto(APIView):
         unidad = Unidadmedida.objects.get(pk = request.data['id_unidadmedida'])
         ids = {}
         for x in Detallestockproducto.objects.filter(id_stock=request.data['id_stock']):
-            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto']:
+            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto'] and x.__dict__['titulo'] == request.data['titulo']:
                 cantidadTotal= cantidadTotal + x.__dict__['cantidad']
                 
                 if unidad.paquete == True and x.__dict__['cantidad'] == request.data['cantidad']:
@@ -1038,12 +1038,12 @@ class RestarDetallestockproducto(APIView):
         if cantidadTotal >0:
             detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             if unidad.paquete == True:
-                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['   '],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['   '],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidadUnidades'] < 1:
                     detalle.delete()
                     return Response({'delete':'se borro el producto'})
             if unidad.paquete == False:
-                data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidad'] < 1:
                     detalle.delete()
                     return Response({'delete':'se borro el producto'})

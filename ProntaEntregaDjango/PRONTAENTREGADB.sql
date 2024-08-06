@@ -385,18 +385,18 @@ INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id
     ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1, 'vehiculos/renault-sandero-y-logan-1269058.webp', FALSE, ''),
     ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1, 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
 
-insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
-	(100, 1, 1, 2, 1),
-    (200, 1, 3, 3, 1),
-    (300, 1, 2, 1, 3),
-	(1, 20, 1, 1, 3),
-    (16, 1, 3, 2, 1),
-    (400, 30, 3, 6, 6),
-	(500, 20, 2, 7, 8),
-    (400, 15, 2, 8, 8),
-    (500, 5, 1, 9, 8),
-    (1, 1, 1, 10, 7),
-    (1, 1, 1, 11, 7);
+insert into DetalleStockProducto (titulo,descripcion,cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
+	("titulo","descripcion",100, 1, 1, 2, 1),
+    ("titulo","descripcion",200, 1, 3, 3, 1),
+    ("titulo","descripcion",300, 1, 2, 1, 3),
+	("titulo","descripcion",1, 20, 1, 1, 3),
+    ("titulo","descripcion",16, 1, 3, 2, 1),
+    ("titulo","descripcion",400, 30, 3, 6, 6),
+	("titulo","descripcion",500, 20, 2, 7, 8),
+    ("titulo","descripcion",400, 15, 2, 8, 8),
+    ("titulo","descripcion",500, 5, 1, 9, 8),
+    ("titulo","descripcion",1, 1, 1, 10, 7),
+    ("titulo","descripcion",1, 1, 1, 11, 7);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
