@@ -150,6 +150,9 @@ CREATE TABLE IF NOT EXISTS Producto (
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255),
+    descripcion VARCHAR(255),
+    imagen VARCHAR(255),
     cantidad INT,
     cantidadUnidades INT DEFAULT 1,
     id_stock INT,
