@@ -234,12 +234,18 @@ CREATE TABLE IF NOT EXISTS Transporte (
     kilometraje INT,
     estadoITV VARCHAR(255),
     anio YEAR,
-    id_Organizacion INT,
     imagen VARCHAR(255),
     necesita_mantenimiento BOOLEAN DEFAULT FALSE,
-    descripcion_mantenimiento VARCHAR(1000),
-    CONSTRAINT fk_organizacion FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion)
+    descripcion_mantenimiento VARCHAR(1000)
 );
+
+CREATE TABLE IF NOT EXISTS DetalleObraTransporte (
+	id_detalleObraTransporte INT AUTO_INCREMENT PRIMARY KEY,
+	id_obra INT,
+    id_transporte INT,
+	CONSTRAINT fk_obra FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+    );
 
 CREATE TABLE IF NOT EXISTS DetalleObraPedido (
     id_DetalleObraPedido INT AUTO_INCREMENT PRIMARY KEY,
@@ -380,10 +386,17 @@ INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 1, 1, 2, 11, 3);
 
 -- Inserciones para la tabla Transporte
-INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id_Organizacion, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
-    ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 1, 'vehiculos/toyota-hilux-on-the-road.webp', FALSE, ''),
-    ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1, 'vehiculos/renault-sandero-y-logan-1269058.webp', FALSE, ''),
-    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1, 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
+INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
+    ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 'vehiculos/toyota-hilux-on-the-road.webp', FALSE, ''),
+    ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 'vehiculos/renault-sandero-y-logan-1269058.webp', FALSE, ''),
+    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
+    
+    -- Inserciones para la tabla DetalleObraTransporte
+    INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES 
+        (1, 1),
+        (1, 2),
+        (2, 2),
+        (3, 3);
 
 insert into DetalleStockProducto (titulo,descripcion,cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
 	("titulo","descripcion",100, 1, 1, 2, 1),
