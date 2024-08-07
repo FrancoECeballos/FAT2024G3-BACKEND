@@ -882,7 +882,18 @@ class EditarTransporte(APIView):
             return Response({'success': 'Los atributos del transporte han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        
+class EliminarTransporte(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, pk):
+        try:
+            transporte = Transporte.objects.get(pk=pk)
+        except Transporte.DoesNotExist:
+            return Response({'error': 'No se encontró un transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        transporte.delete()
+        return Response({'success': 'El transporte ha sido eliminado exitosamente.'}, status=status.HTTP_200_OK)
 
 
 
