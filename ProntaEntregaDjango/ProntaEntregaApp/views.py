@@ -1282,15 +1282,14 @@ class CategoriasProductosView(APIView):
         return Response(categorias)
 
 class ProductosPorCategoriaYObraView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, id_stock, id_categoriaproducto, id_categoria):
-        try:
+        
             obra = get_object_or_404(Stock, id_stock=id_stock)
 
             if id_categoriaproducto != 'Todos':
-                categoria_producto = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
-
+                
                 detalles_stock = Detallestockproducto.objects.filter(
                     id_stock=id_stock,
                     id_producto__id_categoriaproducto=id_categoriaproducto
@@ -1301,22 +1300,20 @@ class ProductosPorCategoriaYObraView(APIView):
                 
                 productos = Detallestockproducto.objects.filter(id_producto__id_categoriaproducto__in=categorias_ids, id_stock__in=obras_ids)
             else:
-                categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+                
                 productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto__id_categoriaproducto__id_categoria=id_categoria)
 
             serializer = DetallestockproductoSerializer(productos, many=True)
 
             return Response(serializer.data)
         
-        except Exception as e:
-            return Response([], status=status.HTTP_200_OK)
 
 class CategoriaProductosPorCategoria(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, id_categoria):
         try:
-            categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+            
 
             categoria_producto = Categoriaproducto.objects.filter(
                 id_categoria=id_categoria
