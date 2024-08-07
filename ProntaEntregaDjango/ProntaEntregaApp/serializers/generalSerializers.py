@@ -69,13 +69,17 @@ class TransporteSerializer(serializers.ModelSerializer):
 class ObraSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer()
     usuarios_registrados = serializers.SerializerMethodField()
+    autos_registrados = serializers.SerializerMethodField()
 
     class Meta:
         model = Obra
-        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados', 'imagen']
+        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'usuarios_registrados', "autos_registrados", 'imagen']
 
     def get_usuarios_registrados(self, obra):
         return obra.detalleobrausuario_set.count()
+    
+    def get_autos_registrados(self, obra):
+        return obra.detalleobratransporte_set.count()
     
 class DetalleobrausuarioSerializer(serializers.ModelSerializer):
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
