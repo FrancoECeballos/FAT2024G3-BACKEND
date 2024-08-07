@@ -33,7 +33,7 @@ urlpatterns = [
     path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
 
     path('obra/', GetObra.as_view(), name='obra_get'),
-    path('obra/<int:pk>', GetObraByID.as_view(), name='obra_get_id'),
+    path('obra/<int:pk>/', GetObraByID.as_view(), name='obra_get_id'),
     path('crear_obra/', CrearObra.as_view(), name='obra_post'),
     path('editar_obra/<int:pk>', EditarObra.as_view(), name='obra_edit'),
 
@@ -48,6 +48,7 @@ urlpatterns = [
     path('editar_stock/<int:pk>/', EditarStock.as_view(), name='editar_stock'),
 
     path('categoria/', GetCategoria.as_view(), name='ver_categoria'),
+    path('categoria/<int:id_categoria>/', GetCategoriaByID.as_view(), name='ver_categoria_id'),
     path('crear_categoria/', CrearCategoria.as_view(), name='crear_categoria'),
     path('editar_categoria/<int:pk>/', EditarCategoria.as_view(), name='editar_categoria'),
 
