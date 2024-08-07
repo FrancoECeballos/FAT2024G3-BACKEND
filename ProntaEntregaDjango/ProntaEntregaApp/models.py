@@ -308,7 +308,7 @@ class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     titulo = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
-    imagen = models.CharField(max_length=255, blank=True, null=True)
+    imagen = models.ImageField(upload_to='productos/detalles/')
     cantidad = models.IntegerField(blank=True, null=True)
     cantidadunidades = models.IntegerField(db_column='cantidadUnidades', blank=True, null=True)  # Field name made lowercase.
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)

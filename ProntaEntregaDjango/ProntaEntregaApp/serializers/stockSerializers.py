@@ -58,11 +58,8 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto','titulo','descripcion','imagen', 'cantidad', 'cantidadUnidades', 'id_unidadmedida', 'id_producto', 'id_stock', 'multiplicacion']
+        fields = ['id_detallestockproducto', 'titulo', 'descripcion', 'imagen', 'cantidad', 'cantidadUnidades', 'id_unidadmedida', 'id_producto', 'id_stock', 'multiplicacion']
 
-    def get_multiplicacion(self, obj):
-        return obj.cantidad * obj.cantidadUnidades if obj.cantidad and obj.cantidadUnidades else None
-    
     def get_multiplicacion(self, obj):
         cantidad = obj.cantidad if obj.cantidad else 0
         cantidad_unidades = obj.cantidadUnidades if obj.cantidadUnidades else 0
