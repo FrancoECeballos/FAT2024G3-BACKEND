@@ -865,6 +865,13 @@ class GetTransporte(APIView):
         serializer = TransporteSerializer(transportes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+class GetTransporteByObra(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        transportes = Transporte.objects.all()
+        serializer = TransporteSerializer(transportes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class CrearTransporte(APIView):
     permission_classes = [AllowAny]
     def post(self, request):

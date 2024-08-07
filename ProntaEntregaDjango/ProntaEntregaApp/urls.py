@@ -83,6 +83,7 @@ urlpatterns = [
     path('editar_detalle_oferta/<int:pk>/', EditarDetalleOferta.as_view(), name='editar_detalle_oferta'),
 
     path('transporte/', GetTransporte.as_view(), name='ver_transporte'),
+    path('transporte/<int:id_obra>/', GetTransporteByObra.as_view(), name='ver_transporte_obra'),
     path('crear_transporte/', CrearTransporte.as_view(), name='crear_transporte'),
     path('editar_transporte/<int:pk>/', EditarTransporte.as_view(), name='editar_transporte'),
     path('eliminar_transporte/<int:pk>/', EliminarTransporte.as_view(), name='eliminar_transporte'),
