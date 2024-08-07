@@ -496,6 +496,13 @@ class GetCategoria(APIView):
         categorias = Categoria.objects.all()
         serializer = CategoriaSerializer(categorias, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class GetCategoriaByID(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, id_categoria):
+        categorias = Categoria.objects.filter(id_categoria=id_categoria)
+        serializer = CategoriaSerializer(categorias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CrearCategoria(APIView):
     permission_classes = [AllowAny]
@@ -858,6 +865,13 @@ class GetTransporte(APIView):
         serializer = TransporteSerializer(transportes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+class GetTransporteByObra(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        transportes = Transporte.objects.all()
+        serializer = TransporteSerializer(transportes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class CrearTransporte(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -882,7 +896,18 @@ class EditarTransporte(APIView):
             return Response({'success': 'Los atributos del transporte han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        
+class EliminarTransporte(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, pk):
+        try:
+            transporte = Transporte.objects.get(pk=pk)
+        except Transporte.DoesNotExist:
+            return Response({'error': 'No se encontró un transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        transporte.delete()
+        return Response({'success': 'El transporte ha sido eliminado exitosamente.'}, status=status.HTTP_200_OK)
 
 
 
@@ -980,7 +1005,7 @@ class PostDetallestockproducto(APIView):
         unidad = Unidadmedida.objects.get(pk = request.data['id_unidadmedida'])
         ids = {}
         for x in Detallestockproducto.objects.filter(id_stock=request.data['id_stock']):
-            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto']:
+            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto'] and x.__dict__['titulo'] == request.data['titulo']:
                 cantidadTotal= cantidadTotal + x.__dict__['cantidad']
                 
                 if unidad.paquete == True and x.__dict__['cantidad'] == request.data['cantidad']:
@@ -998,9 +1023,9 @@ class PostDetallestockproducto(APIView):
 
         if cantidadTotal >0:
             if unidad.paquete == True:
-                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades+request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades+request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
             if unidad.paquete == False:
-                data_conjunta = {"cantidad":cantidadTotal+ request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":cantidadTotal+ request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
             detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             serializer = CrearDetallestockproductoSerializer(detalle,data=data_conjunta,partial=True)
         
@@ -1019,7 +1044,7 @@ class RestarDetallestockproducto(APIView):
         unidad = Unidadmedida.objects.get(pk = request.data['id_unidadmedida'])
         ids = {}
         for x in Detallestockproducto.objects.filter(id_stock=request.data['id_stock']):
-            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto']:
+            if x.__dict__['id_unidadmedida_id'] == request.data['id_unidadmedida'] and x.__dict__['id_producto_id'] == request.data['id_producto'] and x.__dict__['titulo'] == request.data['titulo']:
                 cantidadTotal= cantidadTotal + x.__dict__['cantidad']
                 
                 if unidad.paquete == True and x.__dict__['cantidad'] == request.data['cantidad']:
@@ -1038,12 +1063,12 @@ class RestarDetallestockproducto(APIView):
         if cantidadTotal >0:
             detalle = Detallestockproducto.objects.get(pk= sorted(ids)[0])
             if unidad.paquete == True:
-                data_conjunta = {"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['   '],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":request.data['cantidad'],"cantidadUnidades":cantidadTotalUnidades - request.data['cantidadUnidades'],"id_stock":request.data['id_stock'],"id_producto":request.data['   '],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidadUnidades'] < 1:
                     detalle.delete()
                     return Response({'delete':'se borro el producto'})
             if unidad.paquete == False:
-                data_conjunta = {"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
+                data_conjunta = {"titulo": request.data['titulo'],"descripcion": request.data['descripcion'],"cantidad":cantidadTotal - request.data['cantidad'],"cantidadUnidades":1,"id_stock":request.data['id_stock'],"id_producto":request.data['id_producto'],"id_unidadmedida":request.data['id_unidadmedida']}
                 if data_conjunta['cantidad'] < 1:
                     detalle.delete()
                     return Response({'delete':'se borro el producto'})
@@ -1271,15 +1296,14 @@ class CategoriasProductosView(APIView):
         return Response(categorias)
 
 class ProductosPorCategoriaYObraView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, id_stock, id_categoriaproducto, id_categoria):
-        try:
+        
             obra = get_object_or_404(Stock, id_stock=id_stock)
 
             if id_categoriaproducto != 'Todos':
-                categoria_producto = get_object_or_404(Categoriaproducto, id_categoriaproducto=id_categoriaproducto)
-
+                
                 detalles_stock = Detallestockproducto.objects.filter(
                     id_stock=id_stock,
                     id_producto__id_categoriaproducto=id_categoriaproducto
@@ -1290,22 +1314,20 @@ class ProductosPorCategoriaYObraView(APIView):
                 
                 productos = Detallestockproducto.objects.filter(id_producto__id_categoriaproducto__in=categorias_ids, id_stock__in=obras_ids)
             else:
-                categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+                
                 productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto__id_categoriaproducto__id_categoria=id_categoria)
 
             serializer = DetallestockproductoSerializer(productos, many=True)
 
             return Response(serializer.data)
         
-        except Exception as e:
-            return Response([], status=status.HTTP_200_OK)
 
 class CategoriaProductosPorCategoria(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, id_categoria):
         try:
-            categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+            
 
             categoria_producto = Categoriaproducto.objects.filter(
                 id_categoria=id_categoria

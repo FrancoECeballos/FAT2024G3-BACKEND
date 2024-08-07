@@ -33,7 +33,7 @@ urlpatterns = [
     path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
 
     path('obra/', GetObra.as_view(), name='obra_get'),
-    path('obra/<int:pk>', GetObraByID.as_view(), name='obra_get_id'),
+    path('obra/<int:pk>/', GetObraByID.as_view(), name='obra_get_id'),
     path('crear_obra/', CrearObra.as_view(), name='obra_post'),
     path('editar_obra/<int:pk>', EditarObra.as_view(), name='obra_edit'),
 
@@ -48,6 +48,7 @@ urlpatterns = [
     path('editar_stock/<int:pk>/', EditarStock.as_view(), name='editar_stock'),
 
     path('categoria/', GetCategoria.as_view(), name='ver_categoria'),
+    path('categoria/<int:id_categoria>/', GetCategoriaByID.as_view(), name='ver_categoria_id'),
     path('crear_categoria/', CrearCategoria.as_view(), name='crear_categoria'),
     path('editar_categoria/<int:pk>/', EditarCategoria.as_view(), name='editar_categoria'),
 
@@ -82,8 +83,10 @@ urlpatterns = [
     path('editar_detalle_oferta/<int:pk>/', EditarDetalleOferta.as_view(), name='editar_detalle_oferta'),
 
     path('transporte/', GetTransporte.as_view(), name='ver_transporte'),
+    path('transporte/<int:id_obra>/', GetTransporteByObra.as_view(), name='ver_transporte_obra'),
     path('crear_transporte/', CrearTransporte.as_view(), name='crear_transporte'),
     path('editar_transporte/<int:pk>/', EditarTransporte.as_view(), name='editar_transporte'),
+    path('eliminar_transporte/<int:pk>/', EliminarTransporte.as_view(), name='eliminar_transporte'),
 
 #---------------------------------------------------------------------------------------
     path('profile/', UserPage.as_view(), name='profile'),

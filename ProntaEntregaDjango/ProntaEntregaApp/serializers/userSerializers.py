@@ -3,8 +3,6 @@ from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers.generalSerializers import *
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from google.cloud import storage
-import uuid
 
 class TipousuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,17 +16,16 @@ class TipodocumentoSerializer(serializers.ModelSerializer):
 
 class UsuarioSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer(many = False)
-    id_tipousuario = TipousuarioSerializer(many = False)
     id_tipodocumento = TipodocumentoSerializer(many = False)
     
     class Meta:
         model = CustomUsuario
-        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
 
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento']
 
     def update(self, instance, validated_data):
         instance.nombre = validated_data.get('nombre', instance.nombre)
@@ -40,7 +37,6 @@ class UsuarioUpdateSerializer(serializers.ModelSerializer):
         instance.genero = validated_data.get('genero', instance.genero)
         instance.imagen = validated_data.get('imagen', instance.imagen)
         instance.id_direccion = validated_data.get('id_direccion', instance.id_direccion)
-        instance.id_tipousuario = validated_data.get('id_tipousuario', instance.id_tipousuario)
         instance.id_tipodocumento = validated_data.get('id_tipodocumento', instance.id_tipodocumento)
         instance.save()
         return instance
@@ -49,12 +45,13 @@ class UsuarioUpdateSerializer(serializers.ModelSerializer):
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion',  'id_tipodocumento']
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
     def validate(self, data):
+        
         email = data.get('email', '').strip()
         username = data.get('nombreusuario', '').strip()
         password = data.get('password', '').strip()
@@ -71,11 +68,6 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        image = validated_data.pop('imagen', None)
-        if image:
-            image_url = self.upload_image_to_gcs(image)
-            validated_data['imagen'] = image_url
-
         user = CustomUsuario.objects.create_user(
             nombre=validated_data['nombre'],
             apellido=validated_data['apellido'],
@@ -85,31 +77,11 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             genero=validated_data['genero'],
             password=validated_data['password'],
-            imagen=validated_data.get('imagen'),
+            imagen=validated_data['imagen'],
             id_direccion=validated_data['id_direccion'],
-            id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],
         )
         return user
-
-    def upload_image_to_gcs(self, image):
-        # Initialize a client
-        storage_client = storage.Client()
-        bucket_name = 'bucket-django-pronta-entrega'
-        bucket = storage_client.bucket(bucket_name)
-
-        # Create a unique filename
-        blob_name = f"profile_pics/{uuid.uuid4()}.jpg"
-        blob = bucket.blob(blob_name)
-
-        # Upload the image
-        blob.upload_from_file(image, content_type=image.content_type)
-
-        # Make the blob publicly viewable
-        blob.make_public()
-
-        # Return the public URL
-        return blob.public_url
 
 
 class UsuarioLoginSerializer(serializers.ModelSerializer):

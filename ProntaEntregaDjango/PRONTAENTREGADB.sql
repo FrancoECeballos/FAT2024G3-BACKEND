@@ -51,14 +51,12 @@ CREATE TABLE IF NOT EXISTS CustomUsuario (
     fechaUnion DATETIME,
     last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_direccion INT,
-    id_tipoUsuario INT,
     id_tipoDocumento INT,
     `is_staff` BOOLEAN DEFAULT FALSE,
     `is_superuser` BOOLEAN DEFAULT FALSE,
     `is_active` BOOLEAN DEFAULT TRUE,
     `is_verified` BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_direccion FOREIGN KEY (id_direccion) REFERENCES Direccion(id_direccion),
-    CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario),
     CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipoDocumento) REFERENCES TipoDocumento(id_tipoDocumento)
 );
 
@@ -105,8 +103,10 @@ CREATE TABLE IF NOT EXISTS DetalleObraUsuario (
     fechaIngreso DATE,
     id_obra INT,
     id_usuario INT,
+    id_tipoUsuario INT,
     CONSTRAINT fk_obra_detalle FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
-    CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario)
+    CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
+    CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario)
 );
 
 CREATE TABLE IF NOT EXISTS UnidadMedida(
@@ -150,6 +150,9 @@ CREATE TABLE IF NOT EXISTS Producto (
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255),
+    descripcion VARCHAR(255),
+    imagen VARCHAR(255),
     cantidad INT,
     cantidadUnidades INT DEFAULT 1,
     id_stock INT,
@@ -231,12 +234,18 @@ CREATE TABLE IF NOT EXISTS Transporte (
     kilometraje INT,
     estadoITV VARCHAR(255),
     anio YEAR,
-    id_Organizacion INT,
     imagen VARCHAR(255),
     necesita_mantenimiento BOOLEAN DEFAULT FALSE,
-    descripcion_mantenimiento VARCHAR(1000),
-    CONSTRAINT fk_organizacion FOREIGN KEY (id_Organizacion) REFERENCES Organizacion(id_Organizacion)
+    descripcion_mantenimiento VARCHAR(1000)
 );
+
+CREATE TABLE IF NOT EXISTS DetalleObraTransporte (
+	id_detalleObraTransporte INT AUTO_INCREMENT PRIMARY KEY,
+	id_obra INT,
+    id_transporte INT,
+	CONSTRAINT fk_obra FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+    );
 
 CREATE TABLE IF NOT EXISTS DetalleObraPedido (
     id_DetalleObraPedido INT AUTO_INCREMENT PRIMARY KEY,
@@ -282,32 +291,32 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
     ('Cedula', 'Es un documento de identidad');
 
 -- Inserciones para la tabla Usuario
-INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoUsuario, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
-    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 3, 1, FALSE, FALSE, TRUE),
-    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, 2, FALSE, FALSE, TRUE),
-    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 1, 3, FALSE, FALSE, TRUE),
-    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 2, 1, TRUE, TRUE, TRUE);
+INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
+    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 1, FALSE, FALSE, TRUE),
+    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
+    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
+    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE);
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
     ('Mama Antula', 'Ejercicios espirituales gratuitos', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Cura Brochero', 'Acompañamientos a Privados de libertad', 1, 15, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Cura Brochero', 'Acompañamientos a Privados de libertad', 1, 15, 'obras/logo.png'),
     ('Casa de la Bondad', 'Centro de Cuidados Paliativos', 1, 12, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
     ('Jose Bainotti', 'Hogar de niños', 1, 10, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
     ('P. Alberto Hurtado', 'Hospedería y centro de día de hombres', 1, 11, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Caminar de Nuevo', 'Acompañamiento a mujeres HIV', 1, 13, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Caminar de Nuevo', 'Acompañamiento a mujeres HIV', 1, 13, 'obras/logo.png'),
     ('Nuestra Señora del Valle', 'Escuela Albergue', 1, 14, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
     ('Nuestra familia Siria', 'Escuela Albergue', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
     ('Señor Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
     ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
     ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp');
+    ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/logo.png');
 
 -- Inserciones para la tabla DetalleObraUsuario
-INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario) VALUES 
-    ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1),
-    ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2),
-    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3); 
+INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, id_tipousuario) VALUES 
+    ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 2),
+    ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 2),
+    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 2); 
 
 -- Inserciones para la tabla UnidadMedida
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
@@ -395,23 +404,30 @@ INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 1, 1, 2, 11, 3);
 
 -- Inserciones para la tabla Transporte
-INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, id_Organizacion, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
-    ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 1, 'vehiculos/toyota-hilux-on-the-road.webp', FALSE, ''),
-    ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 1, 'vehiculos/renault-sandero-y-logan-1269058.webp', FALSE, ''),
-    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 1, 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
+INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
+    ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 'vehiculos/toyota-hilux-on-the-road.webp', FALSE, ''),
+    ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 'vehiculos/renault-sandero-y-logan-1269058.webp', FALSE, ''),
+    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
+    
+    -- Inserciones para la tabla DetalleObraTransporte
+    INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES 
+        (1, 1),
+        (1, 2),
+        (2, 2),
+        (3, 3);
 
-insert into DetalleStockProducto (cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
-	(100, 1, 1, 2, 1),
-    (200, 1, 3, 3, 1),
-    (300, 1, 2, 1, 3),
-	(1, 20, 1, 1, 3),
-    (16, 1, 3, 2, 1),
-    (400, 30, 3, 6, 6),
-	(500, 20, 2, 7, 8),
-    (400, 15, 2, 8, 8),
-    (500, 5, 1, 9, 8),
-    (1, 1, 1, 10, 7),
-    (1, 1, 1, 11, 7);
+insert into DetalleStockProducto (titulo, descripcion, imagen, cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
+	("titulo", "descripcion", "productos/detalles/no_image.png", 100, 1, 1, 2, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 200, 1, 3, 3, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 300, 1, 2, 1, 3),
+	("titulo", "descripcion", "productos/detalles/no_image.png", 1, 20, 1, 1, 3),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 16, 1, 3, 2, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 30, 3, 6, 6),
+	("titulo", "descripcion", "productos/detalles/no_image.png", 500, 20, 2, 7, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 15, 2, 8, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 500, 5, 1, 9, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 1, 10, 7),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 1, 11, 7);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
