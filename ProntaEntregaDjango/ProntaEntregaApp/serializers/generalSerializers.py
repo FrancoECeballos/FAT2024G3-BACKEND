@@ -79,7 +79,7 @@ class ObraSerializer(serializers.ModelSerializer):
     
 class DetalleobrausuarioSerializer(serializers.ModelSerializer):
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
-    id_tipoUsuario = serializers.PrimaryKeyRelatedField(queryset=Tipousuario.objects.all())
+    id_tipousuario = serializers.PrimaryKeyRelatedField(queryset=Tipousuario.objects.all())
     class Meta:
         model = Detalleobrausuario
         fields = '__all__'
