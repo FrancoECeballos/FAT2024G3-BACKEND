@@ -251,11 +251,20 @@ INSERT INTO Direccion (calle, numero, localidad) VALUES
     ('Calle Fornica', 25, 'Localidad Abedul'),
     ('Calle Ignacio', 103, 'Localidad Betular'),
     ('Calle Gonzalo', 6, 'Localidad Carlos Paz'),
-    ('Calle Martinez', 42, 'Localidad Dildo'),
+    ('Calle Martinez', 42, 'Localidad Budin'),
     ('Calle Sergio', 25, 'Localidad Abedul'),
     ('Calle Roca', 103, 'Localidad Colonia Carolla'),
     ('Calle Menem', 6, 'Localidad La Estanzuela'),
-    ('Calle Evita', 42, 'Localidad Perón');
+    ('Calle Evita', 42, 'Localidad Perón'),
+    ('Calle Desconocida', 0, 'Localidad Desconocida'), -- Asilo a refugiados sirios, Nuestra familia Siria / Acompañamiento a jóvenes adolecentes, Señor Común / Acompañamiento a personas que sufren soledad, Madre Teresa / Acompañamiento a mamás, Madre de la Ternura / Ejercicios espirituales gratuitos, Mamá Antula
+	('Brasil 680, X5000CCP Córdoba', 680, 'B° Güemes'), -- Hogar de niños, Jose Bainotti
+    ('X5000FGC, Libertad 171, X5000 FGC', 171, 'B° Centro'), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
+    ('Brasil 581, X5000CCK ', 581, 'B° Güemes'), -- Centro de Cuidados Paliativos, Casa de la Bondad
+    ('Turrado Juárez 2188, 5000 Córdoba', 2188, 'B° Colinas de Vélez Sársfield'), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
+    ('Ruta prov. 28 al pie de Los Gigantes (ex nacional 20 km 784), Córdoba', 784, 'al pie de Los Gigantes'), -- Escuela Albergue, Nuestra Señora del Valle
+    ('Establecimiento Carcelario Padre Luchesse (Cárcel de Bower)', 797, 'Santa María'), -- Acompañamientos a Privados de libertad, Cura Brochero
+    ('Ruta N° 5, Km. 20', 20, 'Camino a Alta Gracia'); -- Casa de Retiros, Señorita Isabel de Hungría
+    
 
 -- Inserciones para la tabla Organizacion
 INSERT INTO Organizacion (nombre, descripcion, telefono, email) VALUES 
@@ -281,9 +290,18 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
-    ('Mama Antula', 'Descripción', 1, 5, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('El Aljibe', 'Descripción', 1, 7, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('La Obra de la Bondad', 'Descripción', 1, 6, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp');
+    ('Mama Antula', 'Ejercicios espirituales gratuitos', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Cura Brochero', 'Acompañamientos a Privados de libertad', 1, 15, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Casa de la Bondad', 'Centro de Cuidados Paliativos', 1, 12, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Jose Bainotti', 'Hogar de niños', 1, 10, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('P. Alberto Hurtado', 'Hospedería y centro de día de hombres', 1, 11, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Caminar de Nuevo', 'Acompañamiento a mujeres HIV', 1, 13, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Nuestra Señora del Valle', 'Escuela Albergue', 1, 14, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Nuestra familia Siria', 'Escuela Albergue', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Señor Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp');
 
 -- Inserciones para la tabla DetalleObraUsuario
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario) VALUES 
