@@ -295,7 +295,18 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 1, FALSE, FALSE, TRUE),
     ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
     ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
-    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE);
+    ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE),
+    ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hurtado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
+    ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Bondad@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
+    ('Caminar de Nuevo', 'Admin3', 'caminarnuevo', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Caminar@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
+    ('Señora del Valle', 'Admin4', 'señoravalle', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Valle@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Escuela Albergue, Nuestra Señora del Valle
+    ('Familia Siria', 'Admin5', 'familiasiria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Siria@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 7, 1, TRUE, FALSE, TRUE), -- Asilo a refugiados sirios, Nuestra familia Siria
+    ('Señor Común', 'Admin6', 'señorcomun', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Común@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamiento a jóvenes adolecentes, Señor Común
+    ('Madre Teresa', 'Admin7', 'madreteresa', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Teresa@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Acompañamiento a personas que sufren soledad, Madre Teresa
+    ('Cura Brochero', 'Admin8', 'curabrochero', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Brochero@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamientos a Privados de libertad, Cura Brochero
+    ('Madre de la Ternura', 'Admin9', 'madreternura', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Ternura@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mamás, Madre de la Ternura
+    ('Mamá Antula', 'Admin10', 'mamaantula', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Antula@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Ejercicios espirituales gratuitos, Mamá Antula
+    ('Isabel de Hungría', 'Admin11', 'isabelhungria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hungría@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 3, 1, TRUE, FALSE, TRUE); -- Casa de Retiros, Señorita Isabel de Hungría
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
@@ -316,7 +327,10 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, id_tipousuario) VALUES 
     ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 2),
     ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 2),
-    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 2); 
+    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 2), 
+	('', '2023-12-26', 1, 1, 1),
+    ('', '2024-01-12', 2, 2, 1),
+    ('', '2024-3-09', 3, 3, 1);
 
 -- Inserciones para la tabla UnidadMedida
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
@@ -410,7 +424,7 @@ INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, im
     ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
     
     -- Inserciones para la tabla DetalleObraTransporte
-    INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES 
+INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES 
         (1, 1),
         (1, 2),
         (2, 2),
