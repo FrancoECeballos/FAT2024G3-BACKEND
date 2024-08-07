@@ -398,18 +398,18 @@ INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, im
         (2, 2),
         (3, 3);
 
-insert into DetalleStockProducto (titulo,descripcion,cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
-	("titulo","descripcion",100, 1, 1, 2, 1),
-    ("titulo","descripcion",200, 1, 3, 3, 1),
-    ("titulo","descripcion",300, 1, 2, 1, 3),
-	("titulo","descripcion",1, 20, 1, 1, 3),
-    ("titulo","descripcion",16, 1, 3, 2, 1),
-    ("titulo","descripcion",400, 30, 3, 6, 6),
-	("titulo","descripcion",500, 20, 2, 7, 8),
-    ("titulo","descripcion",400, 15, 2, 8, 8),
-    ("titulo","descripcion",500, 5, 1, 9, 8),
-    ("titulo","descripcion",1, 1, 1, 10, 7),
-    ("titulo","descripcion",1, 1, 1, 11, 7);
+insert into DetalleStockProducto (titulo, descripcion, imagen, cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
+	("titulo", "descripcion", "productos/detalles/no_image.png", 100, 1, 1, 2, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 200, 1, 3, 3, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 300, 1, 2, 1, 3),
+	("titulo", "descripcion", "productos/detalles/no_image.png", 1, 20, 1, 1, 3),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 16, 1, 3, 2, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 30, 3, 6, 6),
+	("titulo", "descripcion", "productos/detalles/no_image.png", 500, 20, 2, 7, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 15, 2, 8, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 500, 5, 1, 9, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 1, 10, 7),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 1, 11, 7);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
