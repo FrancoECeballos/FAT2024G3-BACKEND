@@ -152,7 +152,6 @@ class CustomUsuario(AbstractBaseUser, PermissionsMixin):
     fechaUnion = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(default=timezone.now, verbose_name='last login')
     id_direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, db_column='id_direccion', blank=True, null=True)
-    id_tipousuario = models.ForeignKey(Tipousuario, on_delete=models.SET_NULL, db_column='id_tipoUsuario', blank=True, null=True)  # Field name made lowercase.
     id_tipodocumento = models.ForeignKey(Tipodocumento, on_delete=models.SET_NULL, db_column='id_tipoDocumento', blank=True, null=True)  # Field name made lowercase.
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -226,6 +225,8 @@ class Detalleobrausuario(models.Model):
     fechaingreso = models.DateField(db_column='fechaIngreso', blank=True, null=True)  # Field name made lowercase.
     id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
+    id_tipousuario = models.ForeignKey(Tipousuario, on_delete=models.SET_NULL, db_column='id_tipoUsuario', blank=True, null=True)  # Field name made lowercase.
+
 
     class Meta:
         managed = False
@@ -308,7 +309,7 @@ class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     titulo = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
-    imagen = models.CharField(max_length=255, blank=True, null=True)
+    imagen = models.ImageField(upload_to='productos/detalles/')
     cantidad = models.IntegerField(blank=True, null=True)
     cantidadunidades = models.IntegerField(db_column='cantidadUnidades', blank=True, null=True)  # Field name made lowercase.
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
@@ -456,3 +457,15 @@ class Notificacion(models.Model):
 
     def __str__(self):
         return str(self.notificacion_id)
+
+class DetalleObraTransporte(models.Model):
+    id_detalleObraTransporte = models.AutoField(primary_key=True)
+    id_obra = models.ForeignKey(Obra, on_delete=models.CASCADE)
+    id_transporte = models.ForeignKey(Transporte, on_delete=models.CASCADE)
+
+    class Meta:
+        managed = False
+        db_table = 'DetalleObraTransporte'
+
+    def __str__(self):
+        return f'{self.id_detalleObraTransporte}'

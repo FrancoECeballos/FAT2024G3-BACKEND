@@ -16,17 +16,16 @@ class TipodocumentoSerializer(serializers.ModelSerializer):
 
 class UsuarioSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer(many = False)
-    id_tipousuario = TipousuarioSerializer(many = False)
     id_tipodocumento = TipodocumentoSerializer(many = False)
     
     class Meta:
         model = CustomUsuario
-        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
 
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento']
 
     def update(self, instance, validated_data):
         instance.nombre = validated_data.get('nombre', instance.nombre)
@@ -38,7 +37,6 @@ class UsuarioUpdateSerializer(serializers.ModelSerializer):
         instance.genero = validated_data.get('genero', instance.genero)
         instance.imagen = validated_data.get('imagen', instance.imagen)
         instance.id_direccion = validated_data.get('id_direccion', instance.id_direccion)
-        instance.id_tipousuario = validated_data.get('id_tipousuario', instance.id_tipousuario)
         instance.id_tipodocumento = validated_data.get('id_tipodocumento', instance.id_tipodocumento)
         instance.save()
         return instance
@@ -47,7 +45,7 @@ class UsuarioUpdateSerializer(serializers.ModelSerializer):
 class UsuarioRegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUsuario
-        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipousuario', 'id_tipodocumento']
+        fields = ['nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion',  'id_tipodocumento']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -81,7 +79,6 @@ class UsuarioRegistroSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
             imagen=validated_data['imagen'],
             id_direccion=validated_data['id_direccion'],
-            id_tipousuario=validated_data['id_tipousuario'],
             id_tipodocumento=validated_data['id_tipodocumento'],
         )
         return user
