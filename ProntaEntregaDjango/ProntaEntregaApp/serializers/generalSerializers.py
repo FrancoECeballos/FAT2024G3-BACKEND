@@ -104,3 +104,8 @@ class NotificacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notificacion
         fields = '__all__'
+
+class DetalleObraTransporteSerializer():
+    class Meta:
+        model = Detalleobratransporte
+        fields = '__all__'
