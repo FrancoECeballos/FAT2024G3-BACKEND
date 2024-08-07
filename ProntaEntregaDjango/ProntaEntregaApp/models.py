@@ -457,14 +457,14 @@ class Notificacion(models.Model):
     def __str__(self):
         return str(self.notificacion_id)
 
-class DetalleObraTransporte(models.Model):
-    id_detalleObraTransporte = models.AutoField(primary_key=True)
-    id_obra = models.ForeignKey(Obra, on_delete=models.CASCADE)
-    id_transporte = models.ForeignKey(Transporte, on_delete=models.CASCADE)
+class Detalleobratransporte(models.Model):
+    id_detalleobratransporte = models.AutoField(db_column='id_detalleObraTransporte', primary_key=True)  # Field name made lowercase.
+    id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
+    id_transporte = models.ForeignKey('Transporte', models.DO_NOTHING, db_column='id_transporte', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'DetalleObraTransporte'
 
     def __str__(self):
-        return f'{self.id_detalleObraTransporte}'
+        return f'{self.id_detalleobratransporte}'

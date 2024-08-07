@@ -867,8 +867,15 @@ class GetTransporte(APIView):
     
 class GetTransporteByObra(APIView):
     permission_classes = [AllowAny]
-    def get(self, request):
-        transportes = Transporte.objects.all()
+    def get(self, request, id_obra):
+        try:
+            detalle = Detalleobratransporte.objects.filter(id_obra = id_obra)
+        except Detalleobratransporte.DoesNotExist():
+            return Response({'error':'no se encuentra nada con esa id'}, status=status.HTTP_200_OK)
+
+        transporte_ids = detalle.values_list('id_transporte', flat=True)
+        
+        transportes = Transporte.objects.filter(id_transporte__in=transporte_ids)
         serializer = TransporteSerializer(transportes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
