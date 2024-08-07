@@ -310,17 +310,17 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
-    ('Mama Antula', 'Ejercicios espirituales gratuitos', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Mama Antula', 'Ejercicios espirituales gratuitos', 1, 9, 'obras/logo.png'),
     ('Cura Brochero', 'Acompañamientos a Privados de libertad', 1, 15, 'obras/logo.png'),
-    ('Casa de la Bondad', 'Centro de Cuidados Paliativos', 1, 12, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Jose Bainotti', 'Hogar de niños', 1, 10, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('P. Alberto Hurtado', 'Hospedería y centro de día de hombres', 1, 11, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Casa de la Bondad', 'Centro de Cuidados Paliativos', 1, 12, 'obras/logo.png'),
+    ('Jose Bainotti', 'Hogar de niños', 1, 10, 'obras/logo.png'),
+    ('P. Alberto Hurtado', 'Hospedería y centro de día de hombres', 1, 11, 'obras/logo.png'),
     ('Caminar de Nuevo', 'Acompañamiento a mujeres HIV', 1, 13, 'obras/logo.png'),
-    ('Nuestra Señora del Valle', 'Escuela Albergue', 1, 14, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Nuestra familia Siria', 'Escuela Albergue', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Señor Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
-    ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/manos_10152900384813092_5921720902835658172_o-300x300.webp'),
+    ('Nuestra Señora del Valle', 'Escuela Albergue', 1, 14, 'obras/logo.png'),
+    ('Nuestra familia Siria', 'Escuela Albergue', 1, 9, 'obras/logo.png'),
+    ('Señor Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/logo.png'),
+    ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/logo.png'),
+    ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/logo.png'),
     ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/logo.png');
 
 -- Inserciones para la tabla DetalleObraUsuario
