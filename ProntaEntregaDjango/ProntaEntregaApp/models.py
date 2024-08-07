@@ -423,7 +423,6 @@ class Transporte(models.Model):
     kilometraje = models.IntegerField(blank=True, null=True)
     estadoitv = models.CharField(db_column='estadoITV', max_length=255, blank=True, null=True)  # Field name made lowercase.
     anio = models.TextField(blank=True, null=True)  # This field type is a guess.
-    id_organizacion = models.ForeignKey(Organizacion, on_delete=models.SET_NULL, db_column='id_Organizacion', blank=True, null=True)  # Field name made lowercase.
     imagen = models.ImageField(upload_to='vehiculos/', null=True, blank=True)
     necesita_mantenimiento = models.BooleanField(default=False)
     descripcion_mantenimiento = models.CharField(max_length=1000, blank=True, null=True)
