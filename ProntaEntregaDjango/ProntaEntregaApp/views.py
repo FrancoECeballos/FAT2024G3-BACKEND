@@ -232,10 +232,10 @@ class UserLogin(APIView):
 
     def post(self, request):
         try:
-            if 'email' not in request.data or 'password' not in request.data:
-                return Response({'error': 'El email y la contraseña son necesarias.'}, status=status.HTTP_400_BAD_REQUEST)
+            if 'user' not in request.data or 'password' not in request.data:
+                return Response({'error': 'El nombre de usuario/email y la contraseña son necesarias.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            user = CustomUsuario.objects.get(email=request.data['email'])
+            user = CustomUsuario.objects.get(Q(email=request.data['user']) | Q(nombreusuario=request.data['user']))
             if not user.check_password(request.data['password']):
                 return Response({'error': 'El usuario o la contraseña es incorrecta.'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -867,8 +867,15 @@ class GetTransporte(APIView):
     
 class GetTransporteByObra(APIView):
     permission_classes = [AllowAny]
-    def get(self, request):
-        transportes = Transporte.objects.all()
+    def get(self, request, id_obra):
+        try:
+            detalle = Detalleobratransporte.objects.filter(id_obra = id_obra)
+        except Detalleobratransporte.DoesNotExist():
+            return Response({'error':'no se encuentra nada con esa id'}, status=status.HTTP_200_OK)
+
+        transporte_ids = detalle.values_list('id_transporte', flat=True)
+        
+        transportes = Transporte.objects.filter(id_transporte__in=transporte_ids)
         serializer = TransporteSerializer(transportes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
