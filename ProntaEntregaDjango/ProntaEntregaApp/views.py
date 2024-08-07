@@ -1313,7 +1313,7 @@ class CategoriaProductosPorCategoria(APIView):
 
     def get(self, request, id_categoria):
         try:
-            categoria = get_object_or_404(Categoria, id_categoria=id_categoria)
+            
 
             categoria_producto = Categoriaproducto.objects.filter(
                 id_categoria=id_categoria
