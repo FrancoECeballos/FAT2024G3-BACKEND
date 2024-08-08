@@ -297,6 +297,14 @@ class UserByToken(APIView):
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
         
+class AllUsersByObra(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        detalles = CustomUsuario.objects.all()
+        serializer = Detalleobrausuario(detalles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
 class UserByObra(APIView):
     permission_classes = [AllowAny]
 
