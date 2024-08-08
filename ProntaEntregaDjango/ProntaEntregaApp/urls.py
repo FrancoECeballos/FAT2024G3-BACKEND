@@ -79,6 +79,7 @@ urlpatterns = [
     path('editar_detalle_pedido/<int:pk>/', EditarDetallePedido.as_view(), name='editar_detalle_pedido'),
 
     path('oferta/', GetOferta.as_view(), name='ver_oferta'),
+    path('oferta/<int:pk>/', GetOfertaById.as_view(), name='ver_oferta_por_id'),
     path('crear_oferta/', CrearOferta.as_view(), name='crear_oferta'),
     path('editar_oferta/<int:pk>/', EditarOferta.as_view(), name='editar_oferta'),
     path('estado_oferta/', GetEstadoOferta.as_view(), name='ver_estado_oferta'),
