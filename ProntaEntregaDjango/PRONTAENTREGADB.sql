@@ -297,7 +297,6 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
     ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE),
-	('Jose', 'Bainotti', 'admin7', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'jose@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE),
     ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hurtado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
     ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Bondad@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
     ('Caminar de Nuevo', 'Admin3', 'caminarnuevo', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Caminar@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
@@ -308,7 +307,8 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Cura Brochero', 'Admin8', 'curabrochero', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Brochero@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamientos a Privados de libertad, Cura Brochero
     ('Madre de la Ternura', 'Admin9', 'madreternura', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Ternura@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mamás, Madre de la Ternura
     ('Mamá Antula', 'Admin10', 'mamaantula', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Antula@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Ejercicios espirituales gratuitos, Mamá Antula
-    ('Isabel de Hungría', 'Admin11', 'isabelhungria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hungría@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 3, 1, TRUE, FALSE, TRUE); -- Casa de Retiros, Señorita Isabel de Hungría
+    ('Isabel de Hungría', 'Admin11', 'isabelhungria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hungría@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 3, 1, TRUE, FALSE, TRUE), -- Casa de Retiros, Señorita Isabel de Hungría
+    ('Jose', 'Bainotti', 'admin7', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'jose@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE); -- Hogar de niños, Jose Bainotti
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
@@ -330,18 +330,18 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 2),
     ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 1),
     ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 1), 
-	('Ejercicios espirituales gratuitos para todos', '2023-12-26', 1, 4, 1),
-    ('Acompañamiento a privados de libertad', '2024-01-12', 2, 5, 1),
-    ('Centro de Cuidados Paliativos para enfermos terminales', '2024-3-09', 3, 6, 1),
-    ('Hogar de niños en situación de vulnerabilidad', '2023-12-26', 4, 7, 1),
-    ('Hospedería y centro de día para hombres en situación de calle', '2024-01-12', 5, 8, 1),
-    ('Acompañamiento a mujeres con HIV', '2024-3-09', 6, 9, 1),
-    ('Escuela Albergue para niños y jóvenes', '2023-12-26', 7, 10, 1),
-    ('Asilo a refugiados sirios', '2024-01-12', 8, 11, 1),
-    ('Acompañamiento a jóvenes adolescentes', '2024-3-09', 9, 12, 1),
-    ('Acompañamiento a personas que sufren soledad', '2023-12-26', 10, 13, 1),
-    ('Acompañamiento a mamás en situación de vulnerabilidad', '2024-01-12', 11, 14, 1),
-    ('Casa de Retiros para la comunidad', '2024-3-09', 12, 15, 1);
+	('Administrar la obra Mama Antula', '2023-12-26', 1, 14, 1),
+    ('Administrar la obra Cura Brochero', '2024-01-12', 2, 12, 1),
+    ('Administrar la obra Casa de la Bondad', '2024-3-09', 3, 6, 1),
+    ('Administrar la obra Jose Bainotti', '2023-12-26', 4, 16, 1),
+    ('Administrar la obra P. Alberto Hurtado', '2024-01-12', 5, 5, 1),
+    ('Administrar la obra Caminar de Nuevo', '2024-3-09', 6, 7, 1),
+    ('Administrar la obra Nuestra Señora del Valle', '2023-12-26', 7, 8, 1),
+    ('Administrar la obra Nuestra familia Siria', '2024-01-12', 8, 9, 1),
+    ('Administrar la obra Señor Común', '2024-3-09', 9, 10, 1),
+    ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 1),
+    ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 1),
+    ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 1);
 
 -- Inserciones para la tabla UnidadMedida
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 

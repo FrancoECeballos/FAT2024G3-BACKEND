@@ -13,6 +13,7 @@ urlpatterns = [
     path('user/', VerUsuarios.as_view(), name='users'),
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
     path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
+    path('user/obra/', AllUsersByObra.as_view(), name='ver_all_user_obra'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
     
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
@@ -79,6 +80,7 @@ urlpatterns = [
     path('editar_detalle_pedido/<int:pk>/', EditarDetallePedido.as_view(), name='editar_detalle_pedido'),
 
     path('oferta/', GetOferta.as_view(), name='ver_oferta'),
+    path('oferta/<int:pk>/', GetOfertaById.as_view(), name='ver_oferta_por_id'),
     path('crear_oferta/', CrearOferta.as_view(), name='crear_oferta'),
     path('editar_oferta/<int:pk>/', EditarOferta.as_view(), name='editar_oferta'),
     path('estado_oferta/', GetEstadoOferta.as_view(), name='ver_estado_oferta'),
@@ -92,7 +94,9 @@ urlpatterns = [
     path('transporte/<int:id_obra>/', GetTransporteByObra.as_view(), name='ver_transporte_obra'),
     path('crear_transporte/', CrearTransporte.as_view(), name='crear_transporte'),
     path('editar_transporte/<int:pk>/', EditarTransporte.as_view(), name='editar_transporte'),
-    path('eliminar_transporte/<int:pk>/', EliminarTransporte.as_view(), name='eliminar_transporte'),
+    path('eliminar_detalle_transporte/<int:id_obra>/<int:id_transporte>/', EliminarTransporte.as_view(), name='eliminar_transporte'),
+    path('detalle_transporte/', GetDetalleobratransporte.as_view(), name='ver_detalle_transporte'),
+    path('crear_detalle_transporte/', PostDetalleobratransporte.as_view(), name='crear_detalle_transporte'),
 
 #---------------------------------------------------------------------------------------
     path('profile/', UserPage.as_view(), name='profile'),

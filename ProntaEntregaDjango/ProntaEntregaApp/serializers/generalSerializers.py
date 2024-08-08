@@ -66,6 +66,11 @@ class TransporteSerializer(serializers.ModelSerializer):
         model = Transporte
         fields = '__all__'
 
+class DetalleobratransporteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detalleobratransporte
+        fields = '__all__'
+
 class ObraSerializer(serializers.ModelSerializer):
     id_direccion = DireccionSerializer()
     usuarios_registrados = serializers.SerializerMethodField()
