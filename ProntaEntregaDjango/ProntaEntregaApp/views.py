@@ -296,6 +296,22 @@ class UserByToken(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CustomUsuario.DoesNotExist:
             return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class UserByObra(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, id_obra):
+        try:
+            usuarios = Detalleobrausuario.objects.filter(id_obra=id_obra)
+            if not usuarios.exists():
+                return Response({'error': 'No se encuentra nada con esa id'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrausuario.DoesNotExist:
+            return Response({'error': 'No se encuentra nada con esa id'}, status=status.HTTP_404_NOT_FOUND)
+
+        usuario_ids = usuarios.values_list('id_usuario', flat=True)
+        users = CustomUsuario.objects.filter(id_usuario__in=usuario_ids)
+        serializer = UsuarioSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CambiarContrasenia(APIView):
     permission_classes = [IsAuthenticated]

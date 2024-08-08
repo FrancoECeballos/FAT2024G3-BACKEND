@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS TipoDocumento (
 CREATE TABLE IF NOT EXISTS TipoUsuario (
     id_tipoUsuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
+    abreviacion VARCHAR(20),
     descripcion VARCHAR(255)
 );
 
@@ -280,10 +281,10 @@ INSERT INTO Organizacion (nombre, descripcion, telefono, email) VALUES
     ('Manos Abiertas','Manos Abiertas de la provincia de Córdoba', '0351 423 5140', 'cordoba@manosabiertas.org.ar');
 
 -- Inserciones para la tabla TipoUsuario
-INSERT INTO TipoUsuario (nombre, descripcion) VALUES 
-    ('Admin', 'Es admin'),
-    ('Voluntario', 'Es el voluntario'),
-    ('SuperUser', 'Es el superadmin');
+INSERT INTO TipoUsuario (nombre, abreviacion, descripcion) VALUES 
+    ('Voluntario', 'user', 'Es un voluntario, usuario común del sistema'),
+    ('Moderador', 'mod', 'Es un moderador de esta Obra, puede manejar usuarios'),
+    ('Administrador', 'admin', 'Es un administrador de la organización, puede manejar obras y usuarios');
 
 INSERT INTO TipoDocumento (nombre, descripcion) VALUES 
     ('DNI', 'Es un documento de identidad'),
@@ -306,7 +307,8 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Cura Brochero', 'Admin8', 'curabrochero', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Brochero@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamientos a Privados de libertad, Cura Brochero
     ('Madre de la Ternura', 'Admin9', 'madreternura', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Ternura@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mamás, Madre de la Ternura
     ('Mamá Antula', 'Admin10', 'mamaantula', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Antula@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Ejercicios espirituales gratuitos, Mamá Antula
-    ('Isabel de Hungría', 'Admin11', 'isabelhungria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hungría@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 3, 1, TRUE, FALSE, TRUE); -- Casa de Retiros, Señorita Isabel de Hungría
+    ('Isabel de Hungría', 'Admin11', 'isabelhungria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hungría@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 3, 1, TRUE, FALSE, TRUE), -- Casa de Retiros, Señorita Isabel de Hungría
+    ('Jose', 'Bainotti', 'admin7', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'jose@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE); -- Hogar de niños, Jose Bainotti
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
@@ -326,11 +328,20 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
 -- Inserciones para la tabla DetalleObraUsuario
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, id_tipousuario) VALUES 
     ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 2),
-    ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 2),
-    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 2), 
-	('', '2023-12-26', 1, 1, 1),
-    ('', '2024-01-12', 2, 2, 1),
-    ('', '2024-3-09', 3, 3, 1);
+    ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 1),
+    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 1), 
+	('Administrar la obra Mama Antula', '2023-12-26', 1, 14, 1),
+    ('Administrar la obra Cura Brochero', '2024-01-12', 2, 12, 1),
+    ('Administrar la obra Casa de la Bondad', '2024-3-09', 3, 6, 1),
+    ('Administrar la obra Jose Bainotti', '2023-12-26', 4, 16, 1),
+    ('Administrar la obra P. Alberto Hurtado', '2024-01-12', 5, 5, 1),
+    ('Administrar la obra Caminar de Nuevo', '2024-3-09', 6, 7, 1),
+    ('Administrar la obra Nuestra Señora del Valle', '2023-12-26', 7, 8, 1),
+    ('Administrar la obra Nuestra familia Siria', '2024-01-12', 8, 9, 1),
+    ('Administrar la obra Señor Común', '2024-3-09', 9, 10, 1),
+    ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 1),
+    ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 1),
+    ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 1);
 
 -- Inserciones para la tabla UnidadMedida
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
