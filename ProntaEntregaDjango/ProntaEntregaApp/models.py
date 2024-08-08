@@ -87,7 +87,7 @@ class Tipousuario(models.Model):
 
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self, nombre, apellido, nombreusuario, documento, telefono, email, genero, imagen, id_direccion, id_tipousuario, id_tipodocumento, password):
+    def create_user(self, nombre, apellido, nombreusuario, documento, telefono, email, genero, imagen, id_direccion, id_tipodocumento, password):
         if not nombre:
             raise ValueError('El usuario debe tener un nombre')
         if not apellido:
@@ -109,7 +109,6 @@ class UsuarioManager(BaseUserManager):
             genero=genero,
             imagen=imagen,
             id_direccion=id_direccion,
-            id_tipousuario=id_tipousuario,
             id_tipodocumento=id_tipodocumento
         )
         usuario.set_password(password)  # Utiliza set_password para encriptar y guardar la contraseña
@@ -124,8 +123,7 @@ class UsuarioManager(BaseUserManager):
             documento=documento, 
             telefono=None, 
             email=None, 
-            id_direccion=None, 
-            id_tipousuario=None, 
+            id_direccion=None,
             id_tipodocumento=None)
         usuario.set_password(password)
         usuario.is_superuser = True
