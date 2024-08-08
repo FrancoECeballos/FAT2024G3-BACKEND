@@ -93,7 +93,9 @@ urlpatterns = [
     path('transporte/<int:id_obra>/', GetTransporteByObra.as_view(), name='ver_transporte_obra'),
     path('crear_transporte/', CrearTransporte.as_view(), name='crear_transporte'),
     path('editar_transporte/<int:pk>/', EditarTransporte.as_view(), name='editar_transporte'),
-    path('eliminar_transporte/<int:pk>/', EliminarTransporte.as_view(), name='eliminar_transporte'),
+    path('eliminar_detalle_transporte/<int:id_obra>/<int:id_transporte>/', EliminarTransporte.as_view(), name='eliminar_transporte'),
+    path('detalle_transporte/', GetDetalleobratransporte.as_view(), name='ver_detalle_transporte'),
+    path('crear_detalle_transporte/', PostDetalleobratransporte.as_view(), name='crear_detalle_transporte'),
 
 #---------------------------------------------------------------------------------------
     path('profile/', UserPage.as_view(), name='profile'),
