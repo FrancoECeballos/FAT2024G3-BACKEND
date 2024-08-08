@@ -75,6 +75,7 @@ class Tipodocumento(models.Model):
 class Tipousuario(models.Model):
     id_tipousuario = models.AutoField(db_column='id_tipoUsuario', primary_key=True)  # Field name made lowercase.
     nombre = models.CharField(max_length=255, blank=True, null=True)
+    abreviacion = models.CharField(max_length=20, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
@@ -302,7 +303,7 @@ class Producto(models.Model):
         db_table = 'Producto'
 
     def __str__(self):
-        return str(self.id_producto)
+        return str(self.nombre)
 
 
 class Detallestockproducto(models.Model):

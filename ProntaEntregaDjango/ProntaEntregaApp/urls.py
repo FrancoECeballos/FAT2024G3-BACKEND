@@ -8,6 +8,12 @@ urlpatterns = [
     path('', view=index, name='index'),
 
     path('getNotificacion/<int:pk>', GetNotificacionesDeUser.as_view(), name='GetNotificacionesDeUsr'),
+
+    
+    path('user/', VerUsuarios.as_view(), name='users'),
+    path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
+    path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
+    path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
     
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
     path('crear_direccion/', CrearDirecciones.as_view(), name='direcciones_post'),
@@ -90,9 +96,6 @@ urlpatterns = [
 
 #---------------------------------------------------------------------------------------
     path('profile/', UserPage.as_view(), name='profile'),
-    path('user/', VerUsuarios.as_view(), name='users'),
-    path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
-    path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
     path('CambiarStock/<int:pk>/', CambiarStock.as_view(), name='CambiarStock'),
     path('CambiarProducto/<int:pk>/', CambiarProducto.as_view(), name='CambiarProducto'),
     path('CambiarDetalleStock/<int:pk>/', CambiarDetalleStock.as_view(), name='CambiarDetalleStock'),

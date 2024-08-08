@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS TipoDocumento (
 CREATE TABLE IF NOT EXISTS TipoUsuario (
     id_tipoUsuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
+    abreviacion VARCHAR(20),
     descripcion VARCHAR(255)
 );
 
@@ -280,10 +281,10 @@ INSERT INTO Organizacion (nombre, descripcion, telefono, email) VALUES
     ('Manos Abiertas','Manos Abiertas de la provincia de Córdoba', '0351 423 5140', 'cordoba@manosabiertas.org.ar');
 
 -- Inserciones para la tabla TipoUsuario
-INSERT INTO TipoUsuario (nombre, descripcion) VALUES 
-    ('Admin', 'Es admin'),
-    ('Voluntario', 'Es el voluntario'),
-    ('SuperUser', 'Es el superadmin');
+INSERT INTO TipoUsuario (nombre, abreviacion, descripcion) VALUES 
+    ('Voluntario', 'user', 'Es un voluntario, usuario común del sistema'),
+    ('Moderador', 'mod', 'Es un moderador de esta Obra, puede manejar usuarios'),
+    ('Administrador', 'admin', 'Es un administrador de la organización, puede manejar obras y usuarios');
 
 INSERT INTO TipoDocumento (nombre, descripcion) VALUES 
     ('DNI', 'Es un documento de identidad'),
@@ -296,6 +297,7 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
     ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE),
+	('Jose', 'Bainotti', 'admin7', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'jose@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE),
     ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hurtado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
     ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Bondad@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
     ('Caminar de Nuevo', 'Admin3', 'caminarnuevo', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Caminar@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
@@ -326,11 +328,20 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
 -- Inserciones para la tabla DetalleObraUsuario
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, id_tipousuario) VALUES 
     ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 2),
-    ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 2),
-    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 2), 
-	('', '2023-12-26', 1, 1, 1),
-    ('', '2024-01-12', 2, 2, 1),
-    ('', '2024-3-09', 3, 3, 1);
+    ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 1),
+    ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 1), 
+	('Ejercicios espirituales gratuitos para todos', '2023-12-26', 1, 4, 1),
+    ('Acompañamiento a privados de libertad', '2024-01-12', 2, 5, 1),
+    ('Centro de Cuidados Paliativos para enfermos terminales', '2024-3-09', 3, 6, 1),
+    ('Hogar de niños en situación de vulnerabilidad', '2023-12-26', 4, 7, 1),
+    ('Hospedería y centro de día para hombres en situación de calle', '2024-01-12', 5, 8, 1),
+    ('Acompañamiento a mujeres con HIV', '2024-3-09', 6, 9, 1),
+    ('Escuela Albergue para niños y jóvenes', '2023-12-26', 7, 10, 1),
+    ('Asilo a refugiados sirios', '2024-01-12', 8, 11, 1),
+    ('Acompañamiento a jóvenes adolescentes', '2024-3-09', 9, 12, 1),
+    ('Acompañamiento a personas que sufren soledad', '2023-12-26', 10, 13, 1),
+    ('Acompañamiento a mamás en situación de vulnerabilidad', '2024-01-12', 11, 14, 1),
+    ('Casa de Retiros para la comunidad', '2024-3-09', 12, 15, 1);
 
 -- Inserciones para la tabla UnidadMedida
 INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
