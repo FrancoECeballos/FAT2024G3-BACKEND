@@ -909,12 +909,28 @@ class EliminarTransporte(APIView):
     
     def delete(self, request, pk):
         try:
-            transporte = Transporte.objects.get(pk=pk)
-        except Transporte.DoesNotExist:
-            return Response({'error': 'No se encontró un transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+            detalle = Detalleobratransporte.objects.get(pk=pk)
+        except Detalleobratransporte.DoesNotExist:
+            return Response({'error': 'No se encontró un detalle de obra transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
-        transporte.delete()
-        return Response({'success': 'El transporte ha sido eliminado exitosamente.'}, status=status.HTTP_200_OK)
+        detalle.delete()
+        return Response({'success': 'El detalle de obra transporte ha sido eliminado exitosamente.'}, status=status.HTTP_200_OK)
+    
+class GetDetalleobratransporte(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        detalles = Detalleobratransporte.objects.all()
+        serializer = DetalleobratransporteSerializer(detalles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class PostDetalleobratransporte(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = DetalleobratransporteSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
