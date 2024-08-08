@@ -923,9 +923,9 @@ class EditarTransporte(APIView):
 class EliminarTransporte(APIView):
     permission_classes = [IsAuthenticated]
     
-    def delete(self, request, pk):
+    def delete(self, request, id_obra, id_transporte):
         try:
-            detalle = Detalleobratransporte.objects.get(pk=pk)
+            detalle = Detalleobratransporte.objects.get(id_obra=id_obra, id_transporte=id_transporte)
         except Detalleobratransporte.DoesNotExist:
             return Response({'error': 'No se encontró un detalle de obra transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
