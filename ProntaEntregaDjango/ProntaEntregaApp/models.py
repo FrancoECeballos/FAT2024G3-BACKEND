@@ -234,21 +234,6 @@ class Detalleobrausuario(models.Model):
     def __str__(self):
         return f'{self.id_detalleobrausuario}'
 
-class Unidadmedida(models.Model):
-    id_unidadmedida = models.AutoField(db_column='id_unidadMedida', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    identificador = models.CharField(max_length=20, blank=True, null=True)
-    paquete = models.BooleanField(blank=True, default=False)
-
-    class Meta:
-        managed = False
-        db_table = 'UnidadMedida'
-
-    def __str__(self):
-        return self.nombre
-
-
 class Stock(models.Model):
     id_stock = models.AutoField(primary_key=True)
     id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
@@ -273,47 +258,31 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nombre
     
-
-class Categoriaproducto(models.Model):
-    id_categoriaproducto = models.AutoField(db_column='id_categoriaProducto', primary_key=True)
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    id_categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, db_column='id_categoria', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'CategoriaProducto'
-
-    def __str__(self):
-        return self.nombre
-
-
 class Producto(models.Model):
     id_producto = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
-    id_categoriaproducto = models.ForeignKey(Categoriaproducto, on_delete=models.SET_NULL, db_column='id_categoriaProducto', blank=True, null=True)
-    id_unidadmedida = models.ForeignKey(Unidadmedida, on_delete=models.SET_NULL, db_column='id_unidadMedida', blank=True, null=True)
-    imagen = models.ImageField(upload_to='productos/')
+    id_categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_categoria', blank=True, null=True)
+    unidadmedida = models.IntegerField(db_column='unidadMedida', blank=True, null=True)  # Field name made lowercase.
+    talle = models.IntegerField(blank=True, null=True)
+    cantidad_por_unidad = models.IntegerField(blank=True, null=True)
+    imagen = models.CharField(max_length=255, blank=True, null=True)
+    perecedero = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Producto'
 
-    def __str__(self):
-        return str(self.nombre)
 
 
 class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     titulo = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
-    imagen = models.ImageField(upload_to='productos/detalles/')
+    imagen = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
-    cantidadUnidades = models.IntegerField(db_column='cantidadUnidades', blank=True, null=True)  # Field name made lowercase.
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
-    id_unidadmedida = models.ForeignKey('Unidadmedida', models.DO_NOTHING, db_column='id_unidadMedida', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

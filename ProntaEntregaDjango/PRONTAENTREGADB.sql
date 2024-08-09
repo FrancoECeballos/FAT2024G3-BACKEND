@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     cantidad_por_unidad int,
     imagen VARCHAR(255),
     perecedero BOOLEAN,
-    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
+    CONSTRAINT fk_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
 );
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
@@ -141,11 +141,9 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     descripcion VARCHAR(255),
     imagen VARCHAR(255),
     cantidad INT,
-    cantidadUnidades INT DEFAULT 1,
     id_stock INT,
     id_producto INT,
     CONSTRAINT fk_producto_detalle_stock FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
-    CONSTRAINT fk_unidadMedida FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida),
     CONSTRAINT fk_stock_detalle FOREIGN KEY (id_stock) REFERENCES Stock(id_stock)
 );
 
@@ -377,9 +375,9 @@ INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 6, 3, 3),
 	('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 7, 1, 1),
     ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 8, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 9, 3, 3),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 1, 2, 1, 10, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 1, 3, 1, 11, 3, 3);
+    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 1, 3, 3),
+    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 1, 2, 1, 2, 2, 2),
+    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 1, 3, 1, 3, 3, 3);
 
 -- Inserciones para la tabla EstadoOferta
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 
@@ -397,9 +395,9 @@ INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 30, 2, 3, 6, 3),
     ('2024-01-10', '02:10:01', '2024-02-10', '08:01:31', 20, 1, 1, 7, 1),
     ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 15, 3, 2, 8, 2),
-    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 5, 2, 3, 9, 3),
-    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 1, 1, 3, 10, 2),
-    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 1, 1, 2, 11, 3);
+    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 5, 2, 3, 1, 3),
+    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 1, 1, 3, 2, 2),
+    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 1, 1, 2, 3, 3);
 
 -- Inserciones para la tabla Transporte
 INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
@@ -414,18 +412,18 @@ INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES
         (2, 2),
         (3, 3);
 
-insert into DetalleStockProducto (titulo, descripcion, imagen, cantidad, cantidadUnidades, id_stock, id_producto, id_unidadMedida) values
-	("titulo", "descripcion", "productos/detalles/no_image.png", 100, 1, 1, 2, 1),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 200, 1, 3, 3, 1),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 300, 1, 2, 1, 3),
-	("titulo", "descripcion", "productos/detalles/no_image.png", 1, 20, 1, 1, 3),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 16, 1, 3, 2, 1),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 30, 3, 6, 6),
-	("titulo", "descripcion", "productos/detalles/no_image.png", 500, 20, 2, 7, 8),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 15, 2, 8, 8),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 500, 5, 1, 9, 8),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 1, 10, 7),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 1, 11, 7);
+insert into DetalleStockProducto (titulo, descripcion, imagen, cantidad, id_stock, id_producto) values
+	("titulo", "descripcion", "productos/detalles/no_image.png", 100, 1, 2),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 200, 3, 3),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 300, 2, 1),
+	("titulo", "descripcion", "productos/detalles/no_image.png", 20, 1, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 16, 3, 2),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 3, 6),
+	("titulo", "descripcion", "productos/detalles/no_image.png", 500, 2, 7),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 2, 8),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 500, 1, 1),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 2),
+    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 3);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
