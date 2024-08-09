@@ -110,14 +110,6 @@ CREATE TABLE IF NOT EXISTS DetalleObraUsuario (
     CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario)
 );
 
-CREATE TABLE IF NOT EXISTS UnidadMedida(
-    id_unidadMedida INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255),
-    descripcion VARCHAR(255),
-    identificador VARCHAR(20),
-    paquete BOOLEAN DEFAULT FALSE
-);
-
 CREATE TABLE IF NOT EXISTS Stock (
     id_stock INT AUTO_INCREMENT PRIMARY KEY,
     id_obra INT,
@@ -130,23 +122,17 @@ CREATE TABLE IF NOT EXISTS Categoria (
     descripcion VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS CategoriaProducto (
-    id_categoriaProducto INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255),
-    descripcion VARCHAR(255),
-    id_categoria INT,
-    CONSTRAINT fk_categoria_categoriaproducto FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
-);
-
 CREATE TABLE IF NOT EXISTS Producto (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     descripcion VARCHAR(255),
-    id_categoriaProducto INT,
-    id_unidadMedida INT,
+    id_categoria INT,
+    unidadMedida INT,
+    talle int,
+    cantidad_por_unidad int,
     imagen VARCHAR(255),
-    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoriaProducto) REFERENCES CategoriaProducto(id_categoriaProducto),
-    CONSTRAINT fk_unidadMedida_producto FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida)
+    perecedero BOOLEAN,
+    CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
 );
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
@@ -158,7 +144,6 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     cantidadUnidades INT DEFAULT 1,
     id_stock INT,
     id_producto INT,
-    id_unidadMedida INT,
     CONSTRAINT fk_producto_detalle_stock FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
     CONSTRAINT fk_unidadMedida FOREIGN KEY (id_unidadMedida) REFERENCES UnidadMedida(id_unidadMedida),
     CONSTRAINT fk_stock_detalle FOREIGN KEY (id_stock) REFERENCES Stock(id_stock)
@@ -343,16 +328,6 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 1),
     ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 1);
 
--- Inserciones para la tabla UnidadMedida
-INSERT INTO UnidadMedida (nombre, descripcion, identificador, paquete) VALUES 
-    ('Kilogramos', 'Son Kilogramos', 'Kg', FALSE),
-    ('Litros', 'Son Litros', 'l', FALSE),
-    ('Gramos', 'Son Gramos', 'g', FALSE),
-    ('Paquete en Kg', 'Es un paquete en Kilogramos', 'x', TRUE),
-    ('Paquete en l', 'Es un paquete en Litros', 'x', TRUE),
-    ('Paquete en g', 'Es un paquete en Gramos', 'x', TRUE),
-    ('Unidad', 'Un objecto', '', FALSE),
-    ('Miligramos', 'Son Gramos', 'g', TRUE);
 
 -- Inserciones para la tabla Stock
 INSERT INTO Stock (id_obra) VALUES 
@@ -372,30 +347,19 @@ INSERT INTO Stock (id_obra) VALUES
 -- Inserciones para la tabla Categoria
 INSERT INTO Categoria (nombre, descripcion) VALUES 
     ('Comida', 'Alimentos, enlatados, percederos y no percederos,etc.'),
-    ('Medicina', 'Pastillas y Tabletas.'),
+    ('Ropa', 'Ropa, para vestir'),
     ('Muebles', 'Muebles que pueden ser ofrecidos.');
 
--- Inserciones para la tabla CategoriaProducto
-INSERT INTO CategoriaProducto (nombre, descripcion, id_categoria) VALUES 
-    ('Perecedero', 'Productos con fecha de vencimiento.', 1),
-    ('No perecederos', 'Productos sin fecha de vencimiento.', 1),
-    ('Enlatados', 'Productos en lata.', 1),
-	('Medicina', 'Medicinas', 2),
-    ('Muebles', 'Muebles', 3);
-
 -- Inserciones para la tabla Producto
-INSERT INTO Producto (nombre, descripcion, id_categoriaProducto, id_unidadMedida, imagen) VALUES 
-    ('Arroz', 'Paquete de arroz de 1Kg', 2, 1, 'productos/Lucchetti_Arroz_Largo_Fino_1_kg__Bolsa_.webp'),
-    ('Fideos', 'Paquete de fideideos', 2, 1, 'productos/spaguetti__70855.jpg'),
-    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 1, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp'),
-	('Yerba', 'Paquete de Yerba de 1Kg', 1, 4, 'productos/yerba.jpg'),
-    ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 2, 1, 'productos/queso.jpg'),
-    ('Avena', 'Paquete de avena de 400 g', 2, 6, 'productos/avena.jpg'),
-    ('Paracetamol', 'Analgésico y antipirético de 500 mg', 4, 8, 'productos/Paracetamol.jpg'),
-    ('Ibuprofeno', 'Antiinflamatorio de 400 mg', 4, 8, 'productos/Ibuprofeno.jpg'),
-    ('Amoxicilina', 'Antibiótico de 500 mg', 4, 8, 'productos/Amoxicilina.png'),
-    ('Pupitre', 'Pupitre basico', 5, 7, 'productos/mueble1.jpg'),
-    ('Placar', 'Placar 2 puertas basico', 5, 7, 'productos/mueble2.jpg');
+INSERT INTO Producto (nombre, descripcion, id_categoria, imagen) VALUES 
+    ('Arroz', 'Paquete de arroz de 1Kg', 1, 'productos/Lucchetti_Arroz_Largo_Fino_1_kg__Bolsa_.webp'),
+    ('Fideos', 'Paquete de fideideos', 1, 'productos/spaguetti__70855.jpg'),
+    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp'),
+	('Yerba', 'Paquete de Yerba de 1Kg', 1, 'productos/yerba.jpg'),
+    ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 1, 'productos/queso.jpg'),
+    ('Avena', 'Paquete de avena de 400 g', 1, 'productos/avena.jpg'),
+    ('Pupitre', 'Pupitre basico', 3, 'productos/mueble1.jpg'),
+    ('Placar', 'Placar 2 puertas basico', 3, 'productos/mueble2.jpg');
 
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
