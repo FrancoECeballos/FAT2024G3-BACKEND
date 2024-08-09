@@ -1008,6 +1008,10 @@ class PostDetallestockproducto(APIView):
 class RestarDetallestockproducto(APIView):
     def post(self,request):
         
+        try:
+            request.data['cantidad']= request.data['cantidad'] * -1
+        except KeyError:
+            return Response({'error','se requiere una cantidad'})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 

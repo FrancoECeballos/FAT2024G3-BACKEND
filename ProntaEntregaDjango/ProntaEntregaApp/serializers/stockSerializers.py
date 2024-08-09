@@ -37,22 +37,20 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'titulo', 'descripcion', 'imagen', 'cantidad', 'cantidadUnidades', 'id_producto', 'id_stock', 'multiplicacion']
+        fields = ['id_detallestockproducto', 'titulo', 'descripcion', 'imagen', 'cantidad', 'id_producto', 'id_stock', 'multiplicacion']
 
     def get_multiplicacion(self, obj):
         cantidad = obj.cantidad if obj.cantidad else 0
-        cantidad_unidades = obj.cantidadUnidades if obj.cantidadUnidades else 0
-        return cantidad * cantidad_unidades
+        return cantidad
 
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto','titulo','descripcion','imagen', 'cantidad', 'cantidadUnidades', 'id_producto', 'id_stock']
+        fields = ['id_detallestockproducto','titulo','descripcion','imagen', 'cantidad', 'id_producto', 'id_stock']
         extra_kwargs = {
             'id_producto': {'required': True, 'allow_null': False},
             'id_stock': {'required': True, 'allow_null': False},
             'cantidad': {'required': False, 'allow_null': True},
-            'cantidadUnidades': {'required': False, 'allow_null': True},
         }
 
     def to_internal_value(self, data):
