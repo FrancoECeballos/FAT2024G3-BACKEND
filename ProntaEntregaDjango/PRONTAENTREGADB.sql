@@ -128,8 +128,8 @@ CREATE TABLE IF NOT EXISTS Producto (
     descripcion VARCHAR(255),
     id_categoria INT,
     unidadMedida INT,
-    talle int,
-    cantidad_por_unidad int,
+    talle INT,
+    cantidad_por_unidad INT,
     imagen VARCHAR(255),
     perecedero BOOLEAN,
     CONSTRAINT fk_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
