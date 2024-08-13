@@ -349,16 +349,18 @@ INSERT INTO Categoria (nombre, descripcion) VALUES
     ('Muebles', 'Muebles que pueden ser ofrecidos.');
 
 -- Inserciones para la tabla Producto
-INSERT INTO Producto (nombre, descripcion, id_categoria, imagen) VALUES 
-    ('Arroz', 'Paquete de arroz de 1Kg', 1, 'productos/Lucchetti_Arroz_Largo_Fino_1_kg__Bolsa_.webp'),
-    ('Fideos', 'Paquete de fideideos', 1, 'productos/spaguetti__70855.jpg'),
-    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp'),
-	('Yerba', 'Paquete de Yerba de 1Kg', 1, 'productos/yerba.jpg'),
-    ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 1, 'productos/queso.jpg'),
-    ('Avena', 'Paquete de avena de 400 g', 1, 'productos/avena.jpg'),
-    ('Pupitre', 'Pupitre basico', 3, 'productos/mueble1.jpg'),
-    ('Placar', 'Placar 2 puertas basico', 3, 'productos/mueble2.jpg');
+INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen, perecedero) VALUES 
+    ('Arroz', 'Paquete de arroz de 1Kg', 1, 1, 'productos/Lucchetti_Arroz_Largo_Fino_1_kg__Bolsa_.webp', FALSE),
+    ('Fideos', 'Paquete de fideideos', 1, 1, 'productos/spaguetti__70855.jpg', FALSE),
+    ('Pure de tomate', 'Pure de tomate 500 ml', 1, 2, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp', FALSE),
+	('Yerba', 'Paquete de Yerba de 1Kg', 1, 1, 'productos/yerba.jpg', FALSE),
+    ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 1, 1, 'productos/queso.jpg', TRUE),
+    ('Avena', 'Paquete de avena de 400 g', 1, 1, 'productos/avena.jpg', FALSE);
+INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen) VALUES 
+    ('Pupitre', 'Pupitre basico', 3, 0, 'productos/mueble1.jpg'),
+    ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg');
 
+    
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
     ('Pendiente', 'Solo es un pedido y no se hizo nada'),
