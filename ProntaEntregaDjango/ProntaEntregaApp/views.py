@@ -997,7 +997,12 @@ class GetProductoByStock(APIView):
             productos = Producto.objects.filter(id_producto__in = ids)
 
             serializer = ProductoSerializer(productos,many=True)
-            
+            for x in serializer.data:
+                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=x['id_producto'])
+                total = 0
+                for y in detalle:
+                    total = total + y.cantidad
+                x.update({'total':total})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Oferta.DoesNotExist:
             return Response({'error': 'Oferta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
