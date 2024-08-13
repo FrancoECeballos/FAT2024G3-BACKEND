@@ -137,9 +137,6 @@ CREATE TABLE IF NOT EXISTS Producto (
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255),
-    descripcion VARCHAR(255),
-    imagen VARCHAR(255),
     cantidad INT,
     checkpoint BOOLEAN,
     fecha_creacion DATE,
@@ -358,6 +355,7 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen, p
 	('Yerba', 'Paquete de Yerba de 1Kg', 1, 1, 'productos/yerba.jpg', FALSE),
     ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 1, 1, 'productos/queso.jpg', TRUE),
     ('Avena', 'Paquete de avena de 400 g', 1, 1, 'productos/avena.jpg', FALSE);
+    
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen) VALUES 
     ('Pupitre', 'Pupitre basico', 3, 0, 'productos/mueble1.jpg'),
     ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg');
@@ -416,18 +414,18 @@ INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES
         (2, 2),
         (3, 3);
 
-insert into DetalleStockProducto (titulo, descripcion, imagen, cantidad, id_stock, id_producto) values
-	("titulo", "descripcion", "productos/detalles/no_image.png", 100, 1, 2),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 200, 3, 3),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 300, 2, 1),
-	("titulo", "descripcion", "productos/detalles/no_image.png", 20, 1, 1),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 16, 3, 2),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 3, 6),
-	("titulo", "descripcion", "productos/detalles/no_image.png", 500, 2, 7),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 400, 2, 8),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 500, 1, 1),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 2),
-    ("titulo", "descripcion", "productos/detalles/no_image.png", 1, 1, 3);
+INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto) VALUES
+    (100, FALSE, '2023-01-01', 1, 2),
+    (200, FALSE, '2023-01-02', 3, 3),
+    (300, FALSE, '2023-01-03', 2, 1),
+    (20, FALSE, '2023-01-04', 1, 1),
+    (16, FALSE, '2023-01-05', 3, 2),
+    (400, FALSE, '2023-01-06', 3, 6),
+    (500, FALSE, '2023-01-07', 2, 7),
+    (400, FALSE, '2023-01-08', 2, 8),
+    (500, FALSE, '2023-01-09', 1, 1),
+    (1, FALSE, '2023-01-10', 1, 2),
+    (1, FALSE, '2023-01-11', 1, 3);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
