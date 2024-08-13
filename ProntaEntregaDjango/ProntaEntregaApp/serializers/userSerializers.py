@@ -23,11 +23,22 @@ class UsuarioSerializer(serializers.ModelSerializer):
         fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
 
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
+    nombreusuario = serializers.CharField(validators=[])
+    documento = serializers.IntegerField(validators=[])
+
     class Meta:
         model = CustomUsuario
         fields = ['nombre', 'apellido', 'nombreusuario', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento']
 
     def update(self, instance, validated_data):
+        # Validar nombreusuario
+        if CustomUsuario.objects.filter(nombreusuario=validated_data.get('nombreusuario')).exclude(pk=instance.pk).exists():
+            raise serializers.ValidationError({"nombreusuario": "El nombre de usuario ya existe."})
+
+        # Validar documento
+        if CustomUsuario.objects.filter(documento=validated_data.get('documento')).exclude(pk=instance.pk).exists():
+            raise serializers.ValidationError({"documento": "El documento ya existe."})
+
         instance.nombre = validated_data.get('nombre', instance.nombre)
         instance.apellido = validated_data.get('apellido', instance.apellido)
         instance.nombreusuario = validated_data.get('nombreusuario', instance.nombreusuario)
