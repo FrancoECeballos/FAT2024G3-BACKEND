@@ -1282,7 +1282,21 @@ class GetDetallestockproductoView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Detallestockproducto.DoesNotExist:
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
-                
+
+class GetDetallestockproducto_Total(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_stock,id_producto):
+        try:
+            detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
+            total = 0
+            for x in detalle:
+                total = total + x.cantidad
+            print(total)
+            return Response({'total':total}, status=status.HTTP_200_OK)
+        except Detallestockproducto.DoesNotExist:
+            return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+  
 class DeleteDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
 
