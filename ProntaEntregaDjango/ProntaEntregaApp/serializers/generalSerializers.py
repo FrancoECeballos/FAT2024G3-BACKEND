@@ -77,7 +77,7 @@ class crearTransporteSerializer(serializers.ModelSerializer):
             modelo=validated_data['modelo'],
             patente=validated_data['patente'],
             kilometraje=validated_data['kilometraje'],
-            imagen=validated_data['imagen'],
+            imagen=validated_data['imagen']
         )
         return auto
     
