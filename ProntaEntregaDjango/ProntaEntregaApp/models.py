@@ -388,7 +388,7 @@ class AporteOferta(models.Model):
         db_table = 'AporteOferta'
 
 
-class TransportManager:
+class TransporteManager:
     def create_transporte(self, marca, modelo, patente, kilometraje):
         if not marca:
             raise ValueError('El transporte debe tener una marca')
