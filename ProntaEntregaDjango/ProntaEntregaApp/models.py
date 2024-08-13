@@ -268,7 +268,7 @@ class Producto(models.Model):
     unidadmedida = models.IntegerField(choices=UNIDAD_CHOICES,db_column='unidadMedida', blank=True, null=True)  # Field name made lowercase.
     talle = models.IntegerField(blank=True, null=True)
     cantidad_por_unidad = models.IntegerField(blank=True, null=True)
-    imagen = models.CharField(max_length=255, blank=True, null=True)
+    imagen = models.ImageField(upload_to='productos/')
     perecedero = models.IntegerField(blank=True, null=True)
 
     class Meta:
