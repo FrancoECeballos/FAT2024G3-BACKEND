@@ -33,20 +33,15 @@ class StockSerializer(serializers.ModelSerializer):
 class DetallestockproductoSerializer(serializers.ModelSerializer):
     id_stock = StockSerializer()
     id_producto = ProductoSerializer()
-    multiplicacion = serializers.SerializerMethodField()
 
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'titulo', 'descripcion', 'cantidad', 'id_producto', 'id_stock', 'multiplicacion']
-
-    def get_multiplicacion(self, obj):
-        cantidad = obj.cantidad if obj.cantidad else 0
-        return cantidad
+        fields = ['id_detallestockproducto', 'titulo', 'descripcion', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'multiplicacion']
 
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'titulo', 'descripcion','checkpoint','fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
+        fields = ['id_detallestockproducto', 'titulo', 'descripcion', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
         extra_kwargs = {
             'id_producto': {'required': True, 'allow_null': False},
             'id_stock': {'required': True, 'allow_null': False},
