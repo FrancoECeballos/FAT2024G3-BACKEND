@@ -260,7 +260,7 @@ class Categoria(models.Model):
     
 class Producto(models.Model):
 
-    UNIDAD_CHOICES = [(1,'Kilogramos'),(2,'Litros'),(3,'Metros')]
+    UNIDAD_CHOICES = [(0,'Unidad'),(1,'Kilogramos'),(2,'Litros'),(3,'Metros')]
     id_producto = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
