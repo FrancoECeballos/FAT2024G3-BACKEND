@@ -275,13 +275,13 @@ class Producto(models.Model):
         managed = False
         db_table = 'Producto'
 
+    def __str__(self):
+        return f'{self.nombre}'
+
 
 
 class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
-    titulo = models.CharField(max_length=255, blank=True, null=True)
-    descripcion = models.CharField(max_length=255, blank=True, null=True)
-    imagen = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     checkpoint = models.BooleanField(default=False,blank=True, null=True)
     fecha_creacion = models.DateField(blank=True, null=True)
