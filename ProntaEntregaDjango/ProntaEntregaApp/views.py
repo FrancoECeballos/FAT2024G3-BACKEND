@@ -981,6 +981,29 @@ class VerStockYProducto(APIView):
         
         return JsonResponse(productos_con_stock, safe=False)
 
+class GetProductoByStock(APIView):
+    permission_classes = [AllowAny]
+    
+    def get(self, request, id_stock,id_categoria):
+        try:
+            stock = Stock.objects.get(pk=id_stock)
+            detalle = Detallestockproducto.objects.filter(id_stock = stock.id_stock)
+            ids = []
+            for y in Producto.objects.filter(id_categoria = id_categoria):
+                for x in detalle:
+                    if y.__dict__['id_producto'] == x.__dict__['id_producto_id']:
+                        ids.append(x.__dict__['id_producto_id'])
+            
+            productos = Producto.objects.filter(id_producto__in = ids)
+
+            serializer = ProductoSerializer(productos,many=True)
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Oferta.DoesNotExist:
+            return Response({'error': 'Oferta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
 class PostStock(APIView):
     def post(self,request):
         serializer = Stock(data=request.data)
@@ -1005,7 +1028,6 @@ class PostDetallestockproducto(APIView):
             serializer.save() 
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class RestarDetallestockproducto(APIView):
     def post(self,request):
