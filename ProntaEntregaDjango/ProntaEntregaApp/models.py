@@ -281,13 +281,17 @@ class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     titulo = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
-    cantidad = models.IntegerField(blank=True, null=False)
+    imagen = models.CharField(max_length=255, blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+    chackpoint = models.BooleanField(default=False,blank=True, null=True)
+    fecha_creacion = models.DateField(blank=True, null=True)
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'DetalleStockProducto'
+
 
     def __str__(self):
         return f'{self.id_producto}, {self.id_stock}'

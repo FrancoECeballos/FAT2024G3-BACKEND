@@ -141,6 +141,8 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     descripcion VARCHAR(255),
     imagen VARCHAR(255),
     cantidad INT,
+    chackpoint boolean,
+    fecha_creacion date,
     id_stock INT,
     id_producto INT,
     CONSTRAINT fk_producto_detalle_stock FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
