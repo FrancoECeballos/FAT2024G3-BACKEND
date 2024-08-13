@@ -48,6 +48,7 @@ urlpatterns = [
     path('stock/', GetStock.as_view(), name='ver_stock'),
     path('stock/<int:id_obra>/', GetStockByID.as_view(), name='ver_stock_id'),
     path('stock/<int:categoria_id>/', VerStockYProducto.as_view(), name='ver_stock_producto'),
+    path('GetProductoByStock/<int:id_stock>/<int:id_categoria>/', GetProductoByStock.as_view(), name='GetProductoByStock'),
     path('crear_stock/', CrearStock.as_view(), name='crear_stock'),
     path('editar_stock/<int:pk>/', EditarStock.as_view(), name='editar_stock'),
 
