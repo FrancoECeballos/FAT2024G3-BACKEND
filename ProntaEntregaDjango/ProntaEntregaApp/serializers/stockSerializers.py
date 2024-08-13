@@ -13,10 +13,14 @@ class CategoriaSerializer(serializers.ModelSerializer):
 
 class ProductoSerializer(serializers.ModelSerializer):
     id_categoria = CategoriaSerializer()
+    unidadmedida = serializers.SerializerMethodField()
 
     class Meta:
         model = Producto
-        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoria', 'imagen']
+        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoria', 'imagen', 'unidadmedida']
+
+    def get_unidadmedida(self, obj):
+        return obj.get_unidadmedida_display()
 
     def validate_id_categoria(self, value):
         if value is None:
