@@ -860,7 +860,7 @@ class GetTransporteByObra(APIView):
 class CrearTransporte(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = crearTransporteSerializer(data=request.data)
+        serializer = TransporteSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
