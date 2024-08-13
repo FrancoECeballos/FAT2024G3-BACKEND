@@ -45,10 +45,6 @@ urlpatterns = [
     path('crear_obra/', CrearObra.as_view(), name='obra_post'),
     path('editar_obra/<int:pk>', EditarObra.as_view(), name='obra_edit'),
 
-    path('unidad_medida/', GetUnidadMedida.as_view(), name='ver_unidad_medida'),
-    path('crear_unidad_medida/', CrearUnidadMedida.as_view(), name='crear_unidad_medida'),
-    path('editar_unidad_medida/<int:pk>/', EditarUnidadMedida.as_view(), name='editar_unidad_medida'),
-
     path('stock/', GetStock.as_view(), name='ver_stock'),
     path('stock/<int:id_obra>/', GetStockByID.as_view(), name='ver_stock_id'),
     path('stock/<int:categoria_id>/', VerStockYProducto.as_view(), name='ver_stock_producto'),
@@ -59,11 +55,6 @@ urlpatterns = [
     path('categoria/<int:id_categoria>/', GetCategoriaByID.as_view(), name='ver_categoria_id'),
     path('crear_categoria/', CrearCategoria.as_view(), name='crear_categoria'),
     path('editar_categoria/<int:pk>/', EditarCategoria.as_view(), name='editar_categoria'),
-
-    path('categoria_producto/', GetCategoriaProducto.as_view(), name='ver_categoria_producto'),
-    path('categoria_producto/<int:id_categoria>/', GetCategoriaProductoByCategoria.as_view(), name='ver_categoria_producto_by_categoria'),
-    path('crear_categoria_producto/', CrearCategoriaProducto.as_view(), name='crear_categoria_producto'),
-    path('editar_categoria_producto/<int:pk>/', EditarCategoriaProducto.as_view(), name='editar_categoria_producto'),
 
     path('productos/', GetProductos.as_view(), name='ver_producto'),
     path('producto/<int:pk>/', GetProductoById.as_view(), name='ver_producto_id'),
@@ -121,7 +112,6 @@ urlpatterns = [
     path('user/stockEmail/<str:email>/', GetStockAsignadoByEmail.as_view(), name='user-stockEmail'),
     path('user/stockToken/<str:token>/', GetStockAsignadoByToken.as_view(), name='user-stockToken'),
     path('user/obras/delete/<int:pk>/', DeleteDetalleObraUsuario.as_view(), name='user-obras-delete'),
-    path('categorias-productos/<int:id_stock>/', CategoriasProductosView.as_view(), name='categorias-productos'),
     path('obra/<int:id_stock>/categoria_producto/<str:id_categoriaproducto>/<int:id_categoria>/', ProductosPorCategoriaYObraView.as_view(), name='productos-por-categoria-y-obra'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
     
@@ -133,7 +123,6 @@ urlpatterns = [
     path('restardetallestockproducto/', RestarDetallestockproducto.as_view(), name='RestarDetallestockproducto'),
     path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
-    path('catprod_obra/<int:id_categoria>/', CategoriaProductosPorCategoria.as_view(), name='detallestockproducto-categoria'),
     path('GetUsuariosPorPedido/<int:id_pedido>/', GetUsuariosPorPedido.as_view(), name='GetUsuariosPorPedido'),
 
 ]
