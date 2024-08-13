@@ -384,6 +384,26 @@ class AporteOferta(models.Model):
         db_table = 'AporteOferta'
 
 
+class TransportManager:
+    def create_transporte(self, marca, modelo, patente, kilometraje):
+        if not marca:
+            raise ValueError('El transporte debe tener una marca')
+        if not modelo:
+            raise ValueError('El transporte debe tener un modelo')
+        if not patente:
+            raise ValueError('El transporte debe tener una placa')
+        if not kilometraje:
+            raise ValueError('El transporte debe tener un kilometraje')
+
+        transporte = self.model(
+            marca=marca,
+            modelo=modelo,
+            patente=patente,
+            kilometraje=kilometraje,
+        )
+        transporte.save(using=self._db)
+        return transporte
+
 class Transporte(models.Model):
     id_transporte = models.AutoField(primary_key=True)
     marca = models.CharField(max_length=255, blank=True, null=True)
