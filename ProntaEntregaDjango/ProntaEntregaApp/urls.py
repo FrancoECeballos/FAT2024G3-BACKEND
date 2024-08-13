@@ -14,6 +14,7 @@ urlpatterns = [
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
     path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
     path('user/obra/', AllUsersByObra.as_view(), name='ver_all_user_obra'),
+    path('obra/user/<str:token>/', ObraByUser.as_view(), name='ver_obra_user'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
     
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
@@ -35,7 +36,7 @@ urlpatterns = [
 
     path('register/', UserRegister.as_view(), name='user_register'),
     path('login/', UserLogin.as_view(), name='user_login'),
-    path('userToken/<str:token>', UserByToken.as_view(), name='userToken'),
+    path('userToken/<str:token>/', UserByToken.as_view(), name='userToken'),
     path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),        
     path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
 
