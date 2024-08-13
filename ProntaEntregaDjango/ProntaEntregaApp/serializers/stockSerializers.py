@@ -46,7 +46,7 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'titulo', 'descripcion','chackpoint','fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
+        fields = ['id_detallestockproducto', 'titulo', 'descripcion','checkpoint','fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
         extra_kwargs = {
             'id_producto': {'required': True, 'allow_null': False},
             'id_stock': {'required': True, 'allow_null': False},

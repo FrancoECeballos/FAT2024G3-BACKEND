@@ -283,7 +283,7 @@ class Detallestockproducto(models.Model):
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     imagen = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
-    chackpoint = models.BooleanField(default=False,blank=True, null=True)
+    checkpoint = models.BooleanField(default=False,blank=True, null=True)
     fecha_creacion = models.DateField(blank=True, null=True)
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
