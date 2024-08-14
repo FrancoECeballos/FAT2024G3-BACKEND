@@ -1066,6 +1066,15 @@ class DeleteStock(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Stock.DoesNotExist:
             return Response({'error': 'El Stock no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class DeleteProducto(APIView):
+    def delete(self, request, pk):
+        try:
+            producto = get_object_or_404(Producto, id_producto=pk)
+            producto.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Producto.DoesNotExist:
+            return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class VerUsuarios(APIView):
