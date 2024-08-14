@@ -1034,10 +1034,22 @@ class PostProducto(APIView):
 class PostDetallestockproducto(APIView):
     def post(self,request):
         
-        request.data.update({'fecha_creacion':datetime.datetime.today().date()})
+        request.data.update({'fecha_creacion':datetime.today().date()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 
+
+            dd = timedelta(days=7)
+            d = datetime.today().date() - dd
+            print(d)
+            crear_checkpoint = True
+            for x in Detallestockproducto.objects.filter(checkpoint = True):
+                if x.fecha_creacion >= d:
+                    print(x)
+                    crear_checkpoint = False
+            
+            if crear_checkpoint == True:
+                print("*crea checkpoint*")
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
