@@ -287,6 +287,7 @@ class Detallestockproducto(models.Model):
     fecha_creacion = models.DateField(blank=True, null=True)
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
+    id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
 
     class Meta:
         managed = False
