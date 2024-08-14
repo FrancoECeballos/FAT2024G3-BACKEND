@@ -36,6 +36,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML
 from .models import Pedido
+from datetime import datetime, timedelta
 
 def index(request):
     return render(request, 'index.html')
@@ -1332,9 +1333,12 @@ class PedidoInformePDFView(APIView):
         # Generar el PDF
         pdf_file = HTML(string=html_string).write_pdf()
 
+        current_time = datetime.now() + timedelta(hours=-3)
+        formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
+
         # Enviar el PDF como respuesta
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="informe_pedidos.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="informe_pedidos_{formatted_time}.pdf"'
         return response
 
 class StockInformePDFView(APIView):
@@ -1351,5 +1355,9 @@ class StockInformePDFView(APIView):
 
         # Enviar el PDF como respuesta
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="informe_stock.pdf"'
+        # Obtener la hora actual y sumarle tres horas
+        current_time = datetime.now() + timedelta(hours=-3)
+        formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
+
+        response['Content-Disposition'] = f'attachment; filename="informe_stock_{formatted_time}.pdf"'
         return response
