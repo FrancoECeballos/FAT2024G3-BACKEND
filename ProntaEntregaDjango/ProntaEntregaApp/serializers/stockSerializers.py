@@ -2,6 +2,7 @@ from rest_framework import serializers
 from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers import *
 from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
+from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 from django.contrib.auth import authenticate
 
 
@@ -37,10 +38,11 @@ class StockSerializer(serializers.ModelSerializer):
 class DetallestockproductoSerializer(serializers.ModelSerializer):
     id_stock = StockSerializer()
     id_producto = ProductoSerializer()
+    id_usuario = UsuarioSerializer()
 
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
 
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:

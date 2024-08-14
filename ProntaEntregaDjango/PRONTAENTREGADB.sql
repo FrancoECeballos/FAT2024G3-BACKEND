@@ -142,8 +142,10 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     fecha_creacion DATE,
     id_stock INT,
     id_producto INT,
+    id_usuario INT,
     CONSTRAINT fk_producto_detalle_stock FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
-    CONSTRAINT fk_stock_detalle FOREIGN KEY (id_stock) REFERENCES Stock(id_stock)
+    CONSTRAINT fk_stock_detalle FOREIGN KEY (id_stock) REFERENCES Stock(id_stock),
+    CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario)
 );
 
 CREATE TABLE IF NOT EXISTS EstadoPedido(
