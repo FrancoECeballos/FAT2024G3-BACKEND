@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS Producto (
 
 CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
-    cantidad INT,
+    cantidad FLOAT,
     checkpoint BOOLEAN,
     fecha_creacion DATE,
     id_stock INT,

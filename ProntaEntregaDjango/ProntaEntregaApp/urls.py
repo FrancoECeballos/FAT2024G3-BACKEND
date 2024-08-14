@@ -127,6 +127,8 @@ urlpatterns = [
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
     path('GetUsuariosPorPedido/<int:id_pedido>/', GetUsuariosPorPedido.as_view(), name='GetUsuariosPorPedido'),
 
+    path('informe-pedidos-pdf/', PedidoInformePDFView.as_view(), name='informe-pedidos-pdf'),
+    path('informe-stock-pdf/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
 ]
 
 if settings.DEBUG:

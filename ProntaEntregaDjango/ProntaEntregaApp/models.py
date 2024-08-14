@@ -282,7 +282,7 @@ class Producto(models.Model):
 
 class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
-    cantidad = models.IntegerField(blank=True, null=True)
+    cantidad = models.FloatField(blank=True, null=True)
     checkpoint = models.BooleanField(default=False,blank=True, null=True)
     fecha_creacion = models.DateField(blank=True, null=True)
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
