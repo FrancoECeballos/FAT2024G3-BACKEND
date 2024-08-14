@@ -64,3 +64,10 @@ class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
             if field not in data or data[field] is None:
                 raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})
         return data
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        fecha_creacion = instance.fecha_creacion
+        if fecha_creacion:
+            representation['fecha_creacion'] = fecha_creacion.strftime('%d/%m/%Y')
+        return representation
