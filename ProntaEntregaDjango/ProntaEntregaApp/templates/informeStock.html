@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe Stock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Informe Stock</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Movimiento</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <!-- Añadir más campos según sea necesario -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.id_detallestockproducto }}</td>
+                <td>{{ detalle.id_producto }}</td>
+                <td>{{ detalle.cantidad}}+{{detalle.id_producto.unidadmedida}}</td>
+                <!-- Añadir más campos según sea necesario -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe de Pedidos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Informe de Pedidos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Pedido</th>
+                <th>Campo 1</th>
+                <th>Campo 2</th>
+                <!-- Añadir más campos según sea necesario -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ pedido.id_pedido }}</td>
+                <td>{{ pedido.id_producto }}</td>
+                <td>{{ pedido.campo2 }}</td>
+                <!-- Añadir más campos según sea necesario -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -40,7 +40,7 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'multiplicacion']
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
 
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
