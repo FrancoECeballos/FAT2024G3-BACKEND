@@ -1033,6 +1033,7 @@ class PostProducto(APIView):
 class PostDetallestockproducto(APIView):
     def post(self,request):
         
+        request.data.update({'fecha_creacion':datetime.datetime.today().date()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 
@@ -1046,20 +1047,12 @@ class RestarDetallestockproducto(APIView):
             request.data['cantidad']= request.data['cantidad'] * -1
         except KeyError:
             return Response({'error','se requiere una cantidad'})
+        request.data.update({'fecha_creacion':datetime.datetime.today().date()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class DeleteProducto(APIView):
-    def delete(self, request, pk):
-        try:
-            producto = get_object_or_404(Producto, id_producto=pk)
-            producto.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Producto.DoesNotExist:
-            return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 class DeleteDetallestockproducto(APIView):
     def delete(self, request, pk):
