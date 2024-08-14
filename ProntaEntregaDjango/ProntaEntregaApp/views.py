@@ -32,6 +32,11 @@ from ProntaEntregaApp.emails import email_sending
 from django.db.models import Count, Q 
 import datetime
 
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from weasyprint import HTML
+from .models import Pedido
+
 def index(request):
     return render(request, 'index.html')
 
@@ -1314,3 +1319,37 @@ class DeleteDetallestockproductoView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Detallestockproducto.DoesNotExist:
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+
+class PedidoInformePDFView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        pedidos = Pedido.objects.all()
+
+        # Renderizar el contenido a una plantilla HTML
+        html_string = render_to_string('informePedidos.html', {'pedidos': pedidos})
+        
+        # Generar el PDF
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        # Enviar el PDF como respuesta
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="informe_pedidos.pdf"'
+        return response
+
+class StockInformePDFView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        detalles = Detallestockproducto.objects.all()
+
+        # Renderizar el contenido a una plantilla HTML
+        html_string = render_to_string('informeStock.html', {'detalles': detalles})
+        
+        # Generar el PDF
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        # Enviar el PDF como respuesta
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="informe_stock.pdf"'
+        return response
