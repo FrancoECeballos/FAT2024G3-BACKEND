@@ -27,19 +27,21 @@
     <table>
         <thead>
             <tr>
+                <th>Fecha</th>
                 <th>ID Movimiento</th>
+                <th>Categoria</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
-                <!-- Añadir más campos según sea necesario -->
             </tr>
         </thead>
         <tbody>
             {% for detalle in detalles %}
             <tr>
+                <td>{{ detalle.fecha_creacion }}</td>
                 <td>{{ detalle.id_detallestockproducto }}</td>
+                <td>{{ detalle.id_producto.id_categoria }}</td>
                 <td>{{ detalle.id_producto }}</td>
                 <td>{{ detalle.cantidad}} {{detalle.id_producto.unidadmedida}}</td>
-                <!-- Añadir más campos según sea necesario -->
             </tr>
             {% endfor %}
         </tbody>
