@@ -1356,8 +1356,10 @@ class PedidoInformePDFView(APIView):
 class StockInformePDFView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        detalles = Detallestockproducto.objects.all()
+    def get(self, request, id_obra, id_producto):
+        stocks = Stock.objects.filter(id_obra=id_obra)
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks)
+        detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
         # Renderizar el contenido a una plantilla HTML
         html_string = render_to_string('informeStock.html', {'detalles': detalles})
@@ -1370,8 +1372,7 @@ class StockInformePDFView(APIView):
         # Obtener la hora actual y sumarle tres horas
         current_time = datetime.now() + timedelta(hours=-3)
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
-
-        response['Content-Disposition'] = f'attachment; filename="informe_stock_{formatted_time}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
 
 class GetProductosPorCategoriaExcluidos(APIView):
@@ -1395,6 +1396,6 @@ class GetDetallesProductoObra(APIView):
 
     def get(self, request, id_obra, id_producto):
         stocks = Stock.objects.filter(id_obra=id_obra)
-        detalles = Detallestockproducto.objects.filter     (id_producto=id_producto, id_stock__in=stocks)
+        detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks)
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
