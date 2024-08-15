@@ -14,7 +14,7 @@ urlpatterns = [
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
     path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
     path('user/obra/', AllUsersByObra.as_view(), name='ver_all_user_obra'),
-    path('user/obra/null', AllUsersByObra_null.as_view(), name='AllUsersByObra_null'),
+    path('user/obra/null/', AllUsersByObra_null.as_view(), name='AllUsersByObra_null'),
     path('obra/user/<str:token>/', ObraByUser.as_view(), name='ver_obra_user'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
     
