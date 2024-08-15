@@ -416,18 +416,18 @@ INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES
         (2, 2),
         (3, 3);
 
-INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto) VALUES
-    (100, FALSE, '2023-01-01', 1, 2),
-    (200, FALSE, '2023-01-02', 3, 3),
-    (300, FALSE, '2023-01-03', 2, 1),
-    (20, FALSE, '2023-01-04', 1, 1),
-    (16, FALSE, '2023-01-05', 3, 2),
-    (400, FALSE, '2023-01-06', 3, 6),
-    (500, FALSE, '2023-01-07', 2, 7),
-    (400, FALSE, '2023-01-08', 2, 8),
-    (500, FALSE, '2023-01-09', 1, 1),
-    (1, FALSE, '2023-01-10', 1, 2),
-    (1, FALSE, '2023-01-11', 1, 3);
+INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto, id_usuario) VALUES
+    (100, FALSE, '2023-01-01', 1, 2, 1),
+    (200, FALSE, '2023-01-02', 3, 3, 2),
+    (300, FALSE, '2023-01-03', 2, 1, 3),
+    (20, FALSE, '2023-01-04', 1, 1, 2),
+    (16, FALSE, '2023-01-05', 3, 2, 4),
+    (400, FALSE, '2023-01-06', 3, 6, 1),
+    (500, FALSE, '2023-01-07', 2, 7, 5),
+    (400, FALSE, '2023-01-08', 2, 8, 4),
+    (500, FALSE, '2023-01-09', 1, 1, 3),
+    (1, FALSE, '2023-01-10', 1, 2, 1),
+    (1, FALSE, '2023-01-11', 1, 3, 2);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),
