@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     descripcion VARCHAR(255),
     id_categoria INT,
     unidadMedida INT,
-    talle INT,
+    talle VARCHAR(255),
     cantidad_por_unidad INT,
     imagen VARCHAR(255),
     perecedero BOOLEAN,
