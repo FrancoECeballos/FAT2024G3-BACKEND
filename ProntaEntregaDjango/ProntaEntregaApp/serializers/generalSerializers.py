@@ -69,15 +69,15 @@ class TransporteSerializer(serializers.ModelSerializer):
 class crearTransporteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transporte
-        fields = ['marca', 'modelo', 'patente', 'kilometraje', 'imagen']
+        fields = ['imagen', 'marca', 'modelo', 'patente', 'kilometraje']
 
     def create(self, validated_data):
-        auto = Transporte.objects.create_transporte(
+        auto = Transporte.objects.crear_transporte(
+            imagen=validated_data['imagen'],
             marca=validated_data['marca'],
             modelo=validated_data['modelo'],
             patente=validated_data['patente'],
-            kilometraje=validated_data['kilometraje'],
-            imagen=validated_data['imagen']
+            kilometraje=validated_data['kilometraje']
         )
         return auto
     
