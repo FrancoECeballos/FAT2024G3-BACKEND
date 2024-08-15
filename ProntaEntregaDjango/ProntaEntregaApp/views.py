@@ -1361,3 +1361,19 @@ class StockInformePDFView(APIView):
 
         response['Content-Disposition'] = f'attachment; filename="informe_stock_{formatted_time}.pdf"'
         return response
+
+class GetProductosPorCategoriaExcluidos(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id_categoria):
+        
+        excluded_ids = request.data.get('excluded_ids', [])
+        print(excluded_ids)
+
+        if id_categoria:
+            productos = Producto.objects.filter(id_categoria=id_categoria).exclude(id_producto__in=excluded_ids)
+        else:
+            return Response({"error": "Categoria no proporcionada"}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ProductoSerializer(productos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
