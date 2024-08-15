@@ -307,8 +307,17 @@ class AllUsersByObra(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        detalles = CustomUsuario.objects.all()
-        serializer = Detalleobrausuario(detalles, many=True)
+        usr = CustomUsuario.objects.all()
+        serializer = UsuarioSerializer(usr, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AllUsersByObra_null(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        detalles = Detalleobrausuario.objects.all().values_list('id_usuario', flat=True)
+        usr = CustomUsuario.objects.exclude(id_usuario__in = detalles)
+        serializer = UsuarioSerializer(usr, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 class ObraByUser(APIView):
