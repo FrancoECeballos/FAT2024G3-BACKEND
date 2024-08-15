@@ -1051,7 +1051,16 @@ class PostDetallestockproducto(APIView):
             
             if crear_checkpoint == True:
 
-                detalle = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'],)
+                ultimo_checkpoint = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'],checkpoint= True)
+                
+                ultimo_checkpoint = ultimo_checkpoint.order_by('fecha_creacion').first()
+                
+                try:
+                    detalle = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'], fecha_creacion__gte = ultimo_checkpoint.fecha_creacion)
+                    total = ultimo_checkpoint.cantidad
+                except AttributeError:
+                    print('hubo errores')
+                    detalle = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'])
                 total = 0
                 for x in detalle:
                     total = total + x.cantidad
