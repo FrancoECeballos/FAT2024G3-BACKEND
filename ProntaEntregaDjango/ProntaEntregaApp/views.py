@@ -1060,7 +1060,7 @@ class RestarDetallestockproducto(APIView):
             request.data['cantidad']= request.data['cantidad'] * -1
         except KeyError:
             return Response({'error','se requiere una cantidad'})
-        request.data.update({'fecha_creacion':datetime.datetime.today().date()})
+        request.data.update({'fecha_creacion':datetime.today().date()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 
