@@ -71,5 +71,5 @@ class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         fecha_creacion = instance.fecha_creacion
         if fecha_creacion:
-            representation['fecha_creacion'] = fecha_creacion.strftime('%d/%m/%Y')
+            representation['fecha_creacion'] = fecha_creacion.strftime('%d/%m/%Y %H:%M:%S')
         return representation

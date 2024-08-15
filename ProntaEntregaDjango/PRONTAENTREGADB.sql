@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
     cantidad FLOAT,
     checkpoint BOOLEAN,
-    fecha_creacion DATE,
+    fecha_creacion DATETIME,
     id_stock INT,
     id_producto INT,
     id_usuario INT,
@@ -417,17 +417,17 @@ INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES
         (3, 3);
 
 INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto, id_usuario) VALUES
-    (100, FALSE, '2023-01-01', 1, 2, 1),
-    (200, FALSE, '2023-01-02', 3, 3, 2),
-    (300, FALSE, '2023-01-03', 2, 1, 3),
-    (20, FALSE, '2023-01-04', 1, 1, 2),
-    (16, FALSE, '2023-01-05', 3, 2, 4),
-    (400, FALSE, '2023-01-06', 3, 6, 1),
-    (500, FALSE, '2023-01-07', 2, 7, 5),
-    (400, FALSE, '2023-01-08', 2, 8, 4),
-    (500, FALSE, '2023-01-09', 1, 1, 3),
-    (1, FALSE, '2023-01-10', 1, 2, 1),
-    (1, FALSE, '2023-01-11', 1, 3, 2);
+    (100, FALSE, '2023-01-01 08:00:00', 1, 2, 1),
+    (200, FALSE, '2023-01-02 09:00:00', 3, 3, 2),
+    (300, FALSE, '2023-01-03 10:00:00', 2, 1, 3),
+    (20, FALSE, '2023-01-04 11:00:00', 1, 1, 2),
+    (16, FALSE, '2023-01-05 12:00:00', 3, 2, 4),
+    (400, FALSE, '2023-01-06 13:00:00', 3, 6, 1),
+    (500, FALSE, '2023-01-07 14:00:00', 2, 7, 5),
+    (400, FALSE, '2023-01-08 15:00:00', 2, 8, 4),
+    (500, FALSE, '2023-01-09 16:00:00', 1, 1, 3),
+    (1, FALSE, '2023-01-10 17:00:00', 1, 2, 1),
+    (1, FALSE, '2023-01-11 18:00:00', 1, 3, 2);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),

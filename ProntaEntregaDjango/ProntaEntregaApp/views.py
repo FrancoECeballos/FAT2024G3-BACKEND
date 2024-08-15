@@ -1043,13 +1043,13 @@ class PostProducto(APIView):
 class PostDetallestockproducto(APIView):
     def post(self,request):
         
-        request.data.update({'fecha_creacion':datetime.today().date()})
+        request.data.update({'fecha_creacion':datetime.today()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             
 
             dd = timedelta(days=7)
-            d = datetime.today().date() - dd
+            d = datetime.today() - dd
             print(request.data['id_producto'])
             print(request.data['id_stock'])
             crear_checkpoint = True
@@ -1076,7 +1076,7 @@ class PostDetallestockproducto(APIView):
 
                 Detallestockproducto.objects.create(
                 checkpoint=True,
-                fecha_creacion=datetime.today().date(),
+                fecha_creacion=datetime.today(),
                 cantidad=total,
                 id_producto_id=request.data['id_producto'],
                 id_stock_id=request.data['id_stock']
@@ -1097,7 +1097,7 @@ class RestarDetallestockproducto(APIView):
             request.data['cantidad']= request.data['cantidad'] * -1
         except KeyError:
             return Response({'error','se requiere una cantidad'})
-        request.data.update({'fecha_creacion':datetime.today().date()})
+        request.data.update({'fecha_creacion':datetime.today()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 
@@ -1206,7 +1206,7 @@ class CategoriaPost(APIView):
             serializer.save()
 
             for usr in CustomUsuario.objects.all():
-                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
+                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now()),"id_usuario": usr.id_usuario })
                 if serializerN.is_valid():
                     serializerN.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
