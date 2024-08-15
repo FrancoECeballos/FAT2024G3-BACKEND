@@ -14,6 +14,7 @@ urlpatterns = [
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
     path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
     path('user/obra/', AllUsersByObra.as_view(), name='ver_all_user_obra'),
+    path('user/obra/null/', AllUsersByObra_null.as_view(), name='AllUsersByObra_null'),
     path('obra/user/<str:token>/', ObraByUser.as_view(), name='ver_obra_user'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
     
@@ -128,7 +129,7 @@ urlpatterns = [
     path('GetUsuariosPorPedido/<int:id_pedido>/', GetUsuariosPorPedido.as_view(), name='GetUsuariosPorPedido'),
 
     path('informe-pedidos-pdf/', PedidoInformePDFView.as_view(), name='informe-pedidos-pdf'),
-    path('informe-stock-pdf/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
+    path('informe-stock-pdf/<int:id_producto>/<int:id_obra>/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_obra>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
