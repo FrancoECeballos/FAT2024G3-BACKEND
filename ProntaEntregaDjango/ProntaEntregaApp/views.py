@@ -316,7 +316,7 @@ class AllUsersByObra_null(APIView):
 
     def get(self, request):
         detalles = Detalleobrausuario.objects.all().values_list('id_usuario', flat=True)
-        usr = CustomUsuario.objects.exclude(id_usuario__in = detalles)
+        usr = CustomUsuario.objects.exclude(id_usuario__in = detalles).exclude(is_superuser = True)
         serializer = UsuarioSerializer(usr, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
