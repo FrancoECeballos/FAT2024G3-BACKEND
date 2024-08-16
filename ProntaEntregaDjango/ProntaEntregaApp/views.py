@@ -36,7 +36,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML
 from .models import Pedido
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 def index(request):
     return render(request, 'index.html')
@@ -220,6 +220,7 @@ class EditarTipoUsuario(APIView):
 class UserRegister(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
+        request.data.update({'fecha_creacion':date.today()})
         serializer = UsuarioRegistroSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
