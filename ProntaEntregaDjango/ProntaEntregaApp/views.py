@@ -770,6 +770,16 @@ class CrearOferta(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetOfertaSimilar(APIView):
+    def get(self,request,id_obra,id_producto):
+        try:
+            oferta = Oferta.objects.filter(id_obra = id_obra, id_producto = id_producto, id_estadooferta = 1)
+            serializer = OfertaSerializer(oferta, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Oferta.DoesNotExist:
+            return Response({'error': 'Oferta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+
 class EditarOferta(APIView):
     def put(self, request, pk):
         try:
