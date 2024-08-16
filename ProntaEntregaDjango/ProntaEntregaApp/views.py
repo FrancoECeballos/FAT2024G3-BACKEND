@@ -1405,7 +1405,7 @@ class StockInformePDFView(APIView):
 
     def get(self, request, id_obra, id_producto):
         stocks = Stock.objects.filter(id_obra=id_obra)
-        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks)
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
         # Renderizar el contenido a una plantilla HTML
@@ -1443,6 +1443,6 @@ class GetDetallesProductoObra(APIView):
 
     def get(self, request, id_obra, id_producto):
         stocks = Stock.objects.filter(id_obra=id_obra)
-        detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks)
+        detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
