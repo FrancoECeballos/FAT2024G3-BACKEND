@@ -129,10 +129,10 @@ urlpatterns = [
     path('GetUsuariosPorPedido/<int:id_pedido>/', GetUsuariosPorPedido.as_view(), name='GetUsuariosPorPedido'),
 
     path('informe-pedidos-pdf/', PedidoInformePDFView.as_view(), name='informe-pedidos-pdf'),
-    path('informe-stock-pdf/<int:id_producto>/<int:id_obra>/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
+    path('informe-stock-pdf/<int:id_producto>/<int:id_stock>/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
-    path('GetDetallesProductoObra/<int:id_producto>/<int:id_obra>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
+    path('GetDetallesProductoObra/<int:id_producto>/<int:id_stock>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
 ]
 
 if settings.DEBUG:
