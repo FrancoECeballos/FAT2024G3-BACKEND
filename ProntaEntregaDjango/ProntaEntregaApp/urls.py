@@ -135,10 +135,7 @@ urlpatterns = [
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_stock>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
-<<<<<<< HEAD
-=======
     path('GetTotalProductoObra/<int:id_obra>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
->>>>>>> 509a9008db0e407d48c0d4946ec13cb5a7b9cf4a
 ]
 
 if settings.DEBUG:

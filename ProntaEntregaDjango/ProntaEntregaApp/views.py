@@ -1449,11 +1449,7 @@ class GetProductosPorCategoriaExcluidos(APIView):
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-<<<<<<< HEAD
-class GetDetallesProductoObra(APIView):
-=======
 class GetCantidadTotalProductoObra(APIView):
->>>>>>> 509a9008db0e407d48c0d4946ec13cb5a7b9cf4a
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_stock, id_producto):
@@ -1461,7 +1457,7 @@ class GetCantidadTotalProductoObra(APIView):
         detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-=======
+    
         preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
@@ -1486,4 +1482,3 @@ class DeletePedido(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Pedido.DoesNotExist:
             return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
->>>>>>> 509a9008db0e407d48c0d4946ec13cb5a7b9cf4a
