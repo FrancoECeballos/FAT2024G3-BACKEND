@@ -131,6 +131,7 @@ urlpatterns = [
     path('informe-stock-pdf/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
+    path('GetTotalProductoObra/<int:id_obra>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
 ]
 
 if settings.DEBUG:

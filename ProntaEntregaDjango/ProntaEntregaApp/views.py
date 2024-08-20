@@ -1389,3 +1389,17 @@ class GetProductosPorCategoriaExcluidos(APIView):
 
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetCantidadTotalProductoObra(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_obra, id_producto):
+        stocks = Stock.objects.filter(id_obra=id_obra)
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+        detalles = DetallestockproductoSerializer(preDetalles, many=True).data
+
+        cantidad_total = 0
+        for detalle in detalles:
+            cantidad_total += detalle['cantidad']
+
+        return Response({'cantidad_total': cantidad_total}, status=status.HTTP_200_OK)
