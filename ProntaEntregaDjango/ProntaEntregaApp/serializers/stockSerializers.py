@@ -27,6 +27,43 @@ class ProductoSerializer(serializers.ModelSerializer):
         if value is None:
             raise serializers.ValidationError("This field is required.")
         return value
+    
+class CreateProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Producto
+        fields = ['id_producto', 'nombre', 'descripcion', 'id_categoria', 'imagen', 'unidadmedida']
+        extra_kwargs = {
+            'id_categoria': {'required': True, 'allow_null': False},
+            'nombre': {'required': True, 'allow_null': False},
+            'descripcion': {'required': True, 'allow_null': False},
+            'unidadmedida': {'required': True, 'allow_null': False},
+        }
+
+    def create(self, validated_data):
+        product = Producto.objects.create(
+            nombre=validated_data['nombre'],
+            descripcion=validated_data['descripcion'],
+            id_categoria=validated_data['id_categoria'],
+            imagen=validated_data['imagen'],
+            unidadmedida=validated_data['unidadmedida'],
+        )
+        return product
+
+    def validate(self, data):
+        required_fields = ['id_categoria', 'nombre', 'descripcion', 'unidadmedida']
+        for field in required_fields:
+            if field not in data or data[field] is None:
+                raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})
+        return data
+
+    def to_internal_value(self, data):
+        internal_value = super().to_internal_value(data)
+        internal_value['id_categoria'] = Categoria.objects.get(pk=data.get('id_categoria'))
+        return internal_value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return representation
 
 class StockSerializer(serializers.ModelSerializer):
     id_obra = ObraSerializer()

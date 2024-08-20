@@ -547,7 +547,7 @@ class GetProductoById(APIView):
 class CrearProductos(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = ProductoSerializer(data=request.data)
+        serializer = CreateProductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
