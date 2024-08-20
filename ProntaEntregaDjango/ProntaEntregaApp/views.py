@@ -1403,3 +1403,16 @@ class GetCantidadTotalProductoObra(APIView):
             cantidad_total += detalle['cantidad']
 
         return Response({'cantidad_total': cantidad_total}, status=status.HTTP_200_OK)
+
+class DeletePedido(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+            aportes = AportePedido.objects.filter(id_pedido=pedido.id_pedido)
+            aportes.delete()
+            pedido.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Pedido.DoesNotExist:
+            return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)

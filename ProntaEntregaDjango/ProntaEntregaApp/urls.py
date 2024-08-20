@@ -65,6 +65,7 @@ urlpatterns = [
     path('pedido/', GetPedido.as_view(), name='ver_pedido'),
     path('crear_pedido/', CrearPedido.as_view(), name='crear_pedido'),
     path('editar_pedido/<int:pk>/', EditarPedido.as_view(), name='editar_pedido'),
+    path('eliminar_pedido/<int:pk>/', DeletePedido.as_view(), name='eliminar_pedido'),
     path('estado_pedido/', GetEstadoPedido.as_view(), name='ver_estado_pedido'),
     path('crear_estado_pedido/', CrearEstadoPedido.as_view(), name='crear_estado_pedido'),
     path('editar_estado_pedido/<int:pk>/', EditarEstadoPedido.as_view(), name='editar_estado_pedido'),
