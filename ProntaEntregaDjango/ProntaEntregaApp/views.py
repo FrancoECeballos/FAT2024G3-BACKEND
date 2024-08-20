@@ -1449,11 +1449,42 @@ class GetProductosPorCategoriaExcluidos(APIView):
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+<<<<<<< HEAD
 class GetDetallesProductoObra(APIView):
+=======
+class GetCantidadTotalProductoObra(APIView):
+>>>>>>> 509a9008db0e407d48c0d4946ec13cb5a7b9cf4a
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_obra, id_producto):
         stocks = Stock.objects.filter(id_obra=id_obra)
+<<<<<<< HEAD
         detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+=======
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+        detalles = DetallestockproductoSerializer(preDetalles, many=True).data
+
+        cantidad_total = 0
+        for detalle in detalles:
+            cantidad_total += detalle['cantidad']
+
+        producto = Producto.objects.get(pk=id_producto)
+        producto_data = ProductoSerializer(producto).data
+
+        return Response({'cantidad_total': cantidad_total, 'producto': producto_data}, status=status.HTTP_200_OK)
+
+class DeletePedido(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+            aportes = AportePedido.objects.filter(id_pedido=pedido.id_pedido)
+            aportes.delete()
+            pedido.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Pedido.DoesNotExist:
+            return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+>>>>>>> 509a9008db0e407d48c0d4946ec13cb5a7b9cf4a

@@ -66,6 +66,7 @@ urlpatterns = [
     path('pedido/', GetPedido.as_view(), name='ver_pedido'),
     path('crear_pedido/', CrearPedido.as_view(), name='crear_pedido'),
     path('editar_pedido/<int:pk>/', EditarPedido.as_view(), name='editar_pedido'),
+    path('eliminar_pedido/<int:pk>/', DeletePedido.as_view(), name='eliminar_pedido'),
     path('estado_pedido/', GetEstadoPedido.as_view(), name='ver_estado_pedido'),
     path('crear_estado_pedido/', CrearEstadoPedido.as_view(), name='crear_estado_pedido'),
     path('editar_estado_pedido/<int:pk>/', EditarEstadoPedido.as_view(), name='editar_estado_pedido'),
@@ -133,7 +134,11 @@ urlpatterns = [
     path('informe-stock-pdf/<int:id_producto>/<int:id_obra>/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
+<<<<<<< HEAD
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_obra>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
+=======
+    path('GetTotalProductoObra/<int:id_obra>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
+>>>>>>> 509a9008db0e407d48c0d4946ec13cb5a7b9cf4a
 ]
 
 if settings.DEBUG:
