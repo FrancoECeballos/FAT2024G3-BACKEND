@@ -266,7 +266,7 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     id_categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_categoria', blank=True, null=True)
     unidadmedida = models.IntegerField(choices=UNIDAD_CHOICES,db_column='unidadMedida', blank=True, null=True)  # Field name made lowercase.
-    talle = models.IntegerField(blank=True, null=True)
+    talle = models.CharField(max_length=255, blank=True, null=True)
     cantidad_por_unidad = models.IntegerField(blank=True, null=True)
     imagen = models.ImageField(upload_to='productos/')
     perecedero = models.IntegerField(blank=True, null=True)
@@ -284,7 +284,7 @@ class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     cantidad = models.FloatField(blank=True, null=True)
     checkpoint = models.BooleanField(default=False,blank=True, null=True)
-    fecha_creacion = models.DateField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(blank=True, null=True)
     id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
@@ -389,7 +389,28 @@ class AporteOferta(models.Model):
         db_table = 'AporteOferta'
 
 
+class TransporteManager(models.Manager): 
+    def crear_transporte(self, marca, modelo, patente, kilometraje, imagen ):
+        if not marca:
+            raise ValueError('El transporte debe tener una marca')
+        if not modelo:
+            raise ValueError('El transporte debe tener un modelo')
+        if not patente:
+            raise ValueError('El transporte debe tener una patente')
+        if not kilometraje:
+            raise ValueError('El transporte debe tener un kilometraje')
+
+        Transporte = self.model(
+            imagen=imagen,
+            marca=marca,
+            modelo=modelo,
+            patente=patente,
+            kilometraje=kilometraje,
+        )
+        Transporte.save(using=self._db)
+        return Transporte
     
+
 class Transporte(models.Model):
     id_transporte = models.AutoField(primary_key=True)
     marca = models.CharField(max_length=255, blank=True, null=True)
@@ -402,8 +423,10 @@ class Transporte(models.Model):
     necesita_mantenimiento = models.BooleanField(default=False)
     descripcion_mantenimiento = models.CharField(max_length=1000, blank=True, null=True)
 
+    objects = TransporteManager()
+
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Transporte'
 
     def __str__(self):

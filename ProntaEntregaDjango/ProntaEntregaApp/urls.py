@@ -14,6 +14,7 @@ urlpatterns = [
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
     path('user/id/<int:pk>/', UserByID.as_view(), name='userID'),
     path('user/obra/', AllUsersByObra.as_view(), name='ver_all_user_obra'),
+    path('user/obra/null/', AllUsersByObra_null.as_view(), name='AllUsersByObra_null'),
     path('obra/user/<str:token>/', ObraByUser.as_view(), name='ver_obra_user'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
     
@@ -64,6 +65,7 @@ urlpatterns = [
 
     path('pedido/', GetPedido.as_view(), name='ver_pedido'),
     path('crear_pedido/', CrearPedido.as_view(), name='crear_pedido'),
+    path('eliminar_pedido/<int:pk>/', DeletePedido.as_view(), name='eliminar_pedido'),
     path('editar_pedido/<int:pk>/', EditarPedido.as_view(), name='editar_pedido'),
     path('estado_pedido/', GetEstadoPedido.as_view(), name='ver_estado_pedido'),
     path('crear_estado_pedido/', CrearEstadoPedido.as_view(), name='crear_estado_pedido'),
@@ -73,6 +75,7 @@ urlpatterns = [
     path('editar_detalle_pedido/<int:pk>/', EditarDetallePedido.as_view(), name='editar_detalle_pedido'),
 
     path('oferta/', GetOferta.as_view(), name='ver_oferta'),
+    path('GetOfertaSimilar/<int:id_obra>/<int:id_producto>/', GetOfertaSimilar.as_view(), name='GetOfertaSimilar'),
     path('oferta/<int:pk>/', GetOfertaById.as_view(), name='ver_oferta_por_id'),
     path('crear_oferta/', CrearOferta.as_view(), name='crear_oferta'),
     path('editar_oferta/<int:pk>/', EditarOferta.as_view(), name='editar_oferta'),
@@ -128,9 +131,12 @@ urlpatterns = [
     path('GetUsuariosPorPedido/<int:id_pedido>/', GetUsuariosPorPedido.as_view(), name='GetUsuariosPorPedido'),
 
     path('informe-pedidos-pdf/', PedidoInformePDFView.as_view(), name='informe-pedidos-pdf'),
-    path('informe-stock-pdf/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
+    path('informe-stock-pdf/<int:id_producto>/<int:id_obra>/', StockInformePDFView.as_view(), name='informe-stock-pdf'),
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
+    path('GetDetallesProductoObra/<int:id_producto>/<int:id_obra>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
+
+    path('GetTotalProductoObra/<int:id_obra>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
 ]
 
 if settings.DEBUG:

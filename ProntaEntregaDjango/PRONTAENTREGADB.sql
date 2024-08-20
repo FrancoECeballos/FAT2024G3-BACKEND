@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS Producto (
     descripcion VARCHAR(255),
     id_categoria INT,
     unidadMedida INT,
-    talle INT,
+    talle VARCHAR(255),
     cantidad_por_unidad INT,
     imagen VARCHAR(255),
     perecedero BOOLEAN,
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     id_detalleStockProducto INT AUTO_INCREMENT PRIMARY KEY,
     cantidad FLOAT,
     checkpoint BOOLEAN,
-    fecha_creacion DATE,
+    fecha_creacion DATETIME,
     id_stock INT,
     id_producto INT,
     id_usuario INT,
@@ -281,8 +281,8 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
     ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE),
-    ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hurtado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
-    ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Bondad@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
+    ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 3514234682', 'hospederia.cba@manosabiertas.org.ar', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
+    ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 3518947780', 'casadelabondad.cba@manosabiertas.org.ar', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
     ('Caminar de Nuevo', 'Admin3', 'caminarnuevo', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Caminar@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
     ('Señora del Valle', 'Admin4', 'señoravalle', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Valle@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Escuela Albergue, Nuestra Señora del Valle
     ('Familia Siria', 'Admin5', 'familiasiria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Siria@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 7, 1, TRUE, FALSE, TRUE), -- Asilo a refugiados sirios, Nuestra familia Siria
@@ -362,6 +362,12 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen) V
     ('Pupitre', 'Pupitre basico', 3, 0, 'productos/mueble1.jpg'),
     ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg');
 
+INSERT INTO Producto (nombre, descripcion, id_categoria, talle, imagen, perecedero) VALUES 
+    ('Camisa', 'Camisa de manga larga', 2, "l", 'productos/camisa.jpg', FALSE),
+    ('Pantalón', 'Pantalón de mezclilla', 2, "s", 'productos/pantalon.jpg', FALSE),
+    ('Vestido', 'Vestido elegante', 2, "xl", 'productos/vestido.jpg', FALSE);
+
+
     
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
@@ -416,18 +422,18 @@ INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES
         (2, 2),
         (3, 3);
 
-INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto) VALUES
-    (100, FALSE, '2023-01-01', 1, 2),
-    (200, FALSE, '2023-01-02', 3, 3),
-    (300, FALSE, '2023-01-03', 2, 1),
-    (20, FALSE, '2023-01-04', 1, 1),
-    (16, FALSE, '2023-01-05', 3, 2),
-    (400, FALSE, '2023-01-06', 3, 6),
-    (500, FALSE, '2023-01-07', 2, 7),
-    (400, FALSE, '2023-01-08', 2, 8),
-    (500, FALSE, '2023-01-09', 1, 1),
-    (1, FALSE, '2023-01-10', 1, 2),
-    (1, FALSE, '2023-01-11', 1, 3);
+INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto, id_usuario) VALUES
+    (100, FALSE, '2023-01-01 08:00:00', 1, 2, 1),
+    (200, FALSE, '2023-01-02 09:00:00', 3, 3, 2),
+    (300, FALSE, '2023-01-03 10:00:00', 2, 1, 3),
+    (20, FALSE, '2023-01-04 11:00:00', 1, 1, 2),
+    (16, FALSE, '2023-01-05 12:00:00', 3, 2, 4),
+    (400, FALSE, '2023-01-06 13:00:00', 3, 6, 1),
+    (500, FALSE, '2023-01-07 14:00:00', 2, 7, 5),
+    (400, FALSE, '2023-01-08 15:00:00', 2, 8, 4),
+    (500, FALSE, '2023-01-09 16:00:00', 1, 1, 3),
+    (1, FALSE, '2023-01-10 17:00:00', 1, 2, 1),
+    (1, FALSE, '2023-01-11 18:00:00', 1, 3, 2);
     
 insert into AportePedido (descripcion,cantidad,id_pedido) values 
 ('desc1',10,1),

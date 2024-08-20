@@ -36,7 +36,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML
 from .models import Pedido
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 def index(request):
     return render(request, 'index.html')
@@ -220,6 +220,7 @@ class EditarTipoUsuario(APIView):
 class UserRegister(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
+        request.data.update({'fecha_creacion':date.today()})
         serializer = UsuarioRegistroSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -307,8 +308,17 @@ class AllUsersByObra(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        detalles = CustomUsuario.objects.all()
-        serializer = Detalleobrausuario(detalles, many=True)
+        usr = CustomUsuario.objects.all()
+        serializer = UsuarioSerializer(usr, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AllUsersByObra_null(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        detalles = Detalleobrausuario.objects.all().values_list('id_usuario', flat=True)
+        usr = CustomUsuario.objects.exclude(id_usuario__in = detalles).exclude(is_superuser = True)
+        serializer = UsuarioSerializer(usr, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 class ObraByUser(APIView):
@@ -761,6 +771,16 @@ class CrearOferta(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetOfertaSimilar(APIView):
+    def get(self,request,id_obra,id_producto):
+        try:
+            oferta = Oferta.objects.filter(id_obra = id_obra, id_producto = id_producto, id_estadooferta = 1)
+            serializer = OfertaSerializer(oferta, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Oferta.DoesNotExist:
+            return Response({'error': 'Oferta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+
 class EditarOferta(APIView):
     def put(self, request, pk):
         try:
@@ -866,7 +886,7 @@ class GetTransporteByObra(APIView):
 class CrearTransporte(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = TransporteSerializer(data=request.data)
+        serializer = crearTransporteSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -1034,22 +1054,49 @@ class PostProducto(APIView):
 class PostDetallestockproducto(APIView):
     def post(self,request):
         
-        request.data.update({'fecha_creacion':datetime.today().date()})
+        request.data.update({'fecha_creacion':datetime.today()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save() 
+            serializer.save()
 
             dd = timedelta(days=7)
-            d = datetime.today().date() - dd
-            print(d)
+            d = datetime.today() - dd
             crear_checkpoint = True
-            for x in Detallestockproducto.objects.filter(checkpoint = True):
+            for x in Detallestockproducto.objects.filter(id_stock = request.data['id_stock'],id_producto = request.data['id_producto'],checkpoint = True):
                 if x.fecha_creacion >= d:
-                    print(x)
                     crear_checkpoint = False
             
             if crear_checkpoint == True:
-                print("*crea checkpoint*")
+
+                ultimo_checkpoint = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'],checkpoint= True)
+                
+                ultimo_checkpoint = ultimo_checkpoint.order_by('fecha_creacion').first()
+                
+                try:
+                    print(ultimo_checkpoint.fecha_creacion)
+                    detalle = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'], fecha_creacion__gt = ultimo_checkpoint.fecha_creacion)
+                    total = ultimo_checkpoint.cantidad
+                except AttributeError:
+                    detalle = Detallestockproducto.objects.filter(id_stock=request.data['id_stock'], id_producto=request.data['id_producto'])
+                    total = 0
+                
+                for x in detalle:
+                    print(x.cantidad)
+                    total = total + x.cantidad
+
+                Detallestockproducto.objects.create(
+                checkpoint=True,
+                fecha_creacion=datetime.today(),
+                cantidad=total,
+                id_producto_id=request.data['id_producto'],
+                id_stock_id=request.data['id_stock']
+                )
+                print('se creo checkpoint')
+            else:
+                print('no se necesita crear checkpoint')
+            
+            
+             ## esto tiene que quedar al despues de todo el resto
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -1060,7 +1107,7 @@ class RestarDetallestockproducto(APIView):
             request.data['cantidad']= request.data['cantidad'] * -1
         except KeyError:
             return Response({'error','se requiere una cantidad'})
-        request.data.update({'fecha_creacion':datetime.datetime.today().date()})
+        request.data.update({'fecha_creacion':datetime.today()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save() 
@@ -1169,7 +1216,7 @@ class CategoriaPost(APIView):
             serializer.save()
 
             for usr in CustomUsuario.objects.all():
-                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now().date()),"id_usuario": usr.id_usuario })
+                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now()),"id_usuario": usr.id_usuario })
                 if serializerN.is_valid():
                     serializerN.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -1313,11 +1360,22 @@ class GetDetallestockproducto_Total(APIView):
 
     def get(self, request, id_stock,id_producto):
         try:
-            detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
-            total = 0
+            
+
+            ultimo_checkpoint = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto,checkpoint= True)
+            
+            ultimo_checkpoint = ultimo_checkpoint.order_by('fecha_creacion').first()
+        
+            try:
+                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto, fecha_creacion__gt = ultimo_checkpoint.fecha_creacion)
+                total = ultimo_checkpoint.cantidad
+            except AttributeError:
+                print('hubo errores')
+                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
+                total = 0
+            
             for x in detalle:
                 total = total + x.cantidad
-            print(total)
             return Response({'total':total}, status=status.HTTP_200_OK)
         except Detallestockproducto.DoesNotExist:
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
@@ -1356,8 +1414,10 @@ class PedidoInformePDFView(APIView):
 class StockInformePDFView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        detalles = Detallestockproducto.objects.all()
+    def get(self, request, id_obra, id_producto):
+        stocks = Stock.objects.filter(id_obra=id_obra)
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+        detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
         # Renderizar el contenido a una plantilla HTML
         html_string = render_to_string('informeStock.html', {'detalles': detalles})
@@ -1370,8 +1430,7 @@ class StockInformePDFView(APIView):
         # Obtener la hora actual y sumarle tres horas
         current_time = datetime.now() + timedelta(hours=-3)
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
-
-        response['Content-Disposition'] = f'attachment; filename="informe_stock_{formatted_time}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
 
 class GetProductosPorCategoriaExcluidos(APIView):
@@ -1389,3 +1448,39 @@ class GetProductosPorCategoriaExcluidos(APIView):
 
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetDetallesProductoObra(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_obra, id_producto):
+        stocks = Stock.objects.filter(id_obra=id_obra)
+        detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+        serializer = DetallestockproductoSerializer(detalles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class DeletePedido(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+            aportes = AportePedido.objects.filter(id_pedido=pedido.id_pedido)
+            aportes.delete()
+            pedido.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Pedido.DoesNotExist:
+            return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+
+class GetCantidadTotalProductoObra(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_obra, id_producto):
+        stocks = Stock.objects.filter(id_obra=id_obra)
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+        detalles = DetallestockproductoSerializer(preDetalles, many=True).data
+
+        cantidad_total = 0
+        for detalle in detalles:
+            cantidad_total += detalle['cantidad']
+
+        return Response({'cantidad_total': cantidad_total}, status=status.HTTP_200_OK)
