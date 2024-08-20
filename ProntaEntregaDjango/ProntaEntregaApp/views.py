@@ -1402,7 +1402,10 @@ class GetCantidadTotalProductoObra(APIView):
         for detalle in detalles:
             cantidad_total += detalle['cantidad']
 
-        return Response({'cantidad_total': cantidad_total}, status=status.HTTP_200_OK)
+        producto = Producto.objects.get(pk=id_producto)
+        producto_data = ProductoSerializer(producto).data
+
+        return Response({'cantidad_total': cantidad_total, 'producto': producto_data}, status=status.HTTP_200_OK)
 
 class DeletePedido(APIView):
     permission_classes = [IsAuthenticated]
