@@ -1426,12 +1426,8 @@ class StockInformePDFView(APIView):
         html_string = render_to_string('informeStock.html', {'detalles': detalles})
         
         # Generar el PDF
-        pdf_file = HTML(string=html_string).write_pdf()
-
-        # Enviar el PDF como respuesta
-        response = HttpResponse(pdf_file, content_type='application/pdf')
-        # Obtener la hora actual y sumarle tres horas
-        current_time = datetime.now() + timedelta(hours=-3)
+        pdf_file = HTML(string=html_string).write_pdf()        # 1. Obtener el usuario que está loggeado
+        user = request.user
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
         response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
@@ -1491,8 +1487,27 @@ class GetDetallesProductoObra(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_obra, id_producto):
-        stocks = Stock.objects.filter(id_obra=id_obra)
+        stocks = Stock.objects.filter(id_obra=id_obra)        # 1. Obtener el usuario que está loggeado
+        user = request.user
         detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class GetPedidosByUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, token):
+        # 1. Obtener el usuario a partir del token
+        detalles = Detalleobrausuario.objects.filter(id_usuario__auth_token=token).values_list('id_obra', flat=True)
+        print(detalles, "/n")
+        obras = Obra.objects.filter(id_obra__in=detalles)
+        print(obras, "/n")
+
+        # 3. Obtener todos los Detallesobrapedido que contengan el id_obra de las obras en donde está el usuario
+        detalles_obrapedido = Detalleobrapedido.objects.filter(id_obra__in=obras)
+        print(detalles_obrapedido, "/n")
+
+        # 4. Buscar y devolver los pedidos que corresponden a esos detalles
+        pedidos = Pedido.objects.filter(id_pedido__in=detalles.values_list('id_pedido', flat=True))
+        serializer = PedidoSerializer(pedidos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
