@@ -451,7 +451,7 @@ class EditarObra(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetStock(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request):
         stock = Stock.objects.all()
         serializer = StockSerializer(stock, many=True)
@@ -580,7 +580,7 @@ class GetPedido(APIView):
 class CrearPedido(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = PedidoSerializer(data=request.data)
+        serializer = CreatePedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -688,14 +688,14 @@ class DeleteDetalleobrapedido(APIView):
         except Producto.DoesNotExist:
             return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
-class GetDetallePedido(APIView):
+class GetAportePedido(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         detalles = AportePedido.objects.all()
         serializer = DetallepedidoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class CrearDetallePedido(APIView):
+class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
         serializer = DetallepedidoSerializer(data=request.data)
@@ -705,7 +705,7 @@ class CrearDetallePedido(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class EditarDetallePedido(APIView):
+class EditarAportePedido(APIView):
     def put(self, request, pk):
         try:
             detalle = AportePedido.objects.get(pk=pk)
