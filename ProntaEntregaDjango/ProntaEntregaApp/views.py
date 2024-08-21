@@ -31,7 +31,7 @@ from django.views.decorators.csrf import csrf_exempt
 from ProntaEntregaApp.emails import email_sending
 from django.db.models import Count, Q 
 import datetime
-
+from django.utils import timezone
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML
@@ -731,7 +731,7 @@ class EditarDetallePedido(APIView):
             p = producto.nombre
             
             
-            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(datetime.datetime.now().date()),'id_usuario':1})
+            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
             ##FIN SECCION NOTIFICACION
@@ -1052,6 +1052,10 @@ class PostProducto(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PostDetallestockproducto(APIView):
+
+    def get(self,request):
+        return Response({"id_stock":1,"id_producto":1,"cantidad":1})
+
     def post(self,request):
         
         request.data.update({'fecha_creacion':datetime.today()})
@@ -1060,7 +1064,7 @@ class PostDetallestockproducto(APIView):
             serializer.save()
 
             dd = timedelta(days=7)
-            d = datetime.today() - dd
+            d = timezone.now() - dd
             crear_checkpoint = True
             for x in Detallestockproducto.objects.filter(id_stock = request.data['id_stock'],id_producto = request.data['id_producto'],checkpoint = True):
                 if x.fecha_creacion >= d:
@@ -1216,7 +1220,7 @@ class CategoriaPost(APIView):
             serializer.save()
 
             for usr in CustomUsuario.objects.all():
-                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now()),"id_usuario": usr.id_usuario })
+                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(timezone.now()),"id_usuario": usr.id_usuario })
                 if serializerN.is_valid():
                     serializerN.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -1426,12 +1430,8 @@ class StockInformePDFView(APIView):
         html_string = render_to_string('informeStock.html', {'detalles': detalles})
         
         # Generar el PDF
-        pdf_file = HTML(string=html_string).write_pdf()
-
-        # Enviar el PDF como respuesta
-        response = HttpResponse(pdf_file, content_type='application/pdf')
-        # Obtener la hora actual y sumarle tres horas
-        current_time = datetime.now() + timedelta(hours=-3)
+        pdf_file = HTML(string=html_string).write_pdf()        # 1. Obtener el usuario que está loggeado
+        user = request.user
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
         response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
@@ -1491,8 +1491,27 @@ class GetDetallesProductoObra(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_obra, id_producto):
-        stocks = Stock.objects.filter(id_obra=id_obra)
+        stocks = Stock.objects.filter(id_obra=id_obra)        # 1. Obtener el usuario que está loggeado
+        user = request.user
         detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class GetPedidosByUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, token):
+        # 1. Obtener el usuario a partir del token
+        detalles = Detalleobrausuario.objects.filter(id_usuario__auth_token=token).values_list('id_obra', flat=True)
+        print(detalles, "/n")
+        obras = Obra.objects.filter(id_obra__in=detalles)
+        print(obras, "/n")
+
+        # 3. Obtener todos los Detallesobrapedido que contengan el id_obra de las obras en donde está el usuario
+        detalles_obrapedido = Detalleobrapedido.objects.filter(id_obra__in=obras)
+        print(detalles_obrapedido, "/n")
+
+        # 4. Buscar y devolver los pedidos que corresponden a esos detalles
+        pedidos = Pedido.objects.filter(id_pedido__in=detalles.values_list('id_pedido', flat=True))
+        serializer = PedidoSerializer(pedidos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
