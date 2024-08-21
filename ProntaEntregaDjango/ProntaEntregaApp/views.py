@@ -16,6 +16,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 
 
+
 # Application-specific imports
 from ProntaEntregaApp.serializers.userSerializers import *
 from ProntaEntregaApp.serializers.stockSerializers import *
@@ -403,7 +404,7 @@ class CambiarContrasenia_open(APIView): ##no abrir sin consultar que es esto
         return Response({'success': 'La contraseña ha sido cambiada con éxito.'}, status=status.HTTP_200_OK)
 
 class GetObra(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def get(self, request):
         obras = Obra.objects.all()
         serializer = ObraSerializer(obras, many=True)
@@ -1432,7 +1433,11 @@ class StockInformePDFView(APIView):
         # Generar el PDF
         pdf_file = HTML(string=html_string).write_pdf()        # 1. Obtener el usuario que está loggeado
         user = request.user
+
+        current_time = datetime.now() + timedelta(hours=-3)
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
+
+        response = HttpResponse(pdf_file, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
 
