@@ -367,8 +367,6 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, talle, imagen, perecede
     ('Pantalón', 'Pantalón de mezclilla', 2, "s", 'productos/pantalon.jpg', FALSE),
     ('Vestido', 'Vestido elegante', 2, "xl", 'productos/vestido.jpg', FALSE);
 
-
-    
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
     ('Pendiente', 'Solo es un pedido y no se hizo nada'),
@@ -388,6 +386,34 @@ INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, 
     ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 1, 3, 3),
     ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 1, 2, 1, 2, 2, 2),
     ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 1, 3, 1, 3, 3, 3);
+
+
+INSERT INTO DetalleObraPedido(id_obra, id_pedido) VALUES 
+    (2, 1),
+    (3, 1),
+    (4, 1),
+    (5, 1),
+    (1, 2),
+    (3, 2),
+    (4, 2),
+    (1, 3),
+    (5, 3),
+    (7, 3),
+    (2, 4),
+    (6, 4),
+    (7, 4),
+    (1, 5),
+    (2, 6),
+    (4, 6),
+    (3, 7),
+    (5, 7),
+    (1, 8),
+    (5, 8),
+    (6, 8),
+    (6, 9),
+    (7, 9),
+    (5, 10),
+    (2, 11);
 
 -- Inserciones para la tabla EstadoOferta
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 

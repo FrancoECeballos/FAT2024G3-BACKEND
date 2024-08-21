@@ -31,7 +31,7 @@ from django.views.decorators.csrf import csrf_exempt
 from ProntaEntregaApp.emails import email_sending
 from django.db.models import Count, Q 
 import datetime
-
+from django.utils import timezone
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML
@@ -731,7 +731,7 @@ class EditarDetallePedido(APIView):
             p = producto.nombre
             
             
-            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(datetime.datetime.now().date()),'id_usuario':1})
+            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
             ##FIN SECCION NOTIFICACION
@@ -1052,6 +1052,10 @@ class PostProducto(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PostDetallestockproducto(APIView):
+
+    def get(self,request):
+        return Response({"id_stock":1,"id_producto":1,"cantidad":1})
+
     def post(self,request):
         
         request.data.update({'fecha_creacion':datetime.today()})
@@ -1060,7 +1064,7 @@ class PostDetallestockproducto(APIView):
             serializer.save()
 
             dd = timedelta(days=7)
-            d = datetime.today() - dd
+            d = timezone.now() - dd
             crear_checkpoint = True
             for x in Detallestockproducto.objects.filter(id_stock = request.data['id_stock'],id_producto = request.data['id_producto'],checkpoint = True):
                 if x.fecha_creacion >= d:
@@ -1216,7 +1220,7 @@ class CategoriaPost(APIView):
             serializer.save()
 
             for usr in CustomUsuario.objects.all():
-                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(datetime.datetime.now()),"id_usuario": usr.id_usuario })
+                serializerN = NotificacionSerializer(data={"titulo":"Se creo una nueva categoria de producto","descripcion":'Se creo una nueva categoria "'+ request.data['nombre'],"fecha_creacion":str(timezone.now()),"id_usuario": usr.id_usuario })
                 if serializerN.is_valid():
                     serializerN.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
