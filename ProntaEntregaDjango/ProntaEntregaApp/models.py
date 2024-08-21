@@ -299,13 +299,11 @@ class Detallestockproducto(models.Model):
 
 
 class Pedido(models.Model):
-    urgencia_choices = [(1,'No es urgente'),(2,'Ligeramente urgente'),(3,'muy urgente'),(4,'inmediato')]
+    urgencia_choices = [(1,'No es urgente'),(2,'Ligeramente Urgente'),(3,'Muy Urgente'),(4,'Inmediato')]
 
     id_pedido = models.AutoField(primary_key=True)  
     fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
-    horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
     fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
     id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
@@ -348,9 +346,7 @@ class AportePedido(models.Model):
 class Oferta(models.Model):
     id_oferta = models.AutoField(primary_key=True)
     fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.
-    horainicio = models.TimeField(db_column='horaInicio', blank=True, null=True)  # Field name made lowercase.
     fechavencimiento = models.DateField(db_column='fechaVencimiento', blank=True, null=True)  # Field name made lowercase.
-    horavencimiento = models.TimeField(db_column='horaVencimiento', blank=True, null=True)  # Field name made lowercase.
     id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     id_obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, db_column='id_obra', blank=True, null=True)
     id_estadooferta = models.ForeignKey('Estadooferta', on_delete=models.SET_NULL, db_column='id_estadoOferta', blank=True, null=True)  # Field name made lowercase.

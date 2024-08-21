@@ -157,9 +157,7 @@ CREATE TABLE IF NOT EXISTS EstadoPedido(
 CREATE TABLE IF NOT EXISTS Pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
     fechaInicio DATE,
-    horaInicio TIME,
     fechaVencimiento DATE,
-    horaVencimiento TIME,
     cantidad INT,
     urgente INT,
     id_obra INT,
@@ -189,9 +187,7 @@ CREATE TABLE IF NOT EXISTS EstadoOferta(
 CREATE TABLE IF NOT EXISTS Oferta (
     id_oferta INT AUTO_INCREMENT PRIMARY KEY,
     fechaInicio DATE,
-    horaInicio TIME,
     fechaVencimiento DATE,
-    horaVencimiento TIME,
     cantidad INT,
     id_usuario INT,
     id_obra INT,
@@ -376,18 +372,18 @@ INSERT INTO EstadoPedido (nombre, descripcion) VALUES
     ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.');
 
 -- Inserciones para la tabla Pedido
-INSERT INTO Pedido (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_obra, id_usuario, id_producto, urgente, id_estadoPedido) VALUES 
-    ('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 3, 1, 1),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 1, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 2, 3, 3),
-	('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 4, 1, 1),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 5, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 6, 3, 3),
-	('2024-06-14', '09:05:00', '2024-06-28', '09:05:00', 200, 1, 1, 7, 1, 1),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 200, 2, 2, 8, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 200, 3, 3, 1, 3, 3),
-    ('2024-04-08', '13:00:00', '2024-04-15', '13:00:00', 1, 2, 1, 2, 2, 2),
-    ('2024-09-23', '17:27:00', '2024-10-23', '17:27:00', 1, 3, 1, 3, 3, 3);
+INSERT INTO Pedido (fechaInicio, fechaVencimiento, cantidad, id_obra, id_usuario, id_producto, urgente, id_estadoPedido) VALUES 
+    ('2024-06-14', '2024-06-28', 200, 1, 1, 3, 1, 1),
+    ('2024-04-08', '2024-04-15', 200, 2, 2, 1, 2, 2),
+    ('2024-09-23', '2024-10-23', 200, 3, 3, 2, 3, 3),
+    ('2024-06-14', '2024-06-28', 200, 1, 1, 4, 1, 1),
+    ('2024-04-08', '2024-04-15', 200, 2, 2, 5, 2, 2),
+    ('2024-09-23', '2024-10-23', 200, 3, 3, 6, 3, 3),
+    ('2024-06-14', '2024-06-28', 200, 1, 1, 7, 1, 1),
+    ('2024-04-08', '2024-04-15', 200, 2, 2, 8, 2, 2),
+    ('2024-09-23', '2024-10-23', 200, 3, 3, 1, 3, 3),
+    ('2024-04-08', '2024-04-15', 1, 2, 1, 2, 2, 2),
+    ('2024-09-23', '2024-10-23', 1, 3, 1, 3, 3, 3);
 
 -- Inserciones para la tabla EstadoOferta
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 
@@ -396,18 +392,18 @@ INSERT INTO EstadoOferta (nombre, descripcion) VALUES
     ('Reclamado', 'La oferta que etaba en reserva ya fue transportada hasta la obra que la reclamo');
 
 -- Inserciones para la tabla Oferta
-INSERT INTO Oferta (fechaInicio, horaInicio, fechaVencimiento, horaVencimiento, cantidad, id_usuario, id_obra, id_producto, id_estadoOferta) VALUES 
-    ('2024-01-14', '08:01:31', '2024-01-28', '08:01:31', 200, 1, 1, 3, 1),
-    ('2023-08-10', '16:08:10', '2023-08-17', '16:08:10', 200, 3, 2, 2, 2),
-    ('2024-04-30', '14:27:57', '2024-05-30', '14:27:57', 200, 2, 3, 1, 3),
-    ('2024-01-10', '02:10:01', '2024-02-10', '08:01:31', 20, 1, 1, 4, 1),
-    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 12, 3, 2, 5, 2),
-    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 30, 2, 3, 6, 3),
-    ('2024-01-10', '02:10:01', '2024-02-10', '08:01:31', 20, 1, 1, 7, 1),
-    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 15, 3, 2, 8, 2),
-    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 5, 2, 3, 1, 3),
-    ('2023-08-02', '13:00:10', '2023-09-02', '16:08:10', 1, 1, 3, 2, 2),
-    ('2024-04-01', '06:27:00', '2024-05-01', '14:27:57', 1, 1, 2, 3, 3);
+INSERT INTO Oferta (fechaInicio, fechaVencimiento, cantidad, id_usuario, id_obra, id_producto, id_estadoOferta) VALUES 
+    ('2024-01-14', '2024-01-28', 200, 1, 1, 3, 1),
+    ('2023-08-10', '2023-08-17', 200, 3, 2, 2, 2),
+    ('2024-04-30', '2024-05-30', 200, 2, 3, 1, 3),
+    ('2024-01-10', '2024-02-10', 20, 1, 1, 4, 1),
+    ('2023-08-02', '2023-09-02', 12, 3, 2, 5, 2),
+    ('2024-04-01', '2024-05-01', 30, 2, 3, 6, 3),
+    ('2024-01-10', '2024-02-10', 20, 1, 1, 7, 1),
+    ('2023-08-02', '2023-09-02', 15, 3, 2, 8, 2),
+    ('2024-04-01', '2024-05-01', 5, 2, 3, 1, 3),
+    ('2023-08-02', '2023-09-02', 1, 1, 3, 2, 2),
+    ('2024-04-01', '2024-05-01', 1, 1, 2, 3, 3);
 
 -- Inserciones para la tabla Transporte
 INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
