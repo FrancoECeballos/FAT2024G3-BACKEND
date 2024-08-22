@@ -1059,7 +1059,7 @@ class PostDetallestockproducto(APIView):
 
     def post(self,request):
         
-        request.data.update({'fecha_creacion':datetime.today()})
+        request.data.update({'fecha_creacion':timezone.now()})
         serializer = CrearDetallestockproductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -1381,7 +1381,14 @@ class GetDetallestockproducto_Total(APIView):
             
             for x in detalle:
                 total = total + x.cantidad
-            return Response({'total':total}, status=status.HTTP_200_OK)
+
+            p = Producto.objects.get(pk = id_producto)
+
+            serializer = ProductoSerializer(p)
+            d = serializer.data
+            d.update({'total':total})
+            print(d)
+            return Response(d, status=status.HTTP_200_OK)
         except Detallestockproducto.DoesNotExist:
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
   
