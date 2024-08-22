@@ -211,7 +211,7 @@ class Obra(models.Model):
 
 class Detalleobrapedido(models.Model):
     id_detalleobrapedido = models.AutoField(db_column='id_DetalleObraPedido', primary_key=True)  # Field name made lowercase.
-    id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
+    id_stock = models.ForeignKey('Stock', models.DO_NOTHING, db_column='id_stock', blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
 
     class Meta:
@@ -422,7 +422,7 @@ class Transporte(models.Model):
     objects = TransporteManager()
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'Transporte'
 
     def __str__(self):
