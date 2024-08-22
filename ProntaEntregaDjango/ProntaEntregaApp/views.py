@@ -1437,8 +1437,12 @@ class StockInformePDFView(APIView):
         nombre_obra = obra.nombre
         # Obtener el stock y el producto específico
         stocks = Stock.objects.filter(id_stock=id_stock)
-        detalles = Detallestockproducto.objects.all()
+        producto = Producto.objects.get(id_producto=id_producto)
+
+        # Filtrar los detalles del stock de ese producto
         preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+
+        # Serializar los datos
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
 
