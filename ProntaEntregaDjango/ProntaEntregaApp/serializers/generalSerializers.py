@@ -67,7 +67,7 @@ class CreateDetalleobrapedidoSerializer(serializers.ModelSerializer):
         fields = ['id_stock', 'id_pedido']
     
     def create(self, validated_data):
-        detalle = Detalleobrapedido.objects.create_detalleobrapedido(
+        detalle = Detalleobrapedido.objects.create(
             id_stock=validated_data.get('id_stock'),
             id_pedido=validated_data.get('id_pedido')
         )

@@ -700,7 +700,7 @@ class GetAportePedido(APIView):
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = DetallepedidoSerializer(data=request.data)
+        serializer = CreateDetalleobrapedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -1470,11 +1470,9 @@ class StockInformePDFView(APIView):
         # Generar el PDF
         pdf_file = HTML(string=html_string).write_pdf()
 
-        # Preparar la respuesta con el PDF
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="informe_stock_{producto.nombre}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
-
 
 class GetProductosPorCategoriaExcluidos(APIView):
     permission_classes = [IsAuthenticated]
