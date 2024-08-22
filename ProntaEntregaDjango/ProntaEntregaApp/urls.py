@@ -140,6 +140,7 @@ urlpatterns = [
 
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_stock>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
+    path('GetTotalProductoObra/<int:id_stock>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
 ]
 
 if settings.DEBUG:

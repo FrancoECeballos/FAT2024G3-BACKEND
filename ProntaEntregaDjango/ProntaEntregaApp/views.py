@@ -1393,6 +1393,33 @@ class GetDetallestockproducto_Total(APIView):
             todo.append(d)
         
         return Response(todo, status=status.HTTP_200_OK)
+
+class GetCantidadTotalProductoObra(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_stock, id_producto):
+        ultimo_checkpoint = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto,checkpoint= True)
+            
+        ultimo_checkpoint = ultimo_checkpoint.order_by('fecha_creacion').first()
+    
+        try:
+            detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto, fecha_creacion__gt = ultimo_checkpoint.fecha_creacion)
+            total = ultimo_checkpoint.cantidad
+        except AttributeError:
+            print('AttributeError, se usan todos los detalles y total es 0')
+            detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
+            total = 0
+        
+        for x in detalle:
+            total = total + x.cantidad
+
+        p = Producto.objects.get(pk = id_producto)
+
+        serializer = ProductoSerializer(p)
+        d = serializer.data
+        d.update({'total':total})
+
+        return Response(d,status=status.HTTP_200_OK)
   
 class DeleteDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
