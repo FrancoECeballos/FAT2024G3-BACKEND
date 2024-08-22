@@ -131,7 +131,7 @@ urlpatterns = [
     path('detallestockproducto/', CreateDetallestockproductoView.as_view(), name='detallestockproducto-create'),
     path('restardetallestockproducto/', RestarDetallestockproducto.as_view(), name='RestarDetallestockproducto'),
     path('gdetallestockproducto/<int:id_detallestockproducto>/', GetDetallestockproductoView.as_view(), name='detallestockproducto-get'),
-    path('GetDetallestockproducto_Total/<int:id_stock>/<int:id_producto>/', GetDetallestockproducto_Total.as_view(), name='GetDetallestockproducto_Total'),
+    path('GetDetallestockproducto_Total/<int:id_stock>/<int:id_categoria>/', GetDetallestockproducto_Total.as_view(), name='GetDetallestockproducto_Total'),
     path('ddetallestockproducto/<int:id_detallestockproducto>/', DeleteDetallestockproductoView.as_view(), name='detallestockproducto-delete'),
     path('GetUsuariosPorPedido/<int:id_pedido>/', GetUsuariosPorPedido.as_view(), name='GetUsuariosPorPedido'),
 
