@@ -417,7 +417,7 @@ class Transporte(models.Model):
     anio = models.TextField(blank=True, null=True)  # This field type is a guess.
     imagen = models.ImageField(upload_to='vehiculos/', null=True, blank=True)
     necesita_mantenimiento = models.BooleanField(default=False)
-    descripcion_mantenimiento = models.CharField(max_length=1000, blank=True, null=True)
+    descripcion_mantenimiento = models.CharField(max_length=1000, blank=True, null=True, default='')
 
     objects = TransporteManager()
 
