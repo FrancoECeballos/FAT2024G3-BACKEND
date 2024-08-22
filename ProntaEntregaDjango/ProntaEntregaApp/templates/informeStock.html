@@ -39,12 +39,18 @@
                     <img class="logo-img" src="https://storage.googleapis.com/bucket-django-pronta-entrega/obras/logo.png">
                 </th>
                 <th class="table-inside">
-                    <h2>Informe del producto</h2>
+                    <h2>Informe del producto - {{ obra }}</h2>
                     <table class="table-inside">
                         <tbody>
                             <tr>
                                 <td><strong>Nombre:</strong> {{ producto.nombre }}</td>
                                 <td><strong>Descripción:</strong> {{ producto.descripcion }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Fecha de generación:</strong> {{ fecha_generacion }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Usuario:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</td>
                             </tr>
                         </tbody>
                     </table>
