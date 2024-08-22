@@ -1365,34 +1365,34 @@ class GetDetallestockproductoView(APIView):
 class GetDetallestockproducto_Total(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id_stock,id_producto):
-        try:
-            
+    def get(self, request, id_stock,id_categoria):
 
-            ultimo_checkpoint = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto,checkpoint= True)
+        todo = []
+
+        for producto in Producto.objects.filter(id_categoria = id_categoria):
+            ultimo_checkpoint = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=producto.id_producto,checkpoint= True)
             
             ultimo_checkpoint = ultimo_checkpoint.order_by('fecha_creacion').first()
         
             try:
-                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto, fecha_creacion__gt = ultimo_checkpoint.fecha_creacion)
+                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=producto.id_producto, fecha_creacion__gt = ultimo_checkpoint.fecha_creacion)
                 total = ultimo_checkpoint.cantidad
             except AttributeError:
-                print('hubo errores')
-                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
+                print('AttributeError, se usan todos los detalles y total es 0')
+                detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=producto.id_producto)
                 total = 0
             
             for x in detalle:
                 total = total + x.cantidad
 
-            p = Producto.objects.get(pk = id_producto)
+            p = Producto.objects.get(pk = producto.id_producto)
 
             serializer = ProductoSerializer(p)
             d = serializer.data
             d.update({'total':total})
-            print(d)
-            return Response(d, status=status.HTTP_200_OK)
-        except Detallestockproducto.DoesNotExist:
-            return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+            todo.append(d)
+        
+        return Response(todo, status=status.HTTP_200_OK)
   
 class DeleteDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
