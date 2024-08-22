@@ -1421,23 +1421,43 @@ class PedidoInformePDFView(APIView):
 class StockInformePDFView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id_stock, id_producto):
+    def get(self, request, id_stock, id_producto, token):
+
+        try:
+            user = CustomUsuario.objects.get(auth_token=token)
+            serializer = UsuarioSerializer(user)
+            user_data = serializer.data
+        except CustomUsuario.DoesNotExist:
+            user_data = {'error': 'El usuario no existe.'}
+
+        # Obtener la obra a la que pertenece el stock
+        obra = Stock.objects.get(id_stock=id_stock).id_obra
+
+        # Obtener el nombre de la obra
+        nombre_obra = obra.nombre
+        # Obtener el stock y el producto específico
         stocks = Stock.objects.filter(id_stock=id_stock)
         detalles = Detallestockproducto.objects.all()
         preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
 
-
-        # Renderizar el contenido a una plantilla HTML
-        html_string = render_to_string('informeStock.html', {'detalles': detalles})
-        
-        # Generar el PDF
-        pdf_file = HTML(string=html_string).write_pdf()        # 1. Obtener el usuario que está loggeado
-        user = request.user
-
+        # Obtener el usuario loggeado y la fecha actual
         current_time = datetime.now() + timedelta(hours=-3)
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
+
+
+        # Renderizar el contenido a una plantilla HTML con detalles y producto
+        html_string = render_to_string('informeStock.html', {
+            'detalles': detalles,
+            'producto': producto,
+            'fecha_generacion': formatted_time,
+            'usuario': user_data,
+            'obra': nombre_obra
+        })
+        
+        # Generar el PDF
+        pdf_file = HTML(string=html_string).write_pdf()
 
         response = HttpResponse(pdf_file, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
