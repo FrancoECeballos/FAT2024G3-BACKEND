@@ -39,13 +39,11 @@
                     <img class="logo-img" src="https://storage.googleapis.com/bucket-django-pronta-entrega/obras/logo.png">
                 </th>
                 <th class="table-inside">
-                    <table>
-                        <thead>
-                            <h2>Informe del producto</h2>
-                        </thead>
+                    <h2>Informe del producto</h2>
+                    <table class="table-inside">
                         <tbody>
-                            <tr class="table-inside">
-                                <td><strong>Nombre:</strong> {{ detalles[0].id_producto.nombre }}</td>
+                            <tr>
+                                <td><strong>Nombre:</strong> {{ producto.nombre }}</td>
                                 <td><strong>Descripción:</strong> {{ producto.descripcion }}</td>
                             </tr>
                         </tbody>
@@ -59,19 +57,20 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Cantidad</th>
             <th>Fecha de carga</th>
-            <th>Usuario responsable de la carga</th>
+            <th>Cantidad</th>
+            <th>Usuario</th>
+            <th>Cantidad con Unidad</th>
           </tr>
         </thead>
         <tbody>
             {% for detalle in detalles %}
             <tr>
-                <td>{{ detalle.fecha_creacion }}</td>
                 <td>{{ detalle.id_detallestockproducto }}</td>
-                <td>{{ detalle.id_producto.id_categoria }}</td>
-                <td>{{ detalle.id_producto }}</td>
-                <td>{{ detalle.cantidad}} {{detalle.id_producto.unidadmedida}}</td>
+                <td>{{ detalle.fecha_creacion }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.id_usuario.nombre }}</td>
+                <td>{{ detalle.cantidad }} {{ detalle.id_producto.unidadmedida.nombre }}</td>
             </tr>
             {% endfor %}
         </tbody>
