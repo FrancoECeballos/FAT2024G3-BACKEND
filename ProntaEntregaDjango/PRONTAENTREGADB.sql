@@ -246,7 +246,7 @@ INSERT INTO Direccion (calle, numero, localidad) VALUES
     ('Calle Roca', 103, 'Localidad Colonia Carolla'),
     ('Calle Menem', 6, 'Localidad La Estanzuela'),
     ('Calle Evita', 42, 'Localidad Perón'),
-    ('Calle Desconocida', 0, 'Localidad Desconocida'), -- Asilo a refugiados sirios, Nuestra familia Siria / Acompañamiento a jóvenes adolecentes, Señor Común / Acompañamiento a personas que sufren soledad, Madre Teresa / Acompañamiento a mamás, Madre de la Ternura / Ejercicios espirituales gratuitos, Mamá Antula
+    ('Calle Desconocida', 0, 'Localidad Desconocida'), -- Asilo a refugiados sirios, Nuestra familia Siria / Acompañamiento a jóvenes adolecentes, Sueño Común / Acompañamiento a personas que sufren soledad, Madre Teresa / Acompañamiento a mamás, Madre de la Ternura / Ejercicios espirituales gratuitos, Mamá Antula
 	('Brasil 680, X5000CCP Córdoba', 680, 'B° Güemes'), -- Hogar de niños, Jose Bainotti
     ('X5000FGC, Libertad 171, X5000 FGC', 171, 'B° Centro'), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
     ('Brasil 581, X5000CCK ', 581, 'B° Güemes'), -- Centro de Cuidados Paliativos, Casa de la Bondad
@@ -282,7 +282,7 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Caminar de Nuevo', 'Admin3', 'caminarnuevo', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Caminar@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
     ('Señora del Valle', 'Admin4', 'señoravalle', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Valle@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 6, 1, TRUE, FALSE, TRUE), -- Escuela Albergue, Nuestra Señora del Valle
     ('Familia Siria', 'Admin5', 'familiasiria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Siria@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 7, 1, TRUE, FALSE, TRUE), -- Asilo a refugiados sirios, Nuestra familia Siria
-    ('Señor Común', 'Admin6', 'señorcomun', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Común@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamiento a jóvenes adolecentes, Señor Común
+    ('Sueño Común', 'Admin6', 'señorcomun', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Común@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamiento a jóvenes adolecentes, Sueño Común
     ('Madre Teresa', 'Admin7', 'madreteresa', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Teresa@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Acompañamiento a personas que sufren soledad, Madre Teresa
     ('Cura Brochero', 'Admin8', 'curabrochero', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Brochero@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Acompañamientos a Privados de libertad, Cura Brochero
     ('Madre de la Ternura', 'Admin9', 'madreternura', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Ternura@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mamás, Madre de la Ternura
@@ -300,7 +300,7 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
     ('Caminar de Nuevo', 'Acompañamiento a mujeres HIV', 1, 13, 'obras/logo.png'),
     ('Nuestra Señora del Valle', 'Escuela Albergue', 1, 14, 'obras/logo.png'),
     ('Nuestra familia Siria', 'Escuela Albergue', 1, 9, 'obras/logo.png'),
-    ('Señor Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/logo.png'),
+    ('Sueño Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/logo.png'),
     ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/logo.png'),
     ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/logo.png'),
     ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/logo.png');
@@ -318,7 +318,7 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Administrar la obra Caminar de Nuevo', '2024-3-09', 6, 7, 1),
     ('Administrar la obra Nuestra Señora del Valle', '2023-12-26', 7, 8, 1),
     ('Administrar la obra Nuestra familia Siria', '2024-01-12', 8, 9, 1),
-    ('Administrar la obra Señor Común', '2024-3-09', 9, 10, 1),
+    ('Administrar la obra Sueño Común', '2024-3-09', 9, 10, 1),
     ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 1),
     ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 1),
     ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 1);
