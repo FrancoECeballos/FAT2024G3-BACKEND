@@ -61,6 +61,35 @@ class DetalleobrapedidoSerializer(serializers.ModelSerializer):
         model = Detalleobrapedido
         fields = '__all__'
 
+class CreateDetalleobrapedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detalleobrapedido
+        fields = ['id_stock', 'id_pedido']
+    
+    def create(self, validated_data):
+        detalle = Detalleobrapedido.objects.create_detalleobrapedido(
+            id_stock=validated_data.get('id_stock'),
+            id_pedido=validated_data.get('id_pedido')
+        )
+        return detalle
+    
+    def validate(self, data):
+        required_fields = ['id_stock', 'id_pedido']
+        for field in required_fields:
+            if field not in data or data[field] is None:
+                raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})
+        return data
+
+    def to_internal_value(self, data):
+        internal_value = super().to_internal_value(data)
+        internal_value['id_stock'] = Stock.objects.get(pk=data.get('id_stock'))
+        internal_value['id_pedido'] = Pedido.objects.get(pk=data.get('id_pedido'))
+        return internal_value
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return representation
+
 class TransporteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transporte

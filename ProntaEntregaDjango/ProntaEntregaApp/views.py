@@ -673,11 +673,13 @@ class GetDetalleobrapedido(APIView):
 
 class CrearDetalleobrapedido(APIView):
     def post(self, request):
-        serializer = DetalleobrapedidoSerializer(data=request.data)
+        serializer = CreateDetalleobrapedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 
 class DeleteDetalleobrapedido(APIView):
     def delete(self, request, pk):
@@ -1426,7 +1428,20 @@ class PedidoInformePDFView(APIView):
 class StockInformePDFView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id_stock, id_producto):
+    def get(self, request, id_stock, id_producto, token):
+
+        try:
+            user = CustomUsuario.objects.get(auth_token=token)
+            serializer = UsuarioSerializer(user)
+            user_data = serializer.data
+        except CustomUsuario.DoesNotExist:
+            user_data = {'error': 'El usuario no existe.'}
+
+        # Obtener la obra a la que pertenece el stock
+        obra = Stock.objects.get(id_stock=id_stock).id_obra
+
+        # Obtener el nombre de la obra
+        nombre_obra = obra.nombre
         # Obtener el stock y el producto específico
         stocks = Stock.objects.filter(id_stock=id_stock)
         producto = Producto.objects.get(id_producto=id_producto)
@@ -1437,19 +1452,23 @@ class StockInformePDFView(APIView):
         # Serializar los datos
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
+
+        # Obtener el usuario loggeado y la fecha actual
+        current_time = datetime.now() + timedelta(hours=-3)
+        formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
+
+
         # Renderizar el contenido a una plantilla HTML con detalles y producto
         html_string = render_to_string('informeStock.html', {
             'detalles': detalles,
             'producto': producto,
+            'fecha_generacion': formatted_time,
+            'usuario': user_data,
+            'obra': nombre_obra
         })
         
         # Generar el PDF
         pdf_file = HTML(string=html_string).write_pdf()
-
-        # Obtener el usuario loggeado y la fecha actual
-        user = request.user
-        current_time = datetime.now() + timedelta(hours=-3)
-        formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
 
         # Preparar la respuesta con el PDF
         response = HttpResponse(pdf_file, content_type='application/pdf')
