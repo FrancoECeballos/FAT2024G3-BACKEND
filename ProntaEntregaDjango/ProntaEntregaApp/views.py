@@ -1539,17 +1539,27 @@ class GetPedidosByUser(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):
+
         # 1. Obtener el usuario a partir del token
-        detalles = Detalleobrausuario.objects.filter(id_usuario__auth_token=token).values_list('id_obra', flat=True)
-        print(detalles, "/n")
-        obras = Obra.objects.filter(id_obra__in=detalles)
-        print(obras, "/n")
+        user = CustomUsuario.objects.get(auth_token=token)
 
-        # 3. Obtener todos los Detallesobrapedido que contengan el id_obra de las obras en donde está el usuario
-        detalles_obrapedido = Detalleobrapedido.objects.filter(id_obra__in=obras)
-        print(detalles_obrapedido, "/n")
+        # 2. Obtener todos los Detalleobrausuario del usuario
+        detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
 
-        # 4. Buscar y devolver los pedidos que corresponden a esos detalles
-        pedidos = Pedido.objects.filter(id_pedido__in=detalles.values_list('id_pedido', flat=True))
+        # 3. Obtener todas las obras que contienen esos detalles
+        obras = Obra.objects.filter(id_obra__in=detalles_obras_usuario.values_list('id_obra', flat=True))
+        
+        # 4. Obtener todos los stocks de las obras
+        stocks = Stock.objects.filter(id_obra__in=obras.values_list('id_obra', flat=True))
+
+        # 5. Obtener los Detalleobrapedido que contengan alguno de los stock_id de los stocks
+        detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks.values_list('id_stock', flat=True))
+
+        # 6. Obtener los pedidos asociados a los Detalleobrapedido
+        pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+
+        # 7. Serializar los pedidos
         serializer = PedidoSerializer(pedidos, many=True)
+
+        # 8. Retornar la respuesta
         return Response(serializer.data, status=status.HTTP_200_OK)
