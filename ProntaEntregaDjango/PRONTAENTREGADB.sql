@@ -230,9 +230,9 @@ CREATE TABLE IF NOT EXISTS DetalleObraTransporte (
 
 CREATE TABLE IF NOT EXISTS DetalleObraPedido (
     id_DetalleObraPedido INT AUTO_INCREMENT PRIMARY KEY,
-    id_obra int,
+    id_stock int,
     id_pedido int,
-    CONSTRAINT fk_obra_detalle_2 FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_stock_detalle_2 FOREIGN KEY (id_stock) REFERENCES Stock(id_stock),
     CONSTRAINT fk_pedido_detalle_2 FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
 );
 
@@ -384,7 +384,7 @@ INSERT INTO Pedido (fechaInicio, fechaVencimiento, cantidad, id_obra, id_usuario
     ('2024-09-23', '2024-10-23', 1, 3, 1, 3, 3, 3);
 
 
-INSERT INTO DetalleObraPedido(id_obra, id_pedido) VALUES 
+INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES 
     (2, 1),
     (3, 1),
     (4, 1),

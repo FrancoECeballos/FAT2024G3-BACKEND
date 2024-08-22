@@ -19,7 +19,7 @@ class EstadoofertaSerializer(serializers.ModelSerializer):
 class OfertaSerializer(serializers.ModelSerializer):
     id_obra = ObraSerializer()
     id_usuario = UsuarioSerializer()
-    id_estadooferta = EstadoofertaSerializer()
+    id_estadoOferta = EstadoofertaSerializer()
     id_producto = ProductoSerializer()
 
     class Meta:
@@ -29,7 +29,7 @@ class OfertaSerializer(serializers.ModelSerializer):
 class CrearOfertaSerializer(serializers.ModelSerializer):
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
     id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
-    id_estadooferta = serializers.PrimaryKeyRelatedField(queryset=Estadooferta.objects.all())
+    id_estadoOferta = serializers.PrimaryKeyRelatedField(queryset=Estadooferta.objects.all())
     id_producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
 
     class Meta:
