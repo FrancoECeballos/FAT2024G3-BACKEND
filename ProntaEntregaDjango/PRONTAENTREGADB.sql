@@ -300,7 +300,7 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
     ('Caminar de Nuevo', 'Acompañamiento a mujeres HIV', 1, 13, 'obras/logo.png'),
     ('Nuestra Señora del Valle', 'Escuela Albergue', 1, 14, 'obras/logo.png'),
     ('Nuestra familia Siria', 'Escuela Albergue', 1, 9, 'obras/logo.png'),
-    ('Señor Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/logo.png'),
+    ('Sueño Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/logo.png'),
     ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/logo.png'),
     ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/logo.png'),
     ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/logo.png');
@@ -318,7 +318,7 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Administrar la obra Caminar de Nuevo', '2024-3-09', 6, 7, 1),
     ('Administrar la obra Nuestra Señora del Valle', '2023-12-26', 7, 8, 1),
     ('Administrar la obra Nuestra familia Siria', '2024-01-12', 8, 9, 1),
-    ('Administrar la obra Señor Común', '2024-3-09', 9, 10, 1),
+    ('Administrar la obra Sueño Común', '2024-3-09', 9, 10, 1),
     ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 1),
     ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 1),
     ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 1);
