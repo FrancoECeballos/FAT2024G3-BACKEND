@@ -1420,26 +1420,35 @@ class StockInformePDFView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id_stock, id_producto):
+        # Obtener el stock y el producto específico
         stocks = Stock.objects.filter(id_stock=id_stock)
-        detalles = Detallestockproducto.objects.all()
+        producto = Producto.objects.get(id_producto=id_producto)
+
+        # Filtrar los detalles del stock de ese producto
         preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+
+        # Serializar los datos
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
-
-
-        # Renderizar el contenido a una plantilla HTML
-        html_string = render_to_string('informeStock.html', {'detalles': detalles})
+        # Renderizar el contenido a una plantilla HTML con detalles y producto
+        html_string = render_to_string('informeStock.html', {
+            'detalles': detalles,
+            'producto': producto,
+        })
         
         # Generar el PDF
-        pdf_file = HTML(string=html_string).write_pdf()        # 1. Obtener el usuario que está loggeado
-        user = request.user
+        pdf_file = HTML(string=html_string).write_pdf()
 
+        # Obtener el usuario loggeado y la fecha actual
+        user = request.user
         current_time = datetime.now() + timedelta(hours=-3)
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
 
+        # Preparar la respuesta con el PDF
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="informe_stock_{producto.nombre}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
         return response
+
 
 class GetProductosPorCategoriaExcluidos(APIView):
     permission_classes = [IsAuthenticated]
