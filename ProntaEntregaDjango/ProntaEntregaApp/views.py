@@ -1588,3 +1588,18 @@ class GetPedidosByUser(APIView):
 
         # 10. Retornar la respuesta
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
+
+class GetTagsByCategoria(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_categoria):
+
+        detalle = Detallecategoriatags.objects.filter(id_categoria = id_categoria)
+
+        t = []
+
+        for x in detalle:
+            for y in Tags.objects.filter(id_tags = x.id_tags):
+                t.append(y)
+        
+        return Response(t,status=status.HTTP_200_OK)

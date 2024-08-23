@@ -474,4 +474,14 @@ insert into AportePedido (descripcion,cantidad,id_pedido) values
 ('desc1',10,1),
 ('desc2',20,2),
 ('desc3',30,3)
+;
+
+insert into Tags (nombre) values 
+('tiene_talle'),
+('es_perecedero')
+; 
+
+insert into DetalleCategoriaTags (id_tags,id_categoria) values 
+(1,2),
+(2,1)
 ; 
