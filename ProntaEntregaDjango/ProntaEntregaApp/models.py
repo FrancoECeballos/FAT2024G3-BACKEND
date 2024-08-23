@@ -205,7 +205,6 @@ class Obra(models.Model):
         db_table = 'Obra'
         managed = False
 
-
     def __str__(self):
         return self.nombre
 
@@ -217,6 +216,9 @@ class Detalleobrapedido(models.Model):
     class Meta:
         managed = False
         db_table = 'DetalleObraPedido'
+
+    def __str__(self):
+        return f'Stock N°{self.id_stock}, Pedido N°{self.id_pedido}'
 
 class Detalleobrausuario(models.Model):
     id_detalleobrausuario = models.AutoField(db_column='id_detalleObraUsuario', primary_key=True)  # Field name made lowercase.
