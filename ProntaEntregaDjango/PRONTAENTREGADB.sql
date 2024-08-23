@@ -132,6 +132,11 @@ CREATE TABLE IF NOT EXISTS Producto (
     cantidad_por_unidad INT,
     imagen VARCHAR(255),
     perecedero BOOLEAN,
+    tiene_talle BOOLEAN,
+    enlatado BOOLEAN,
+    requiere_refrigeracion BOOLEAN,
+    sin_TAC BOOLEAN,
+    sin_azucares BOOLEAN,
     CONSTRAINT fk_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
 );
 

@@ -271,6 +271,11 @@ class Producto(models.Model):
     cantidad_por_unidad = models.IntegerField(blank=True, null=True)
     imagen = models.ImageField(upload_to='productos/')
     perecedero = models.IntegerField(blank=True, null=True)
+    tiene_talle = models.IntegerField(blank=True, null=True)
+    enlatado = models.IntegerField(blank=True, null=True)
+    requiere_refrigeracion = models.IntegerField(blank=True, null=True)
+    sin_tac = models.IntegerField(db_column='sin_TAC', blank=True, null=True)  # Field name made lowercase.
+    sin_azucares = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
