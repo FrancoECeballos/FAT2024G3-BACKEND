@@ -42,7 +42,6 @@ from datetime import datetime, timedelta, date
 def index(request):
     return render(request, 'index.html')
 
-
 class Verificar(APIView):
     def get(self,request,pk):
         user = get_object_or_404(CustomUsuario, pk=pk)
@@ -1607,3 +1606,17 @@ class GetPedidosForAdmin(APIView):
             })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
+    
+class UpdateEstadoByVencimiento(APIView):
+    def get(self,request):
+        pedidos = Pedido.objects.all()
+        ofertas = Oferta.objects.all()
+        for oferta in ofertas:
+            if oferta.fecha_vencimiento < date.today():
+                oferta.id_estadooferta = 5
+                oferta.save()
+        for pedido in pedidos:
+            if pedido.fecha_entrega < date.today():
+                pedido.id_estado = 5
+                pedido.save()
+        return Response({'success': 'Los estados de los pedidos y las ofertas han sido actualizados exitosamente.'}, status=status.HTTP_200_OK)

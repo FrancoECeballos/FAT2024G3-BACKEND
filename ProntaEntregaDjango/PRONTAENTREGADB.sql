@@ -372,7 +372,9 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, talle, imagen, perecede
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
     ('Pendiente', 'Solo es un pedido y no se hizo nada'),
     ('En Proceso', 'Transporte se encarga de llevar este pedido que ahora esta en procesosta en proceso el pedido'),
-    ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.');
+    ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.'),
+    ('Cancelado', 'El pedido fue cancelado por el usuario que lo hizo'),
+    ('Vencido', 'El pedido ya vencio y no se puede reservar');
 
 -- Inserciones para la tabla Pedido
 INSERT INTO Pedido (fechaInicio, fechaVencimiento, cantidad, id_obra, id_usuario, id_producto, urgente, id_estadoPedido) VALUES 
@@ -420,7 +422,9 @@ INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 
     ('Disponible', 'La oferta aun esta disponible y los usuarios pueden verla para reservarla'),
     ('Reservado', 'La oferta esta reservada y los usuarios dejan verla'),
-    ('Reclamado', 'La oferta que etaba en reserva ya fue transportada hasta la obra que la reclamo');
+    ('Reclamado', 'La oferta que etaba en reserva ya fue transportada hasta la obra que la reclamo'),
+    ('Cancelado', 'La oferta fue cancelada por el usuario que la ofrecio'),
+    ('Vencido', 'La oferta ya vencio y no se puede reservar');
 
 -- Inserciones para la tabla Oferta
 INSERT INTO Oferta (fechaInicio, fechaVencimiento, cantidad, id_usuario, id_obra, id_producto, id_estadoOferta) VALUES 
