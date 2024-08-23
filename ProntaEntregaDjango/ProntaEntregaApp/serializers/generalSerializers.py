@@ -160,17 +160,7 @@ class NotificacionSerializer(serializers.ModelSerializer):
         model = Notificacion
         fields = '__all__'
 
-class DetalleObraTransporteSerializer():
+class DetalleObraTransporteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detalleobratransporte
-        fields = '__all__'
-
-class TagsSerializer():
-    class Meta:
-        model = Tags
-        fields = '__all__'
-
-class DetallecategoriatagsSerializer():
-    class Meta:
-        model = Detallecategoriatags
         fields = '__all__'

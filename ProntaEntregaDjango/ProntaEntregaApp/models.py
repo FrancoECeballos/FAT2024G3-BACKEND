@@ -58,15 +58,6 @@ class Organizacion(models.Model):
     def __str__(self):
         return self.nombre
 
-class Tags(models.Model):
-    id_tags = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'Tags'
-
-
 class Tipodocumento(models.Model):
     id_tipodocumento = models.AutoField(db_column='id_tipoDocumento', primary_key=True)  # Field name made lowercase.
     nombre = models.CharField(max_length=255, blank=True, null=True)
@@ -267,15 +258,6 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
-    
-class Detallecategoriatags(models.Model):
-    id_detallecategoriatags = models.AutoField(db_column='id_detalleCategoriaTags', primary_key=True)  # Field name made lowercase.
-    id_tags = models.ForeignKey('Tags', models.DO_NOTHING, db_column='id_tags', blank=True, null=True)
-    id_categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_categoria', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'DetalleCategoriaTags'
     
 class Producto(models.Model):
 

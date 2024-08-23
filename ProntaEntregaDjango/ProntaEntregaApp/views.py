@@ -688,8 +688,6 @@ class CrearDetalleobrapedido(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
 
 class DeleteDetalleobrapedido(APIView):
     def delete(self, request, pk):
@@ -1555,7 +1553,6 @@ class GetPedidosByUser(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):
-
         user = CustomUsuario.objects.get(auth_token=token)
 
         detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
@@ -1573,7 +1570,13 @@ class GetPedidosByUser(APIView):
         for obra in obras:
             obra_serialized = ObraSerializer(obra).data
             obra_pedidos = pedidos.filter(id_pedido__in=detalle_obrapedidos.filter(id_stock__in=stocks.filter(id_obra=obra).values_list('id_stock', flat=True)).values_list('id_pedido', flat=True))
-            pedidos_serialized = PedidoSerializer(obra_pedidos, many=True).data
+            
+            pedidos_serialized = []
+            for pedido in obra_pedidos:
+                pedido_data = PedidoSerializer(pedido).data
+                detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
+                pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
+                pedidos_serialized.append(pedido_data)
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
@@ -1581,3 +1584,42 @@ class GetPedidosByUser(APIView):
             })
 
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
+
+
+class GetPedidosForAdmin(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        obras = Obra.objects.all()
+        obras_con_pedidos = []
+
+        for obra in obras:
+            stocks = Stock.objects.filter(id_obra=obra.id_obra)
+            detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
+            pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+
+            obra_serialized = ObraSerializer(obra).data
+            pedidos_serialized = PedidoSerializer(pedidos, many=True).data
+
+            obras_con_pedidos.append({
+                'obra': obra_serialized,
+                'pedidos': pedidos_serialized
+            })
+
+        return Response(obras_con_pedidos, status=status.HTTP_200_OK)
+
+
+class GetTagsByCategoria(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_categoria):
+
+        detalle = Detallecategoriatags.objects.filter(id_categoria = id_categoria)
+
+        t = []
+
+        for x in detalle:
+            for y in Tags.objects.filter(id_tags = x.id_tags):
+                t.append(y)
+        
+        return Response(t,status=status.HTTP_200_OK)
