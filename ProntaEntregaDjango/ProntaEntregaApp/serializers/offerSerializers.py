@@ -31,6 +31,8 @@ class CrearOfertaSerializer(serializers.ModelSerializer):
     id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
     id_estadoOferta = serializers.PrimaryKeyRelatedField(queryset=Estadooferta.objects.all())
     id_producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
+    fechainicio = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    fechavencimiento = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
 
     class Meta:
         model = Oferta
