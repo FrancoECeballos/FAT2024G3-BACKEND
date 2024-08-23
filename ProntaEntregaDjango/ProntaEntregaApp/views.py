@@ -1574,3 +1574,42 @@ class GetPedidosByUser(APIView):
             })
 
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
+
+
+class GetPedidosForAdmin(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        obras = Obra.objects.all()
+        obras_con_pedidos = []
+
+        for obra in obras:
+            stocks = Stock.objects.filter(id_obra=obra.id_obra)
+            detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
+            pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+
+            obra_serialized = ObraSerializer(obra).data
+            pedidos_serialized = PedidoSerializer(pedidos, many=True).data
+
+            obras_con_pedidos.append({
+                'obra': obra_serialized,
+                'pedidos': pedidos_serialized
+            })
+
+        return Response(obras_con_pedidos, status=status.HTTP_200_OK)
+
+
+class GetTagsByCategoria(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_categoria):
+
+        detalle = Detallecategoriatags.objects.filter(id_categoria = id_categoria)
+
+        t = []
+
+        for x in detalle:
+            for y in Tags.objects.filter(id_tags = x.id_tags):
+                t.append(y)
+        
+        return Response(t,status=status.HTTP_200_OK)
