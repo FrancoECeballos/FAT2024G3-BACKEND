@@ -330,6 +330,16 @@ class ObraByUser(APIView):
         obras = Obra.objects.filter(id_obra__in=detalles)
         serializer = ObraSerializer(obras, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ObraSinUsuario(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, token):
+        detalles = Detalleobrausuario.objects.filter(id_usuario__auth_token=token).values_list('id_obra', flat=True)
+        obras = Obra.objects.exclude(id_obra__in=detalles)
+        serializer = ObraSerializer(obras, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
         
 class UserByObra(APIView):
     permission_classes = [AllowAny]
