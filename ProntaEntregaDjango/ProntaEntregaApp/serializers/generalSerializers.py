@@ -164,3 +164,13 @@ class DetalleObraTransporteSerializer():
     class Meta:
         model = Detalleobratransporte
         fields = '__all__'
+
+class TagsSerializer():
+    class Meta:
+        model = Tags
+        fields = '__all__'
+
+class DetallecategoriatagsSerializer():
+    class Meta:
+        model = Detallecategoriatags
+        fields = '__all__'
