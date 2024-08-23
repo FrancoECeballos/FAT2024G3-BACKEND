@@ -1564,8 +1564,27 @@ class GetPedidosByUser(APIView):
         # 6. Obtener los pedidos asociados a los Detalleobrapedido
         pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
 
-        # 7. Serializar los pedidos
-        serializer = PedidoSerializer(pedidos, many=True)
+        # 7. Crear una lista para almacenar los pedidos y su respectiva obra
+        pedidos_por_obra = []
 
-        # 8. Retornar la respuesta
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # 8. Iterar sobre los pedidos obtenidos
+        for pedido in pedidos:
+            # 9. Obtener la obra asociada al pedido
+            obra = Obra.objects.get(id_obra=pedido.id_obra.id_obra)
+            # Serializar el pedido y la obra
+            pedido_serialized = PedidoSerializerPorObra(pedido).data
+            obra_serialized = ObraSerializer(obra).data
+            # Agregar el pedido a la lista de pedidos de la obra
+            if obra_serialized.get('id_obra') not in [item.get('obra').get('id_obra') for item in pedidos_por_obra]:
+                pedidos_por_obra.append({
+                    'obra': obra_serialized,
+                    'pedidos': [pedido_serialized]
+                })
+            else:
+                for item in pedidos_por_obra:
+                    if item.get('obra').get('id_obra') == obra_serialized.get('id_obra'):
+                        item.get('pedidos').append(pedido_serialized)
+                        break
+
+        # 10. Retornar la respuesta
+        return Response(pedidos_por_obra, status=status.HTTP_200_OK)

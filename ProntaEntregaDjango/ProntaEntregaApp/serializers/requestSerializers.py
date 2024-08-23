@@ -25,6 +25,14 @@ class PedidoSerializer(serializers.ModelSerializer):
         model = Pedido
         fields = '__all__'
 
+class PedidoSerializerPorObra(serializers.ModelSerializer):
+    id_usuario = UsuarioSerializer()
+    id_producto = ProductoSerializer()
+
+    class Meta:
+        model = Pedido
+        fields = '__all__'
+
 class CreatePedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
