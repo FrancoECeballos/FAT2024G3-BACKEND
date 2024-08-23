@@ -1546,47 +1546,30 @@ class GetPedidosByUser(APIView):
 
     def get(self, request, token):
 
-        # 1. Obtener el usuario a partir del token
         user = CustomUsuario.objects.get(auth_token=token)
 
-        # 2. Obtener todos los Detalleobrausuario del usuario
         detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
 
-        # 3. Obtener todas las obras que contienen esos detalles
         obras = Obra.objects.filter(id_obra__in=detalles_obras_usuario.values_list('id_obra', flat=True))
         
-        # 4. Obtener todos los stocks de las obras
         stocks = Stock.objects.filter(id_obra__in=obras.values_list('id_obra', flat=True))
 
-        # 5. Obtener los Detalleobrapedido que contengan alguno de los stock_id de los stocks
         detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks.values_list('id_stock', flat=True))
 
-        # 6. Obtener los pedidos asociados a los Detalleobrapedido
         pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
 
-        # 7. Crear una lista para almacenar los pedidos y su respectiva obra
         pedidos_por_obra = []
 
-        # 8. Iterar sobre los pedidos obtenidos
-        for pedido in pedidos:
-            # 9. Obtener la obra asociada al pedido
-            obra = Obra.objects.get(id_obra=pedido.id_obra.id_obra)
-            # Serializar el pedido y la obra
-            pedido_serialized = PedidoSerializerPorObra(pedido).data
+        for obra in obras:
             obra_serialized = ObraSerializer(obra).data
-            # Agregar el pedido a la lista de pedidos de la obra
-            if obra_serialized.get('id_obra') not in [item.get('obra').get('id_obra') for item in pedidos_por_obra]:
-                pedidos_por_obra.append({
-                    'obra': obra_serialized,
-                    'pedidos': [pedido_serialized]
-                })
-            else:
-                for item in pedidos_por_obra:
-                    if item.get('obra').get('id_obra') == obra_serialized.get('id_obra'):
-                        item.get('pedidos').append(pedido_serialized)
-                        break
+            obra_pedidos = pedidos.filter(id_pedido__in=detalle_obrapedidos.filter(id_stock__in=stocks.filter(id_obra=obra).values_list('id_stock', flat=True)).values_list('id_pedido', flat=True))
+            pedidos_serialized = PedidoSerializer(obra_pedidos, many=True).data
 
-        # 10. Retornar la respuesta
+            pedidos_por_obra.append({
+                'obra': obra_serialized,
+                'pedidos': pedidos_serialized
+            })
+
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
 
 
@@ -1611,3 +1594,19 @@ class GetPedidosForAdmin(APIView):
             })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
+
+
+class GetTagsByCategoria(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_categoria):
+
+        detalle = Detallecategoriatags.objects.filter(id_categoria = id_categoria)
+
+        t = []
+
+        for x in detalle:
+            for y in Tags.objects.filter(id_tags = x.id_tags):
+                t.append(y)
+        
+        return Response(t,status=status.HTTP_200_OK)
