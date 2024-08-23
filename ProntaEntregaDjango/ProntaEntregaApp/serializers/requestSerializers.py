@@ -25,34 +25,23 @@ class PedidoSerializer(serializers.ModelSerializer):
         model = Pedido
         fields = '__all__'
 
-class CreatePedidoSerializer(serializers.ModelSerializer):
+class PedidoSerializerPorObra(serializers.ModelSerializer):
+    id_usuario = UsuarioSerializer()
+    id_producto = ProductoSerializer()
+
     class Meta:
         model = Pedido
-        fields = ['id_pedido', 'fechainicio', 'fechavencimiento', 'id_obra', 'id_usuario', 'cantidad', 'urgente', 'id_producto', 'id_estadoPedido']
-        extra_kwargs = {
-            'id_obra': {'required': True, 'allow_null': False},
-            'id_usuario': {'required': True, 'allow_null': False},
-            'cantidad': {'required': True, 'allow_null': False},
-            'urgente': {'required': True, 'allow_null': False},
-            'id_producto': {'required': True, 'allow_null': False},
-            'id_estadoPedido': {'required': True, 'allow_null': False},
-        }
+        fields = '__all__'
 
-    def validate(self, data):
-        required_fields = ['id_obra', 'id_usuario', 'cantidad', 'urgente', 'id_producto', 'id_estadoPedido']
-        for field in required_fields:
-            if field not in data or data[field] is None:
-                raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})
-        return data
+class CreatePedidoSerializer(serializers.ModelSerializer):
+    id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
+    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
+    id_estadoPedido = serializers.PrimaryKeyRelatedField(queryset=Estadopedido.objects.all())
+    id_producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
+    fechainicio = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    fechavencimiento = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
 
-    def to_internal_value(self, data):
-        internal_value = super().to_internal_value(data)
-        internal_value['id_obra'] = Obra.objects.get(pk=data.get('id_obra'))
-        internal_value['id_usuario'] = CustomUsuario.objects.get(pk=data.get('id_usuario'))
-        internal_value['id_producto'] = Producto.objects.get(pk=data.get('id_producto'))
-        internal_value['id_estadoPedido'] = Estadopedido.objects.get(pk=data.get('id_estadoPedido'))
-        return internal_value
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        return representation   
+    class Meta:
+        model = Pedido
+        fields = '__all__'
+        
