@@ -122,19 +122,6 @@ CREATE TABLE IF NOT EXISTS Categoria (
     descripcion VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS Tags (
-    id_tags int auto_increment primary key,
-    nombre varchar(255)
-);
-
-CREATE TABLE IF NOT EXISTS DetalleCategoriaTags (
-    id_detalleCategoriaTags int AUTO_INCREMENT PRIMARY KEY,
-    id_tags int,
-    id_categoria INT,
-    constraint fk_tags_detalle FOREIGN key (id_tags) REFERENCES Tags(id_tags),
-    constraint fk_categoria_detalle FOREIGN key (id_categoria) REFERENCES Categoria(id_categoria)
-);
-
 CREATE TABLE IF NOT EXISTS Producto (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
@@ -475,13 +462,3 @@ insert into AportePedido (descripcion,cantidad,id_pedido) values
 ('desc2',20,2),
 ('desc3',30,3)
 ;
-
-insert into Tags (nombre) values 
-('tiene_talle'),
-('es_perecedero')
-; 
-
-insert into DetalleCategoriaTags (id_tags,id_categoria) values 
-(1,2),
-(2,1)
-; 
