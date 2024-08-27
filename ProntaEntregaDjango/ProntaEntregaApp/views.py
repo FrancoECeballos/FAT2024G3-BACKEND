@@ -717,31 +717,23 @@ class CrearAportePedido(APIView):
 class EditarAportePedido(APIView):
     def put(self, request, pk):
         try:
-            detalle = AportePedido.objects.get(pk=pk)
+            aporte = AportePedido.objects.get(pk=pk)
         except AportePedido.DoesNotExist:
             return Response({'error': 'No se encontró un detalle de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = AportePedidoSerializer(detalle, data=request.data,partial=True)
+        serializer = AportePedidoSerializer(aporte, data=request.data,partial=True)
 
         if serializer.is_valid():
-
-            #print(request.data)
-            #print(serializer)
-            print(int(str(detalle.id_pedido)))
             
-            print("---------------------------------------------------------------")
-
             serializer.save()
 
             ## SECCION NOTIFICACION
-            pedido= Pedido.objects.get(pk=int(str(detalle.id_pedido)))
+            pedido= Pedido.objects.get(pk=aporte.__dict__['id_pedido_id'])
 
-            print(pedido.id_producto.__str__())
-            producto = Producto.objects.get(pk=int(str(pedido.id_producto)))
-            p = producto.nombre
+            producto = Producto.objects.get(pk=pedido.__dict__['id_producto_id'])
             
             
-            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
+            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+producto.nombre+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
             ##FIN SECCION NOTIFICACION

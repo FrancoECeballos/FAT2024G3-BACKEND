@@ -22,6 +22,20 @@ class CreateAportePedidoSerializer(serializers.ModelSerializer):
         model = AportePedido
         fields = '__all__'
 
+    def validate(self, data):
+        cantidad = data.get('cantidad', None)
+        if cantidad is not None and cantidad <= 0:
+            raise serializers.ValidationError('La cantidad debe ser mayor a 0.')
+
+        id_pedido = data.get('id_pedido', None)
+        if id_pedido is not None and not Pedido.objects.filter(id_pedido=id_pedido.id_pedido).exists():
+            raise serializers.ValidationError('El pedido referenciado no existe.')
+        
+        if id_pedido is None:
+            raise serializers.ValidationError('debe proporcionar id_pedido.')
+        
+        return data
+
 class EstadopedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estadopedido
