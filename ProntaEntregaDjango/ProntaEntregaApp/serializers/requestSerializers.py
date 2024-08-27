@@ -5,8 +5,19 @@ from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
 from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 from django.contrib.auth import authenticate
 
-class DetallepedidoSerializer(serializers.ModelSerializer):
+class AportePedidoSerializer(serializers.ModelSerializer):
     
+    class Meta:
+        model = AportePedido
+        fields = '__all__'
+
+class CreateAportePedidoSerializer(serializers.ModelSerializer):
+    id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
+    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
+    monto = serializers.FloatField()
+    fecha = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    descripcion = serializers.CharField(max_length=200)
+
     class Meta:
         model = AportePedido
         fields = '__all__'

@@ -701,13 +701,13 @@ class GetAportePedido(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         detalles = AportePedido.objects.all()
-        serializer = DetallepedidoSerializer(detalles, many=True)
+        serializer = AportePedidoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = CreateDetalleobrapedidoSerializer(data=request.data)
+        serializer = CreateAportePedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -721,7 +721,7 @@ class EditarAportePedido(APIView):
         except AportePedido.DoesNotExist:
             return Response({'error': 'No se encontró un detalle de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = DetallepedidoSerializer(detalle, data=request.data,partial=True)
+        serializer = AportePedidoSerializer(detalle, data=request.data,partial=True)
 
         if serializer.is_valid():
 
