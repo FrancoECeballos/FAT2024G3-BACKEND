@@ -14,13 +14,28 @@ class AportePedidoSerializer(serializers.ModelSerializer):
 class CreateAportePedidoSerializer(serializers.ModelSerializer):
     id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
     id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
-    monto = serializers.FloatField()
+    cantidad = serializers.FloatField()
     fecha = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
-    descripcion = serializers.CharField(max_length=200)
 
     class Meta:
         model = AportePedido
-        fields = '__all__'
+        fields = ['id_usuario', 'fecha', 'cantidad', 'id_pedido']
+
+    def create(self, validated_data):
+        id_usuario = validated_data.pop('id_usuario')
+        fecha = validated_data.pop('fecha')
+        id_pedido = validated_data.pop('id_pedido')
+        
+        # Crear el objeto AportePedido sin los campos no definidos en el modelo
+        aporte_pedido = AportePedido.objects.create(**validated_data)
+        
+        # Asignar los campos adicionales
+        aporte_pedido.id_usuario = id_usuario
+        aporte_pedido.fecha = fecha
+        aporte_pedido.id_pedido = id_pedido
+        aporte_pedido.save()
+        
+        return aporte_pedido
 
     def validate(self, data):
         cantidad = data.get('cantidad', None)
@@ -32,7 +47,7 @@ class CreateAportePedidoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('El pedido referenciado no existe.')
         
         if id_pedido is None:
-            raise serializers.ValidationError('debe proporcionar id_pedido.')
+            raise serializers.ValidationError('Debe proporcionar id_pedido.')
         
         return data
 
