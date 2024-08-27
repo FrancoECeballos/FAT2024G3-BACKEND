@@ -11,6 +11,20 @@ class DetalleofertaSerializer(serializers.ModelSerializer):
         model = AporteOferta
         fields = '__all__'
 
+    def validate(self, data):
+        cantidad = data.get('cantidad', None)
+        if cantidad is not None and cantidad <= 0:
+            raise serializers.ValidationError('La cantidad debe ser mayor a 0.')
+
+        id_oferta = data.get('id_oferta', None)
+        if id_oferta is not None and not Oferta.objects.filter(id_oferta=id_oferta.id_oferta).exists():
+            raise serializers.ValidationError('El pedido referenciado no existe.')
+        
+        if id_oferta is None:
+            raise serializers.ValidationError('debe proporcionar id_oferta.')
+
+        return data
+
 class EstadoofertaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estadooferta

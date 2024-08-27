@@ -18,7 +18,10 @@ class DetallepedidoSerializer(serializers.ModelSerializer):
         id_pedido = data.get('id_pedido', None)
         if id_pedido is not None and not Pedido.objects.filter(id_pedido=id_pedido.id_pedido).exists():
             raise serializers.ValidationError('El pedido referenciado no existe.')
-
+        
+        if id_pedido is None:
+            raise serializers.ValidationError('debe proporcionar id_pedido.')
+        
         return data
 
 class EstadopedidoSerializer(serializers.ModelSerializer):
