@@ -1566,23 +1566,17 @@ class GetPedidosByUser(APIView):
             stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
             obra_pedidos = pedidos.filter(id_pedido__in=detalle_obrapedidos.filter(id_stock__in=stocks.filter(id_obra=obra).values_list('id_stock', flat=True)).values_list('id_pedido', flat=True))
             
-            pedidos_serialized = []
-            for pedido in obra_pedidos:
-                pedido_data = PedidoSerializer(pedido).data
-                detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
-                pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
-                pedidos_serialized.append(pedido_data)
-                print(detalle_pedido.id_detalleobrapedido)
+            all = lista_pedido_con_progreso(pedidos)
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
-                'pedidos': pedidos_serialized,
+                'pedidos': all,
                 'stock': stock_serialized
             })
         
-        all = lista_pedido_con_progreso(pedidos_por_obra)
+        
 
-        return Response(all, status=status.HTTP_200_OK)
+        return Response(pedidos_por_obra, status=status.HTTP_200_OK)
 
 
 class GetPedidosForAdmin(APIView):
