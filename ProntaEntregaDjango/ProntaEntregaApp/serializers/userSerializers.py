@@ -20,7 +20,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUsuario
-        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'fechaUnion', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
 
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
     nombreusuario = serializers.CharField(validators=[])
