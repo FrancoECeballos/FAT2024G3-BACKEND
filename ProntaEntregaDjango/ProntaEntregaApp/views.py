@@ -1619,11 +1619,11 @@ class UpdateEstadoByVencimiento(APIView):
         pedidos = Pedido.objects.all()
         ofertas = Oferta.objects.all()
         for oferta in ofertas:
-            if oferta.fecha_vencimiento < date.today():
-                oferta.id_estadooferta = 5
+            if oferta.fechavencimiento < date.today():
+                oferta.id_estadoOferta = 5
                 oferta.save()
         for pedido in pedidos:
-            if pedido.fecha_entrega < date.today():
-                pedido.id_estado = 5
+            if pedido.fechavencimiento < date.today():
+                pedido.id_estadoPedido = 5
                 pedido.save()
         return Response({'success': 'Los estados de los pedidos y las ofertas han sido actualizados exitosamente.'}, status=status.HTTP_200_OK)
