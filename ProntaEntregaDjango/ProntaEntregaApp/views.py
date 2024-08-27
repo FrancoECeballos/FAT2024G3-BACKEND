@@ -691,11 +691,11 @@ class CrearDetalleobrapedido(APIView):
 class DeleteDetalleobrapedido(APIView):
     def delete(self, request, pk):
         try:
-            producto = get_object_or_404(Detalleobrapedido, id_detalleobrapedido=pk)
-            producto.delete()
+            detalle = get_object_or_404(Detalleobrapedido, id_detalleobrapedido=pk)
+            detalle.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except Producto.DoesNotExist:
-            return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrapedido.DoesNotExist:
+            return Response({'error': 'El detalle de obra pedido no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 class GetAportePedido(APIView):
     permission_classes = [AllowAny]
@@ -1568,6 +1568,7 @@ class GetPedidosByUser(APIView):
                 detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
                 pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
                 pedidos_serialized.append(pedido_data)
+                print(detalle_pedido.id_detalleobrapedido)
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
@@ -1590,11 +1591,17 @@ class GetPedidosForAdmin(APIView):
             pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
 
             obra_serialized = ObraSerializer(obra).data
-            pedidos_serialized = PedidoSerializer(pedidos, many=True).data
+            pedidos_serialized = []
+
+            for pedido in pedidos:
+                pedido_data = PedidoSerializer(pedido).data
+                detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
+                pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
+                pedidos_serialized.append(pedido_data)
 
             obras_con_pedidos.append({
-                'obra': obra_serialized,
-                'pedidos': pedidos_serialized
+            'obra': obra_serialized,
+            'pedidos': pedidos_serialized
             })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
