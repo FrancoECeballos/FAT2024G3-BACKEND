@@ -583,8 +583,23 @@ class GetPedido(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         pedidos = Pedido.objects.all()
-        serializer = PedidoSerializer(pedidos, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        all = []
+
+        for p in pedidos:
+            serializer = PedidoSerializer(p)
+
+            total = 0
+            aportes = AportePedido.objects.filter(id_pedido = p.id_pedido)
+
+            for a in aportes:
+                total = total + a.cantidad
+
+            s = serializer.data
+            s.update({"progreso":total})
+            all.append(s)
+            
+            print(total)
+        return Response(all, status=status.HTTP_200_OK)
 
 class CrearPedido(APIView):
     permission_classes = [AllowAny]
