@@ -23,6 +23,7 @@ from ProntaEntregaApp.serializers.stockSerializers import *
 from ProntaEntregaApp.serializers.generalSerializers import *
 from ProntaEntregaApp.serializers.offerSerializers import *
 from ProntaEntregaApp.serializers.requestSerializers import *
+from ProntaEntregaApp.funciones_varias import *
 from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
 from django.db.models import Count
@@ -585,20 +586,7 @@ class GetPedido(APIView):
         pedidos = Pedido.objects.all()
         all = []
 
-        for p in pedidos:
-            serializer = PedidoSerializer(p)
-
-            total = 0
-            aportes = AportePedido.objects.filter(id_pedido = p.id_pedido)
-
-            for a in aportes:
-                total = total + a.cantidad
-
-            s = serializer.data
-            s.update({"progreso":total})
-            all.append(s)
-            
-            print(total)
+        all = lista_pedido_con_progreso(pedidos)
         return Response(all, status=status.HTTP_200_OK)
 
 class CrearPedido(APIView):
@@ -1591,8 +1579,10 @@ class GetPedidosByUser(APIView):
                 'pedidos': pedidos_serialized,
                 'stock': stock_serialized
             })
+        
+        all = lista_pedido_con_progreso(pedidos_por_obra)
 
-        return Response(pedidos_por_obra, status=status.HTTP_200_OK)
+        return Response(all, status=status.HTTP_200_OK)
 
 
 class GetPedidosForAdmin(APIView):
@@ -1605,22 +1595,20 @@ class GetPedidosForAdmin(APIView):
         for obra in obras:
             stocks = Stock.objects.filter(id_obra=obra.id_obra)
             detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
+            
             pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+            
+            pedidos = lista_pedido_con_progreso(pedidos)
+            
             stock = Stock.objects.filter(id_obra=obra.id_obra)
 
             obra_serialized = ObraSerializer(obra).data
-            pedidos_serialized = []
-
-            for pedido in pedidos:
-                pedido_data = PedidoSerializer(pedido).data
-                detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
-                pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
-                pedidos_serialized.append(pedido_data)
+            
             stock_serialized = StockSerializer(stock, many=True).data
 
             obras_con_pedidos.append({
                 'obra': obra_serialized,
-                'pedidos': pedidos_serialized,
+                'pedidos': pedidos,
                 'stock': stock_serialized
             })
 
