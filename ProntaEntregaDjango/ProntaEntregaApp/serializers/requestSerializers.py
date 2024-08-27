@@ -5,11 +5,36 @@ from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
 from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 from django.contrib.auth import authenticate
 
-class DetallepedidoSerializer(serializers.ModelSerializer):
+class AportePedidoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AportePedido
         fields = '__all__'
+
+class CreateAportePedidoSerializer(serializers.ModelSerializer):
+    id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
+    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
+    monto = serializers.FloatField()
+    fecha = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    descripcion = serializers.CharField(max_length=200)
+
+    class Meta:
+        model = AportePedido
+        fields = '__all__'
+
+    def validate(self, data):
+        cantidad = data.get('cantidad', None)
+        if cantidad is not None and cantidad <= 0:
+            raise serializers.ValidationError('La cantidad debe ser mayor a 0.')
+
+        id_pedido = data.get('id_pedido', None)
+        if id_pedido is not None and not Pedido.objects.filter(id_pedido=id_pedido.id_pedido).exists():
+            raise serializers.ValidationError('El pedido referenciado no existe.')
+        
+        if id_pedido is None:
+            raise serializers.ValidationError('debe proporcionar id_pedido.')
+        
+        return data
 
 class EstadopedidoSerializer(serializers.ModelSerializer):
     class Meta:

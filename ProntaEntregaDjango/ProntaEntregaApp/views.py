@@ -583,8 +583,23 @@ class GetPedido(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         pedidos = Pedido.objects.all()
-        serializer = PedidoSerializer(pedidos, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        all = []
+
+        for p in pedidos:
+            serializer = PedidoSerializer(p)
+
+            total = 0
+            aportes = AportePedido.objects.filter(id_pedido = p.id_pedido)
+
+            for a in aportes:
+                total = total + a.cantidad
+
+            s = serializer.data
+            s.update({"progreso":total})
+            all.append(s)
+            
+            print(total)
+        return Response(all, status=status.HTTP_200_OK)
 
 class CrearPedido(APIView):
     permission_classes = [AllowAny]
@@ -691,23 +706,23 @@ class CrearDetalleobrapedido(APIView):
 class DeleteDetalleobrapedido(APIView):
     def delete(self, request, pk):
         try:
-            producto = get_object_or_404(Detalleobrapedido, id_detalleobrapedido=pk)
-            producto.delete()
+            detalle = get_object_or_404(Detalleobrapedido, id_detalleobrapedido=pk)
+            detalle.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except Producto.DoesNotExist:
-            return Response({'error': 'El producto no existe.'}, status=status.HTTP_404_NOT_FOUND)
+        except Detalleobrapedido.DoesNotExist:
+            return Response({'error': 'El detalle de obra pedido no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 class GetAportePedido(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         detalles = AportePedido.objects.all()
-        serializer = DetallepedidoSerializer(detalles, many=True)
+        serializer = AportePedidoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        serializer = CreateDetalleobrapedidoSerializer(data=request.data)
+        serializer = CreateAportePedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -717,31 +732,23 @@ class CrearAportePedido(APIView):
 class EditarAportePedido(APIView):
     def put(self, request, pk):
         try:
-            detalle = AportePedido.objects.get(pk=pk)
+            aporte = AportePedido.objects.get(pk=pk)
         except AportePedido.DoesNotExist:
             return Response({'error': 'No se encontró un detalle de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = DetallepedidoSerializer(detalle, data=request.data,partial=True)
+        serializer = AportePedidoSerializer(aporte, data=request.data,partial=True)
 
         if serializer.is_valid():
-
-            #print(request.data)
-            #print(serializer)
-            print(int(str(detalle.id_pedido)))
             
-            print("---------------------------------------------------------------")
-
             serializer.save()
 
             ## SECCION NOTIFICACION
-            pedido= Pedido.objects.get(pk=int(str(detalle.id_pedido)))
+            pedido= Pedido.objects.get(pk=aporte.__dict__['id_pedido_id'])
 
-            print(pedido.id_producto.__str__())
-            producto = Producto.objects.get(pk=int(str(pedido.id_producto)))
-            p = producto.nombre
+            producto = Producto.objects.get(pk=pedido.__dict__['id_producto_id'])
             
             
-            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+p+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
+            serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+producto.nombre+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
             ##FIN SECCION NOTIFICACION
@@ -1576,6 +1583,7 @@ class GetPedidosByUser(APIView):
                 detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
                 pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
                 pedidos_serialized.append(pedido_data)
+                print(detalle_pedido.id_detalleobrapedido)
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
@@ -1598,11 +1606,17 @@ class GetPedidosForAdmin(APIView):
             pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
 
             obra_serialized = ObraSerializer(obra).data
-            pedidos_serialized = PedidoSerializer(pedidos, many=True).data
+            pedidos_serialized = []
+
+            for pedido in pedidos:
+                pedido_data = PedidoSerializer(pedido).data
+                detalle_pedido = detalle_obrapedidos.get(id_pedido=pedido.id_pedido)
+                pedido_data['id_detalleobrapedido'] = detalle_pedido.id_detalleobrapedido
+                pedidos_serialized.append(pedido_data)
 
             obras_con_pedidos.append({
-                'obra': obra_serialized,
-                'pedidos': pedidos_serialized
+            'obra': obra_serialized,
+            'pedidos': pedidos_serialized
             })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
