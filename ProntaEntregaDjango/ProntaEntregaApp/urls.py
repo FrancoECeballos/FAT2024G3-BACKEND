@@ -40,7 +40,7 @@ urlpatterns = [
     path('login/', UserLogin.as_view(), name='user_login'),
     path('userToken/<str:token>/', UserByToken.as_view(), name='userToken'),
     path('cambiar_contrasenia/', CambiarContrasenia.as_view(), name='change_password'),        
-    path('CambiarContrasenia_open/<int:pk>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
+    path('CambiarContrasenia_open/<str:email>/', CambiarContrasenia_open.as_view(), name='CambiarContrasenia_open'), ##no abrir sin consultar que es esto
 
     path('obra/', GetObra.as_view(), name='obra_get'),
     path('obra/<int:pk>/', GetObraByID.as_view(), name='obra_get_id'),
