@@ -834,7 +834,7 @@ class EditarEstadoOferta(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class GetDetalleOferta(APIView):
+class GetAporteOferta(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         detalles = AporteOferta.objects.all()

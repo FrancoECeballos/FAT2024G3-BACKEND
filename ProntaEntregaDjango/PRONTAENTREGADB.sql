@@ -471,3 +471,9 @@ insert into AportePedido (descripcion,cantidad,id_pedido) values
 ('desc2',20,2),
 ('desc3',30,3)
 ;
+
+insert into AporteOferta (descripcion,cantidad,id_oferta) values 
+('desc1',10,1),
+('desc2',20,2),
+('desc3',30,3)
+;
