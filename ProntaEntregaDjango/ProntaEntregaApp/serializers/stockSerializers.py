@@ -84,10 +84,11 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock']
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
         extra_kwargs = {
             'id_producto': {'required': True, 'allow_null': False},
             'id_stock': {'required': True, 'allow_null': False},
+            'id_usuario': {'required': True, 'allow_null': False},
             'cantidad': {'required': False, 'allow_null': True},
         }
 
@@ -95,10 +96,11 @@ class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
         internal_value = super().to_internal_value(data)
         internal_value['id_stock'] = Stock.objects.get(pk=data.get('id_stock'))
         internal_value['id_producto'] = Producto.objects.get(pk=data.get('id_producto'))
+        internal_value['id_usuario'] = CustomUsuario.objects.get(pk=data.get('id_usuario'))
         return internal_value
 
     def validate(self, data):
-        required_fields = ['id_producto', 'id_stock']
+        required_fields = ['id_producto', 'id_stock', 'id_usuario']
         for field in required_fields:
             if field not in data or data[field] is None:
                 raise serializers.ValidationError({field: 'Este campo es obligatorio y no puede ser nulo.'})

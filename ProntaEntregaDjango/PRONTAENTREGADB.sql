@@ -312,21 +312,21 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
 
 -- Inserciones para la tabla DetalleObraUsuario
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, id_tipousuario) VALUES 
-    ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 2),
+    ('Se ofrece a cuidar de personas con necesidad', '2023-12-26', 1, 1, 1),
     ('Ofrecen apoyo escolar, actividades culturales, deportivas, talleres sobre crianza, alimentación saludable y asesoramiento sobre trámites.', '2024-01-12', 2, 2, 1),
     ('Cuenta con un equipo de voluntarios y profesionales que trabajan juntos para lograr su misión de amar y servir a cada uno de sus beneficiarios.', '2024-3-09', 3, 3, 1), 
-	('Administrar la obra Mama Antula', '2023-12-26', 1, 14, 1),
-    ('Administrar la obra Cura Brochero', '2024-01-12', 2, 12, 1),
-    ('Administrar la obra Casa de la Bondad', '2024-3-09', 3, 6, 1),
-    ('Administrar la obra Jose Bainotti', '2023-12-26', 4, 16, 1),
-    ('Administrar la obra P. Alberto Hurtado', '2024-01-12', 5, 5, 1),
-    ('Administrar la obra Caminar de Nuevo', '2024-3-09', 6, 7, 1),
-    ('Administrar la obra Nuestra Señora del Valle', '2023-12-26', 7, 8, 1),
-    ('Administrar la obra Nuestra familia Siria', '2024-01-12', 8, 9, 1),
-    ('Administrar la obra Sueño Común', '2024-3-09', 9, 10, 1),
-    ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 1),
-    ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 1),
-    ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 1);
+	('Administrar la obra Mama Antula', '2023-12-26', 1, 14, 2),
+    ('Administrar la obra Cura Brochero', '2024-01-12', 2, 12, 2),
+    ('Administrar la obra Casa de la Bondad', '2024-3-09', 3, 6, 2),
+    ('Administrar la obra Jose Bainotti', '2023-12-26', 4, 16, 2),
+    ('Administrar la obra P. Alberto Hurtado', '2024-01-12', 5, 5, 2),
+    ('Administrar la obra Caminar de Nuevo', '2024-3-09', 6, 7, 2),
+    ('Administrar la obra Nuestra Señora del Valle', '2023-12-26', 7, 8, 2),
+    ('Administrar la obra Nuestra familia Siria', '2024-01-12', 8, 9, 2),
+    ('Administrar la obra Sueño Común', '2024-3-09', 9, 10, 2),
+    ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 2),
+    ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 2),
+    ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 2);
 
 
 -- Inserciones para la tabla Stock

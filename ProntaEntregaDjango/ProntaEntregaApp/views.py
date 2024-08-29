@@ -1236,10 +1236,18 @@ class GetObrasAsignadasByEmail(APIView):
 
     def get(self, request, email):
         try:
-            usuario = CustomUsuario.objects.get(email = email)
+            usuario = CustomUsuario.objects.get(email=email)
             detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = DetalleobrausuarioSerializer(detalle_obras, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            obras = [
+                {
+                    **ObraSerializer(detalle_obra.id_obra).data,
+                    'id_tipousuario': detalle_obra.id_tipousuario.id_tipousuario
+                }
+                for detalle_obra in detalle_obras
+            ]
+            return Response(obras, status=status.HTTP_200_OK)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'El usuario no existe.'}, status=status.HTTP_404_NOT_FOUND)
         except Detalleobrausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
