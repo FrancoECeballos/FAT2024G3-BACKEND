@@ -89,7 +89,7 @@ urlpatterns = [
     path('estado_oferta/', GetEstadoOferta.as_view(), name='ver_estado_oferta'),
     path('crear_estado_oferta/', CrearEstadoOferta.as_view(), name='crear_estado_oferta'),
     path('editar_estado_oferta/<int:pk>/', EditarEstadoOferta.as_view(), name='editar_estado_oferta'),
-    path('detalle_oferta/', GetDetalleOferta.as_view(), name='ver_detalle_oferta'),
+    path('aporte_oferta/', GetAporteOferta.as_view(), name='ver_detalle_oferta'),
     path('crear_detalle_oferta/', CrearDetalleOferta.as_view(), name='crear_detalle_oferta'),
     path('editar_detalle_oferta/<int:pk>/', EditarDetalleOferta.as_view(), name='editar_detalle_oferta'),
 
