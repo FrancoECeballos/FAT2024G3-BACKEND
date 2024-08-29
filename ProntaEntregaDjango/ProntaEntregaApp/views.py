@@ -1538,8 +1538,8 @@ class DeletePedido(APIView):
 class GetDetallesProductoObra(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id_obra, id_producto):
-        stocks = Stock.objects.filter(id_obra=id_obra)        # 1. Obtener el usuario que está loggeado
+    def get(self, request, id_producto, id_stock):
+        stocks = Stock.objects.filter(id_stock=id_stock)
         user = request.user
         detalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
         serializer = DetallestockproductoSerializer(detalles, many=True)
