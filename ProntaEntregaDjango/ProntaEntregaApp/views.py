@@ -378,9 +378,12 @@ class CambiarContrasenia(APIView):
 class CambiarContrasenia_open(APIView): ##no abrir sin consultar que es esto
     permission_classes = [AllowAny]
 
-    def get(self,request,pk):
-        CodigosDeVerificacion.objects.filter(codigo__startswith=pk).delete()
-        usuario = CustomUsuario.objects.get(pk = pk)
+    def get(self,request,email):
+        try:
+            usuario = CustomUsuario.objects.get(email = email)
+        except CustomUsuario.DoesNotExist:
+            return Response({'no se encontro un usuario con ese mail'})
+        CodigosDeVerificacion.objects.filter(codigo__startswith=usuario.pk).delete()
         codigo= email_sending.get_codigoVerificacion(usuario.pk)
 
         serializer = CodigosDeVerificacionSerializer(data={'codigo':codigo})
@@ -391,8 +394,11 @@ class CambiarContrasenia_open(APIView): ##no abrir sin consultar que es esto
 
         return Response({'a introducir':'codigo_necesitado,new_password,new_password_repeat'})
     
-    def put(self, request,pk):
-        usuario = CustomUsuario.objects.get(pk = pk)
+    def put(self, request,email):
+        try:
+            usuario = CustomUsuario.objects.get(email = email)
+        except CustomUsuario.DoesNotExist:
+            return Response({'no se encontro un usuario con ese mail'})
 
         if 'codigo_necesitado' not in request.data or 'new_password' not in request.data or 'new_password_repeat' not in request.data:
             return Response({'error': 'Por favor, proporcione el codigo mandado a su mail, la nueva contraseña y la repetición de la nueva contraseña.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -401,7 +407,7 @@ class CambiarContrasenia_open(APIView): ##no abrir sin consultar que es esto
         new_password = request.data['new_password']
         new_password_repeat = request.data['new_password_repeat']
 
-        cod_obj = CodigosDeVerificacion.objects.filter(codigo__startswith=pk).first()
+        cod_obj = CodigosDeVerificacion.objects.filter(codigo__startswith=usuario.pk).first()
         print(cod_obj.codigo)
         if codigo_necesitado != cod_obj.codigo:
             return Response({'error': 'El codigo es incorrecto.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -751,8 +757,10 @@ class GetOferta(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         ofertas = Oferta.objects.all()
-        serializer = OfertaSerializer(ofertas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        all = []
+
+        all = lista_oferta_con_progreso(ofertas)
+        return Response(all, status=status.HTTP_200_OK)
     
 
 class GetOfertaById(APIView):
