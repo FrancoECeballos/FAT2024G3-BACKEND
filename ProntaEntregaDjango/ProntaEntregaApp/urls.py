@@ -8,6 +8,7 @@ urlpatterns = [
     path('', view=index, name='index'),
 
     path('getNotificacion/<int:pk>', GetNotificacionesDeUser.as_view(), name='GetNotificacionesDeUsr'),
+    path('getNotificacion/', GetNotificaciones.as_view(), name='GetNotificaciones'),
     path('PostNotificacion/', PostNotificacion.as_view(), name='PostNotificacion'),
     
     path('user/', VerUsuarios.as_view(), name='users'),

@@ -51,6 +51,13 @@ class Verificar(APIView):
         serializer = UsuarioUpdateSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class GetNotificaciones(APIView):
+    permission_classes = [AllowAny]
+    def get(self,request):
+        notif = Notificacion.objects.all()
+        serializer = NotificacionSerializer(notif,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class GetNotificacionesDeUser(APIView):
     permission_classes = [AllowAny]
     def get(self,request,pk):
