@@ -1502,7 +1502,10 @@ class StockInformePDFView(APIView):
         pdf_file = HTML(string=html_string).write_pdf()
 
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
+        if detalles:
+            response['Content-Disposition'] = f'attachment; filename="informe_stock_{detalles[0]["id_producto"]["nombre"]}_{detalles[0]["id_stock"]["id_obra"]["nombre"]}_{formatted_time}.pdf"'
+        else:
+            response['Content-Disposition'] = f'attachment; filename="informe_stock_{formatted_time}.pdf"'
         return response
 
 class GetProductosPorCategoriaExcluidos(APIView):
