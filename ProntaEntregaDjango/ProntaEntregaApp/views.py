@@ -751,8 +751,10 @@ class GetOferta(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         ofertas = Oferta.objects.all()
-        serializer = OfertaSerializer(ofertas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        all = []
+
+        all = lista_oferta_con_progreso(ofertas)
+        return Response(all, status=status.HTTP_200_OK)
     
 
 class GetOfertaById(APIView):
