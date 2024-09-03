@@ -1,41 +1,38 @@
 classDiagram
-    Organizacion --o Casa : 1..*
-    Organizacion --o Vehiculo : 1..*
-    Casa *-- Direccion : 1..*
+    Organizacion --o Obra : "1..*"
+    Organizacion --o Transporte : "1..*"
+    Obra *-- Direccion : "1"
+    Obra --o DetalleObraTransporte : "1..*"
+    Obra --o DetalleObraUsuario : "1..*"
+    Obra --o Pedido : "1..*"
+    Obra --o Oferta : "1..*"
+    Obra --o Stock : "1..*"
+    Obra --o DetalleObraPedido : "1..*"
 
-    TipoUsuario --* Usuario : 1..*
-    TipoDocumento --* Usuario : 1..*
-    Usuario *-- Direccion : 1..*
-    Usuario --* Pedido : 1..*
-    Usuario --* Oferta : 1..*
+    TipoUsuario --o DetalleObraUsuario : "1..*"
+    TipoDocumento --o CustomUsuario : "1"
+    CustomUsuario *-- Direccion : "1"
+    CustomUsuario --o DetalleObraUsuario : "1..*"
+    CustomUsuario --o Pedido : "1..*"
+    CustomUsuario --o Oferta : "1..*"
+    CustomUsuario --o DetalleStockProducto : "1..*"
+    CustomUsuario --o Notificacion : "1..*"
 
-    Casa --* Pedido : 1..*
-    Casa --* Oferta : 1..*
-    Casa --* Stock : 1..*
+    Categoria --o Producto : "1..*"
+    Producto --o DetalleStockProducto : "1..*"
+    Producto --o Pedido : "1..*"
+    Producto --o Oferta : "1..*"
+    Stock --o DetalleStockProducto : "1..*"
+    Stock --o DetalleObraPedido : "1..*"
 
-    Usuario --o DetalleCasaUsuario : 1..*
-    Casa --o DetalleCasaUsuario : 1..*
-
-    Producto --o DetalleStockProducto : 1..*
-    Stock --o DetalleStockProducto : 1..*
-    CategoriaProducto --* Producto : 1..*
-    UnidadMedida --o Producto : 1..*
-
-    Pedido --o DetallePedido : 1..*
-    Producto --o DetallePedido : 1..*
-    EstadoPedido --o DetallePedido : 1..*
-    Oferta --o DetalleOferta : 1..*
-    Producto --o DetalleOferta : 1..*
-    EstadoOferta --o DetalleOferta : 1..*
-
-    DetallePedido --o EntregaPedido : 1..*
-    DetalleOferta --o EntregaOferta : 1..*
-    EstadoEntrega --o EntregaPedido : 1..*
-    EstadoEntrega --o EntregaOferta : 1..*
-    Direccion --o EntregaPedido : 1..*
-    Direccion --o EntregaOferta : 1..*
+    EstadoPedido --o Pedido : "1..*"
+    EstadoOferta --o Oferta : "1..*"
+    Pedido --o AportePedido : "1..*"
+    Oferta --o AporteOferta : "1..*"
+    Pedido --o DetalleObraPedido : "1..*"
 
     class Direccion {
+        - int id_direccion
         - varchar calle
         - int numero
         - varchar localidad
@@ -49,32 +46,38 @@ classDiagram
         +getLocalidad()
     }
     class Organizacion {
+        - int id_Organizacion
         - varchar nombre
-        - Direccion direccion
+        - varchar descripcion
         - varchar telefono
         - varchar email
 
         +setNombre()
-        +setDireccion()
+        +setDescripcion()
         +setTelefono()
         +setEmail()
 
         +getNombre()
-        +getDireccion()
+        +getDescripcion()
         +getTelefono()
         +getEmail()
     }
     class TipoDocumento {
+        - int id_tipoDocumento
         - varchar nombre
+        - varchar abreviacion
         - varchar descripcion
 
         +setNombre()
+        +setAbreviacion()
         +setDescripcion()
 
         +getNombre()
+        +getAbreviacion()
         +getDescripcion()
     }
     class TipoUsuario {
+        - int id_tipoUsuario
         - varchar nombre
         - varchar descripcion
 
@@ -84,92 +87,114 @@ classDiagram
         +getNombre()
         +getDescripcion()
     }
-    class Usuario {
+    class CustomUsuario {
+        - int id_usuario
         - varchar nombre
         - varchar apellido
-        - varchar nombreUsuario
-        - varchar contrasenia
+        - varchar nombreusuario
+        - varchar password   
+        - varchar documento
         - varchar telefono
         - varchar email
         - int genero
-        - date fechaUnion
-        - varchar documento
-        - TipoDocumento tipoDocumento
-        - TipoUsuario tipoUsuario
-        - Direccion direccion
+        - varchar imagen
+        - datetime fechaUnion
+        - datetime last_login
+        - boolean is_staff
+        - boolean is_superuser
+        - boolean is_active
+        - boolean is_verified
+        - int id_direccion
+        - int id_tipoDocumento
 
         +setNombre()
         +setApellido()
         +setNombreUsuario()
-        +setContrasenia()
+        +setPassword()
+        +setDocumento()
         +setTelefono()
         +setEmail()
-        +setDocumento()
-        +setTipoDocumento()
-        +setTipoUsuario()
+        +setGenero()
+        +setImagen()
+        +setFechaUnion()
+        +setLastLogin()
+        +setIsStaff()
+        +setIsSuperuser()
+        +setIsActive()
+        +setIsVerified()
         +setDireccion()
+        +setTipoDocumento()
 
         +getNombre()
         +getApellido()
         +getNombreUsuario()
-        +getContrasenia()
+        +getPassword()
+        +getDocumento()
         +getTelefono()
         +getEmail()
-        +getDocumento()
-        +getTipoDocumento()
-        +getTipoUsuario()
+        +getGenero()
+        +getImagen()
+        +getFechaUnion()
+        +getLastLogin()
+        +getIsStaff()
+        +getIsSuperuser()
+        +getIsActive()
+        +getIsVerified()
         +getDireccion()
+        +getTipoDocumento()
     }
-    class Casa {
+    class Obra {
+        - int id_obra
         - varchar nombre
         - varchar descripcion
-        - Organizacion organizacion
-        - Direccion direccion
+        - varchar imagen
+        - int id_Organizacion
+        - int id_direccion
 
         +setNombre()
         +setDescripcion()
+        +setImagen()
         +setOrganizacion()
         +setDireccion()
 
         +getNombre()
-        +setDescripcion()
+        +getDescripcion()
+        +getImagen()
         +getOrganizacion()
         +getDireccion()
     }
-    class DetalleCasaUsuario {      
+    class DetalleObraUsuario {      
+        - int id_detalleObraUsuario
         - varchar descripcion
         - date fechaIngreso
-        - Casa casa
-        - Usuario usuario
+        - int id_obra
+        - int id_usuario
+        - int id_tipoUsuario
 
         +setDescripcion()
         +setFechaIngreso()
-        +setCasa()
+        +setObra()
         +setUsuario()
+        +setTipoUsuario()
 
         +getDescripcion()
         +getFechaIngreso()
-        +getCasa()
+        +getObra()
         +getUsuario()
-    }
-    class UnidadMedida {
-        - varchar nombre
-        - varchar descripcion
-
-        +setNombre()
-        +setDescripcion()
-
-        +getNombre()
-        +getDescripcion()
+        +getTipoUsuario()
     }
     class Stock {
-        - Casa casa
+        - int id_stock
+        - int id_obra
 
         +setCantidad()
+        +setObra()
 
         +getCantidad()
+        +getObra()
     }
-    class CategoriaProducto {
+    class Categoria {
+        - int id_categoria
         - varchar nombre
         - varchar descripcion
 
@@ -180,143 +205,74 @@ classDiagram
         +getDescripcion()
     } 
     class Producto {
+        - int id_producto
         - varchar nombre
         - varchar descripcion
-        - CategoriaProducto categoriaProducto
-        - UnidadMedida unidadMedida
+        - int id_categoria
+        - int unidadMedida
+        - varchar talle
+        - int cantidad_por_unidad
+        - varchar imagen
+        - boolean perecedero
+        - boolean tiene_talle
+        - boolean enlatado
+        - boolean requiere_refrigeracion
+        - boolean sin_TAC
+        - boolean sin_azucares
 
         +setNombre()
         +setDescripcion()
-        +setCategoriaProducto()
+        +setCategoria()
         +setUnidadMedida()
+        +setTalle()
+        +setCantidadPorUnidad()
+        +setImagen()
+        +setPerecedero()
+        +setTieneTalle()
+        +setEnlatado()
+        +setRequiereRefrigeracion()
+        +setSinTAC()
+        +setSinAzucares()
 
         +getNombre()
         +getDescripcion()
-        +getCategoriaProducto()
+        +getCategoria()
         +getUnidadMedida()
+        +getTalle()
+        +getCantidadPorUnidad()
+        +getImagen()
+        +getPerecedero()
+        +getTieneTalle()
+        +getEnlatado()
+        +getRequiereRefrigeracion()
+        +getSinTAC()
+        +getSinAzucares()
     }
     class DetalleStockProducto {
-        - Producto producto
-        - Stock stock
-        - int cantidad
+        - int id_detalleStockProducto
+        - float cantidad
+        - boolean checkpoint
+        - datetime fecha_creacion
+        - int id_stock
+        - int id_producto
+        - int id_usuario
 
-        +setProducto()
+        +setCantidad()
+        +setCheckpoint()
+        +setFechaCreacion()
         +setStock()
-        +setCantidad()
+        +setProducto()
+        +setUsuario()
 
-        +getProducto()
+        +getCantidad()
+        +getCheckpoint()
+        +getFechaCreacion()
         +getStock()
-        +getCantidad()
-    }
-    class Pedido {
-        - Casa casa
-        - Usuario usuario
-        - date fecha
-        - time hora
-
-        +setCasa()
-        +setUsuario()
-        +setFecha()
-        +setHora()
-
-        +getCasa()
-        +getUsuario()
-        +getFecha()
-        +getHora()
-    }
-    class DetallePedido {
-        - EstadoPedido estadoPedido
-        - Pedido pedido
-        - Producto producto
-        - int cantidad
-        - varchar descripcion
-
-        +setEstadoPedido()
-        +setPedido()
-        +setProducto()
-        +setCantidad()
-        +setDescripcion()
-
-        +getEstadoPedido()
-        +getPedido()
         +getProducto()
-        +getCantidad()
-        +getDescripcion()
-    }
-    class EntregaPedido{
-        - date fechaEntrega
-        - time horaEntrega
-        - DetallePedido detallePedido
-        - EstadoEntrega estadoEntrega
-        - Direccion direccion
-
-        +setFechaEntrega()
-        +setHoraEntrega()
-        +setDetallePedido()
-        +setEstadoEntrega()
-        +setDireccion()
-
-        +getFechaEntrega()
-        +getHoraEntrega()
-        +getDetallePedido()
-        +getEstadoEntrega()
-        +getDireccion()
-    }
-    class Oferta {
-        - Casa casa
-        - Usuario usuario
-        - date fecha
-        - time hora
-
-        +setCasa()
-        +setUsuario()
-        +setFecha()
-        +setHora()
-
-        +getCasa()
         +getUsuario()
-        +getFecha()
-        +getHora()
-    }
-    class DetalleOferta {
-        - EstadoOferta estadoOferta
-        - Oferta oferta
-        - Producto producto
-        - int cantidad
-        - varchar descripcion
-
-        +setEstadoOferta()
-        +setOferta()
-        +setProducto()
-        +setCantidad()
-        +setDescripcion()
-
-        +getEstadoOferta()
-        +getOferta()
-        +getProducto()
-        +getCantidad()
-        +getDescripcion()
-    }
-    class EntregaOferta{
-        - date fechaEntrega
-        - time horaEntrega
-        - DetalleOferta detalleOferta
-        - EstadoEntrega estadoEntrega
-        - Direccion direccion
-
-        +setFechaEntrega()
-        +setHoraEntrega()
-        +setDetalleOferta()
-        +setEstadoEntrega()
-        +setDireccion()
-
-        +getFechaEntrega()
-        +getHoraEntrega()
-        +getDetalleOferta()
-        +getEstadoEntrega()
-        +getDireccion()
     }
     class EstadoPedido {
+        - int id_estadoPedido
         - varchar nombre
         - varchar descripcion
 
@@ -325,8 +281,52 @@ classDiagram
 
         +getNombre()
         +getDescripcion()
+    }
+    class Pedido {
+        - int id_pedido
+        - date fechaInicio
+        - date fechaVencimiento
+        - int cantidad
+        - int urgente
+        - int id_obra
+        - int id_usuario
+        - int id_producto
+        - int id_estadoPedido
+
+        +setFechaInicio()
+        +setFechaVencimiento()
+        +setCantidad()
+        +setUrgente()
+        +setObra()
+        +setUsuario()
+        +setProducto()
+        +setEstadoPedido()
+
+        +getFechaInicio()
+        +getFechaVencimiento()
+        +getCantidad()
+        +getUrgente()
+        +getObra()
+        +getUsuario()
+        +getProducto()
+        +getEstadoPedido()
+    }
+    class AportePedido {
+        - int id_aportePedido
+        - varchar descripcion
+        - int cantidad
+        - int id_pedido
+
+        +setDescripcion()
+        +setCantidad()
+        +setPedido()
+
+        +getDescripcion()
+        +getCantidad()
+        +getPedido()
     }
     class EstadoOferta {
+        - int id_estadoOferta
         - varchar nombre
         - varchar descripcion
 
@@ -336,24 +336,57 @@ classDiagram
         +getNombre()
         +getDescripcion()
     }
-    class EstadoEntrega {
-        - varchar nombre
-        - varchar descripcion
+    class Oferta {
+        - int id_oferta
+        - date fechaInicio
+        - date fechaVencimiento
+        - int cantidad
+        - int id_usuario
+        - int id_obra
+        - int id_producto
+        - int id_estadoOferta
 
-        +setNombre()
-        +setDescripcion()
+        +setFechaInicio()
+        +setFechaVencimiento()
+        +setCantidad()
+        +setUsuario()
+        +setObra()
+        +setProducto()
+        +setEstadoOferta()
 
-        +getNombre()
-        +getDescripcion()
+        +getFechaInicio()
+        +getFechaVencimiento()
+        +getCantidad()
+        +getUsuario()
+        +getObra()
+        +getProducto()
+        +getEstadoOferta()
     }
-    class Vehiculo {
+    class AporteOferta {
+        - int id_aporteOferta
+        - varchar descripcion
+        - int cantidad
+        - int id_oferta
+
+        +setDescripcion()
+        +setCantidad()
+        +setOferta()
+
+        +getDescripcion()
+        +getCantidad()
+        +getOferta()
+    }
+    class Transporte {
+        - int id_transporte
         - varchar marca
         - varchar modelo
         - varchar patente
         - int kilometraje
         - varchar estadoITV
         - year anio
-        - Organizacion organizacion
+        - varchar imagen
+        - boolean necesita_mantenimiento
+        - varchar descripcion_mantenimiento
 
         +setMarca()
         +setModelo()
@@ -361,7 +394,9 @@ classDiagram
         +setKilometraje()
         +setEstadoITV()
         +setAnio()
-        +setOrganizacion()
+        +setImagen()
+        +setNecesitaMantenimiento()
+        +setDescripcionMantenimiento()
 
         +getMarca()
         +getModelo()
@@ -369,5 +404,49 @@ classDiagram
         +getKilometraje()
         +getEstadoITV()
         +getAnio()
-        +getOrganizacion()
+        +getImagen()
+        +getNecesitaMantenimiento()
+        +getDescripcionMantenimiento()
+    }
+    class DetalleObraTransporte {
+        - int id_detalleObraTransporte
+        - int id_obra
+        - int id_transporte
+
+        +setObra()
+        +setTransporte()
+
+        +getObra()
+        +getTransporte()
+    }
+    class DetalleObraPedido {
+        - int id_DetalleObraPedido
+        - int id_stock
+        - int id_pedido
+
+        +setStock()
+        +setPedido()
+
+        +getStock()
+        +getPedido()
+    }
+    class Notificacion {
+        - int id_notificacion
+        - varchar titulo
+        - varchar descripcion
+        - tinyint viewed
+        - datetime fecha_creacion
+        - int id_usuario
+
+        +setTitulo()
+        +setDescripcion()
+        +setViewed()
+        +setFechaCreacion()
+        +setUsuario()
+
+        +getTitulo()
+        +getDescripcion()
+        +getViewed()
+        +getFechaCreacion()
+        +getUsuario()
     }
