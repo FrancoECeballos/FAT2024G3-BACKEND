@@ -15,6 +15,7 @@ erDiagram
     TipoDocumento{
         int id_tipoDocumento PK
         varchar nombre
+        varchar abreviacion
         varchar descripcion
     }
     TipoUsuario{
@@ -22,46 +23,48 @@ erDiagram
         varchar nombre
         varchar descripcion
     }
-    Usuario{
+    CustomUsuario{
         int id_usuario PK
         varchar nombre
         varchar apellido
-        varchar nombreUsuario
-        varchar contrasenia        
+        varchar nombreusuario
+        varchar password   
+        varchar documento
         varchar telefono
         varchar email
         int genero
-        date fechaUnion
-        varchar documento
-        TipoDocumento tipoDocumento FK
+        varchar imagen
+        datetime fechaUnion
+        datetime last_login
         int id_direccion FK
-        int id_tipoUsuario FK
+        int id_tipoDocumento FK
+        boolean is_staff
+        boolean is_superuser
+        boolean is_active
+        boolean is_verified
     }
-    Casa{
-        int id_casa PK
+    Obra{
+        int id_obra PK
         varchar nombre
         varchar descripcion
-        int id_organizacion FK
+        int id_Organizacion FK
         int id_direccion FK
+        varchar imagen
     }
-    DetalleCasaUsuario{
-        int id_detalleCasaUsuario PK
+    DetalleObraUsuario{
+        int id_detalleObraUsuario PK
         varchar descripcion
         date fechaIngreso
-        int id_casa FK
+        int id_obra FK
         int id_usuario FK
-    }
-    UnidadMedida{
-        int id_unidadMedida PK
-        varchar nombre
-        varchar descripcion
+        int id_tipoUsuario FK
     }
     Stock{
         int id_stock PK
-        int id_casa FK
+        int id_obra FK
     }
-    CategoriaProducto{
-        int id_categoriaProducto PK
+    Categoria{
+        int id_categoria PK
         varchar nombre
         varchar descripcion
     }
@@ -69,130 +72,134 @@ erDiagram
         int id_producto PK
         varchar nombre
         varchar descripcion
-        int id_categoriaProducto PK
-        int id_unidadMedida PK
+        int id_categoria FK
+        int unidadMedida FK
+        varchar talle
+        int cantidad_por_unidad
+        varchar imagen
+        boolean perecedero
+        boolean tiene_talle
+        boolean enlatado
+        boolean requiere_refrigeracion
+        boolean sin_TAC
+        boolean sin_azucares
     }
     DetalleStockProducto{
         int id_detalleStockProducto PK
-        int cantidad
-        int id_producto FK
+        float cantidad
+        boolean checkpoint
+        datetime fecha_creacion
         int id_stock FK
-    }
-    Pedido{
-        int id_pedido PK
-        int cantidad
-        date fechaInicio
-        time horaInicio
-        date fechaVencimiento
-        date horaVencimiento
-        int id_casa FK
+        int id_producto FK
         int id_usuario FK
-        int id_producto FK
-    }
-    AportePedido{
-        int id_AportePedido PK
-        varchar descripcion
-        int cantidad
-        int id_pedido FK
-        int id_producto FK
-        int id_estadoProducto FK
-    }
-    EntregaPedido{
-        int id_entregaPedido PK
-        date fechaEntrega
-        time horaEntrega
-        int id_AportePedido FK
-        int id_estadoEntrega FK
-        int id_direccion FK
-    }
-    Oferta{
-        int id_oferta PK
-        date fechaInicio
-        time horaInicio
-        date fechaVencimiento
-        date horaVencimiento
-        int id_producto FK
-        int cantidad
-        int id_usuario FK
-        int id_casa FK
-    }
-    AporteOferra{
-        int id_AporteOferra PK
-        varchar descripcion
-        int cantidad
-        int id_oferta FK
-        int id_producto FK
-        int id_estadoProducto FK
-    }
-    EntregaOferta{
-        int id_entregaOferta PK
-        date fechaEntrega
-        time horaEntrega
-        int id_AporteOferra FK
-        int id_estadoEntrega FK
-        int id_direccion FK
     }
     EstadoPedido{
         int id_estadoPedido PK
         varchar nombre
         varchar descripcion
     }
+    Pedido{
+        int id_pedido PK
+        date fechaInicio
+        date fechaVencimiento
+        int cantidad
+        int urgente
+        int id_obra FK
+        int id_usuario FK
+        int id_producto FK
+        int id_estadoPedido FK
+    }
+    AportePedido{
+        int id_aportePedido PK
+        varchar descripcion
+        int cantidad
+        int id_pedido FK
+    }
     EstadoOferta{
         int id_estadoOferta PK
         varchar nombre
         varchar descripcion
     }
-    EstadoEntrega{
-        int id_estadoEntrega PK
-        varchar nombre
-        varchar descripcion
+    Oferta{
+        int id_oferta PK
+        date fechaInicio
+        date fechaVencimiento
+        int cantidad
+        int id_usuario FK
+        int id_obra FK
+        int id_producto FK
+        int id_estadoOferta FK
     }
-    Vehiculo{
-        int id_Vehiculo PK
+    AporteOferta{
+        int id_aporteOferta PK
+        varchar descripcion
+        int cantidad
+        int id_oferta FK
+    }
+    Transporte{
+        int id_transporte PK
         varchar marca
         varchar modelo
         varchar patente
         int kilometraje
         varchar estadoITV
         year anio
-        int id_organizacion FK
+        varchar imagen
+        boolean necesita_mantenimiento
+        varchar descripcion_mantenimiento
     }
+    DetalleObraTransporte{
+        int id_detalleObraTransporte PK
+        int id_obra FK
+        int id_transporte FK
+    }
+    DetalleObraPedido{
+        int id_DetalleObraPedido PK
+        int id_stock FK
+        int id_pedido FK
+    }
+    Notificacion{
+        int id_notificacion PK
+        varchar titulo
+        varchar descripcion
+        tinyint viewed
+        datetime fecha_creacion
+        int id_usuario FK
+    }
+    
+Organizacion ||--|{ Obra : "tiene"
+Transporte ||--|{ DetalleObraTransporte : "tiene"
+Obra ||--|{ DetalleObraTransporte : "assigned to"
+Obra }|--|| Direccion : "tiene"
+Obra ||--|{ Stock : "tiene"
+TipoUsuario ||--|{ DetalleObraUsuario : "tiene"
 
-Organizacion ||--|{ Casa : "tiene"
-Organizacion ||--|{ Vehiculo : "tiene"
-Casa }|--|| Direccion : "tiene"
-Casa ||--|{ Stock : "tiene"
+CustomUsuario ||--|{ DetalleObraUsuario : "tiene"
+Obra ||--|{ DetalleObraUsuario : "tiene"
+CustomUsuario ||--|{ Pedido : "tiene"
+CustomUsuario ||--|{ Oferta : "tiene"
+CustomUsuario }|--|| Direccion : "tiene"
+TipoDocumento ||--|{ CustomUsuario : "tiene"
 
-TipoUsuario ||--|{ Usuario : "tiene"
-Usuario ||--|{ Pedido : "tiene"
-Usuario ||--|{ Oferta : "tiene"
-Usuario }|--|| Direccion : "tiene"
-TipoDocumento ||--|{ Usuario : "tiene"
-
-Casa ||--|{ Pedido : "tiene"
-Casa ||--|{ Oferta : "tiene"
-Casa ||--|{ Stock : "tiene"
-
-Casa ||--|{ DetalleCasaUsuario : "tiene"
-Usuario ||--|{ DetalleCasaUsuario : "tiene"
+Obra ||--|{ Pedido : "requested by"
+Obra ||--|{ Oferta : "offered from"
+Obra ||--|{ Stock : "belongs to"
 
 Pedido ||--|{ AportePedido : "tiene"
-Oferta ||--|{ AporteOferra : "tiene"
+Oferta ||--|{ AporteOferta : "tiene"
 EstadoPedido ||--|{ Pedido : "tiene"
 EstadoOferta ||--|{ Oferta : "tiene"
-Producto ||--|{ AportePedido : "tiene"
-Producto ||--|{ AporteOferra : "tiene"
 
-CategoriaProducto ||--|{ Producto : "tiene"
-UnidadMedida ||--|{ Producto : "tiene"
+Categoria ||--|{ Producto : "tiene"
 
 Stock ||--|{ DetalleStockProducto : "tiene"
 Producto ||--|{ DetalleStockProducto : "tiene"
-Producto ||--|{ Pedido : "tiene"
+CustomUsuario ||--|{ DetalleStockProducto : "tiene"
 
-AportePedido ||--o{ EntregaPedido : "tiene"
-AporteOferra ||--o{ EntregaOferta : "tiene"
-EstadoEntrega ||--|{ EntregaPedido : "tiene"
-EstadoEntrega ||--|{ EntregaOferta : "tiene"
-Direccion ||--|{ EntregaPedido : "tiene"
-Direccion ||--|{ EntregaOferta : "tiene"
+Producto ||--|{ Pedido : "tiene"
+Producto ||--|{ Oferta : "tiene"
+CustomUsuario ||--|{ Pedido : "tiene"
+
+DetalleObraPedido }|--|| Stock : "contains"
+DetalleObraPedido }|--|| Pedido : "contains"
+CustomUsuario ||--|{ Notificacion : "belongs to"
