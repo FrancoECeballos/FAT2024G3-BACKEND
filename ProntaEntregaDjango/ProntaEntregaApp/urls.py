@@ -46,7 +46,7 @@ urlpatterns = [
     path('obra/', GetObra.as_view(), name='obra_get'),
     path('obra/<int:pk>/', GetObraByID.as_view(), name='obra_get_id'),
     path('crear_obra/', CrearObra.as_view(), name='obra_post'),
-    path('editar_obra/<int:pk>', EditarObra.as_view(), name='obra_edit'),
+    path('editar_obra/<int:pk>/', EditarObra.as_view(), name='obra_edit'),
 
     path('stock/', GetStock.as_view(), name='ver_stock'),
     path('stock/<int:id_obra>/', GetStockByID.as_view(), name='ver_stock_id'),

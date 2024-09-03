@@ -452,25 +452,20 @@ class CrearObra(APIView):
           
 class EditarObra(APIView):
     def put(self, request, pk):
-        # Obtener la obra a modificar
         try:
             obra = Obra.objects.get(pk=pk)
         except Obra.DoesNotExist:
             return Response({'error': 'No se encontró una obra con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Crear un serializador con los datos recibidos y la instancia de la obra
         serializer = EditarObraSerializer(obra, data=request.data, partial=True)
 
-        # Verificar si los datos son válidos y guardar los cambios si corresponde
         if serializer.is_valid():
-            # Excluir la validación única para el nombre si el nombre no se ha modificado
             if 'nombre' in request.data and request.data['nombre'] == obra.nombre:
                 serializer.fields['nombre'].unique = False
 
             serializer.save()
             return Response({'success': 'Los atributos de la obra han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
-            # Si hay errores en los datos proporcionados, devolver los errores
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetStock(APIView):
