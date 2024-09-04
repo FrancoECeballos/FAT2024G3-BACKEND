@@ -123,7 +123,8 @@ urlpatterns = [
     path('user/obrasToken/<str:token>/', GetObrasAsignadasByToken.as_view(), name='user-obrasToken'),
     path('user/stockEmail/<str:email>/', GetStockAsignadoByEmail.as_view(), name='user-stockEmail'),
     path('user/stockToken/<str:token>/', GetStockAsignadoByToken.as_view(), name='user-stockToken'),
-    path('user/obras/delete/<int:pk>/', DeleteDetalleObraUsuario.as_view(), name='user-obras-delete'),
+    path('user/obras/delete/<int:id_obra>/<int:id_usuario>/', DeleteDetalleObraUsuario.as_view(), name='user-obras-delete'),
+    path('user/obras/update/<int:id_obra>/<int:id_usuario>/', UpdateDetalleObraUsuario.as_view(), name='user-obras-update'),
     path('obra/<int:id_stock>/categoria_producto/<str:id_categoriaproducto>/<int:id_categoria>/', ProductosPorCategoriaYObraView.as_view(), name='productos-por-categoria-y-obra'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
     

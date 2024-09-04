@@ -1268,8 +1268,14 @@ class GetObrasAsignadasByToken(APIView):
         try:
             usuario = CustomUsuario.objects.get(auth_token = token)
             detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = DetalleobrausuarioSerializer(detalle_obras, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            obras = [
+                {
+                    **ObraSerializer(detalle_obra.id_obra).data,
+                    'id_tipousuario': detalle_obra.id_tipousuario.id_tipousuario
+                }
+                for detalle_obra in detalle_obras
+            ]
+            return Response(obras, status=status.HTTP_200_OK)
         except Detalleobrausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -1301,14 +1307,27 @@ class DeleteDetalleObraUsuario (APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request, pk):
+    def delete(self, request, id_obra, id_usuario):
         try:
-            detalle = Detalleobrausuario.objects.get(pk=pk)
+            detalle = Detalleobrausuario.objects.get(id_obra=id_obra, id_usuario= id_usuario)
             detalle.delete()
             return Response({'La relacion usuario-obra se elimino correctamente'},status=status.HTTP_204_NO_CONTENT)
         except Detalleobrausuario.DoesNotExist:
             return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
+class UpdateDetalleObraUsuario (APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, id_obra, id_usuario):
+        try:
+            update = Detalleobrausuario.objects.get(id_obra=id_obra, id_usuario= id_usuario)
+            serialized_tipousuario = Tipousuario.objects.get(pk=request.data['id_tipousuario'])
+            update.id_tipousuario = serialized_tipousuario
+            update.save()
+            return Response({'La relacion usuario-obra se modificó correctamente'},status=status.HTTP_204_NO_CONTENT)
+        except Detalleobrausuario.DoesNotExist:
+            return Response({'error': 'El detalle no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
 class PostDetalleObraUsuario(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
