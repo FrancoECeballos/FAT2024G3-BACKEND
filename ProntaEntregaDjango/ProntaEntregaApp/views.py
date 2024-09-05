@@ -1421,8 +1421,7 @@ class GetDetallestockproducto_Total(APIView):
                 detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=producto.id_producto)
                 total = 0
             
-            print(detalle.__len__())
-            if detalle.__len__() > 0:
+            if Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=producto.id_producto).__len__() > 0:
                 for x in detalle:
                     total = total + x.cantidad
 
