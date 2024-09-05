@@ -243,13 +243,13 @@ CREATE TABLE IF NOT EXISTS DetalleObraPedido (
 
 -- Inserciones para la tabla Direccion
 INSERT INTO Direccion (calle, numero, localidad) VALUES 
-    ('Calle Fornica', 25, 'Localidad Abedul'),
-    ('Calle Ignacio', 103, 'Localidad Betular'),
-    ('Calle Gonzalo', 6, 'Localidad Carlos Paz'),
-    ('Calle Martinez', 42, 'Localidad Budin'),
-    ('Calle Sergio', 25, 'Localidad Abedul'),
-    ('Calle Roca', 103, 'Localidad Colonia Carolla'),
-    ('Calle Menem', 6, 'Localidad La Estanzuela'),
+    ('Av. Republica de China', 25, 'Valle Escondido'),
+    ('Calle San Martín', 50, 'Centro'),
+    ('Av. Libertad', 123, 'Barrio Norte'),
+    ('Calle Los Andes', 75, 'La Colina'),
+    ('Av. Independencia', 80, 'Villa del Parque'),
+    ('Calle Belgrano', 45, 'San Isidro'),
+    ('Av. Ejercito Argentino', 6, 'Cordoba'),
     ('Calle Evita', 42, 'Localidad Perón'),
     ('Calle Desconocida', 0, 'Localidad Desconocida'), -- Asilo a refugiados sirios, Nuestra familia Siria / Acompañamiento a jóvenes adolecentes, Sueño Común / Acompañamiento a personas que sufren soledad, Madre Teresa / Acompañamiento a mamás, Madre de la Ternura / Ejercicios espirituales gratuitos, Mamá Antula
 	('Brasil 680, X5000CCP Córdoba', 680, 'B° Güemes'), -- Hogar de niños, Jose Bainotti
@@ -278,9 +278,9 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
 
 -- Inserciones para la tabla Usuario
 INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
-    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/cn-joaco-lopez-foto-web_sq.webp', NOW(), NOW(), 1, 1, FALSE, FALSE, TRUE),
-    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/llama.webp', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
-    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/GFYCP26UX5ER3KN5AGRXQAMZ7Q.webp', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
+    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 1, 1, FALSE, FALSE, TRUE),
+    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
+    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE),
     ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 3514234682', 'hospederia.cba@manosabiertas.org.ar', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
     ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 3518947780', 'casadelabondad.cba@manosabiertas.org.ar', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
