@@ -1421,15 +1421,17 @@ class GetDetallestockproducto_Total(APIView):
                 detalle = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=producto.id_producto)
                 total = 0
             
-            for x in detalle:
-                total = total + x.cantidad
+            print(detalle.__len__())
+            if detalle.__len__() > 0:
+                for x in detalle:
+                    total = total + x.cantidad
 
-            p = Producto.objects.get(pk = producto.id_producto)
+                p = Producto.objects.get(pk = producto.id_producto)
 
-            serializer = ProductoSerializer(p)
-            d = serializer.data
-            d.update({'total':total})
-            todo.append(d)
+                serializer = ProductoSerializer(p)
+                d = serializer.data
+                d.update({'total':total})
+                todo.append(d)
         
         return Response(todo, status=status.HTTP_200_OK)
 
