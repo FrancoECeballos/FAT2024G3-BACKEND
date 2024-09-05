@@ -10,6 +10,8 @@ urlpatterns = [
     path('getNotificacion/<int:pk>', GetNotificacionesDeUser.as_view(), name='GetNotificacionesDeUsr'),
     path('getNotificacion/', GetNotificaciones.as_view(), name='GetNotificaciones'),
     path('PostNotificacion/', PostNotificacion.as_view(), name='PostNotificacion'),
+    path('DeleteNotificacion/<int:pk>/', DeleteNotificacion.as_view(), name='DeleteNotificacion'),
+    path('MarkNotificacionAsRead/<int:pk>/', MarkNotificacionAsRead.as_view(), name='MarkNotificacionAsRead'),
     
     path('user/', VerUsuarios.as_view(), name='users'),
     path('user/<str:email>', UserByEmail.as_view(), name='userEmail'),
@@ -62,6 +64,7 @@ urlpatterns = [
 
     path('productos/', GetProductos.as_view(), name='ver_producto'),
     path('producto/<int:pk>/', GetProductoById.as_view(), name='ver_producto_id'),
+    path('producto/categoria/<int:id_categoria>/', GetProductoByCategoria.as_view(), name='ver_producto_categoria'),
     path('crear_productos/', CrearProductos.as_view(), name='crear_producto'),
     path('editar_producto/<int:pk>/', EditarProducto.as_view(), name='editar_producto'),
 

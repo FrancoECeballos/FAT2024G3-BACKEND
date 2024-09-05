@@ -61,7 +61,7 @@ class GetNotificaciones(APIView):
 class GetNotificacionesDeUser(APIView):
     permission_classes = [AllowAny]
     def get(self,request,pk):
-        notif = Notificacion.objects.filter(id_usuario = pk)
+        notif = Notificacion.objects.filter(id_usuario = pk, viewed=False)
         serializer = NotificacionSerializer(notif,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -563,6 +563,16 @@ class GetProductoById(APIView):
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class GetProductoByCategoria(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, id_categoria):
+        try:
+            productos = Producto.objects.filter(id_categoria=id_categoria)
+        except Producto.DoesNotExist:
+            return Response({'error': 'No se encontró un producto con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = ProductoSerializer(productos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class CrearProductos(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -613,12 +623,33 @@ class PostNotificacion(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteNotificacion(APIView):
+    permission_classes = [AllowAny]
+
+    def delete(self, request, pk):
+        try:
+            notif = Notificacion.objects.get(notificacion_id=pk)
+            notif.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Notificacion.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+class MarkNotificacionAsRead(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        try:
+            notif = Notificacion.objects.get(notificacion_id=pk)
+            notif.viewed = True
+            notif.save()
+            serializer = NotificacionSerializer(notif)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Notificacion.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class GetUsuariosPorPedido(APIView):
     def get(self,request,id_pedido):
-        
-
-        
         detalle = Detalleobrapedido.objects.filter(pk = id_pedido)
         print(detalle.__len__())
         if detalle.__len__() == 0:
