@@ -46,7 +46,7 @@ urlpatterns = [
     path('obra/', GetObra.as_view(), name='obra_get'),
     path('obra/<int:pk>/', GetObraByID.as_view(), name='obra_get_id'),
     path('crear_obra/', CrearObra.as_view(), name='obra_post'),
-    path('editar_obra/<int:pk>', EditarObra.as_view(), name='obra_edit'),
+    path('editar_obra/<int:pk>/', EditarObra.as_view(), name='obra_edit'),
 
     path('stock/', GetStock.as_view(), name='ver_stock'),
     path('stock/<int:id_obra>/', GetStockByID.as_view(), name='ver_stock_id'),
@@ -123,7 +123,8 @@ urlpatterns = [
     path('user/obrasToken/<str:token>/', GetObrasAsignadasByToken.as_view(), name='user-obrasToken'),
     path('user/stockEmail/<str:email>/', GetStockAsignadoByEmail.as_view(), name='user-stockEmail'),
     path('user/stockToken/<str:token>/', GetStockAsignadoByToken.as_view(), name='user-stockToken'),
-    path('user/obras/delete/<int:pk>/', DeleteDetalleObraUsuario.as_view(), name='user-obras-delete'),
+    path('user/obras/delete/<int:id_obra>/<int:id_usuario>/', DeleteDetalleObraUsuario.as_view(), name='user-obras-delete'),
+    path('user/obras/update/<int:id_obra>/<int:id_usuario>/', UpdateDetalleObraUsuario.as_view(), name='user-obras-update'),
     path('obra/<int:id_stock>/categoria_producto/<str:id_categoriaproducto>/<int:id_categoria>/', ProductosPorCategoriaYObraView.as_view(), name='productos-por-categoria-y-obra'),
     path('detallestockproducto/<int:id_detallestockproducto>/', UpdateDetallestockproductoView.as_view(), name='detallestockproducto-update'),
     

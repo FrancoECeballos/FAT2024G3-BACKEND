@@ -27,14 +27,15 @@ class ObraSerializer(serializers.ModelSerializer):
 class EditarObraSerializer(serializers.ModelSerializer):
     class Meta:
         model = Obra
-        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion']
+        fields = ['id_obra', 'nombre', 'descripcion', 'id_organizacion', 'id_direccion', 'imagen']
     
     def create(self, validated_data):
         obra = Obra.objects.create_obra(
             nombre=validated_data.get('nombre'),
             descripcion=validated_data.get('descripcion'),
             id_organizacion=validated_data.get('id_organizacion'),
-            id_direccion=validated_data.get('id_direccion')
+            id_direccion=validated_data.get('id_direccion'),
+            imagen=validated_data.get('imagen')
         )
         return obra
 
