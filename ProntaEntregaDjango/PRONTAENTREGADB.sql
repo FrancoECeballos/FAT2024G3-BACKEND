@@ -363,10 +363,10 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen) V
     ('Pupitre', 'Pupitre basico', 3, 0, 'productos/mueble1.jpg'),
     ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg');
 
-INSERT INTO Producto (nombre, descripcion, id_categoria, talle, imagen, perecedero) VALUES 
-    ('Camisa', 'Camisa de manga larga', 2, "l", 'productos/camisa.jpg', FALSE),
-    ('Pantalón', 'Pantalón de mezclilla', 2, "s", 'productos/pantalon.jpg', FALSE),
-    ('Vestido', 'Vestido elegante', 2, "xl", 'productos/vestido.jpg', FALSE);
+INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, talle, imagen, perecedero) VALUES 
+    ('Camisa', 'Camisa de manga larga', 2, 0, "l", 'productos/camisa.webp', FALSE),
+    ('Pantalón', 'Pantalón de mezclilla', 2, 0, "s", 'productos/pantalon.webp', FALSE),
+    ('Vestido', 'Vestido elegante', 2, 0, "xl", 'productos/vestido.webp', FALSE);
 
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 

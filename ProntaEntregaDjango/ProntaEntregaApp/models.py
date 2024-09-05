@@ -266,7 +266,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     id_categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_categoria', blank=True, null=True)
-    unidadmedida = models.IntegerField(choices=UNIDAD_CHOICES,db_column='unidadMedida', blank=True, null=True)  # Field name made lowercase.
+    unidadmedida = models.IntegerField(choices=UNIDAD_CHOICES,db_column='unidadMedida', blank=True, null=True, default=0)  # Field name made lowercase.
     talle = models.CharField(max_length=255, blank=True, null=True)
     cantidad_por_unidad = models.IntegerField(blank=True, null=True)
     imagen = models.ImageField(upload_to='productos/')
