@@ -749,6 +749,9 @@ class GetAportePedido(APIView):
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
+        print(timezone.now().date())
+        
+        request.data.update({'fecha':timezone.now().date()})
         serializer = CreateAportePedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
