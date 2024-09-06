@@ -81,6 +81,11 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
         model = Detallestockproducto
         fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
 
+class DspSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Detallestockproducto
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
+
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto

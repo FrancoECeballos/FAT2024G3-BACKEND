@@ -748,13 +748,27 @@ class GetAportePedido(APIView):
 
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
+    def get (self, request):
+        return Response({"id_usuario":1,"cantidad":1,"id_pedido":1})
     def post(self, request):
-        print(timezone.now().date())
         
         request.data.update({'fecha':timezone.now().date()})
         serializer = CreateAportePedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            pedido = Pedido.objects.get(pk = request.data['id_pedido'])
+            stock = Stock.objects.get(id_obra = pedido.id_obra)
+            producto = Producto.objects.get(id_producto =pedido.__dict__['id_producto_id'])
+            usuario = CustomUsuario.objects.get(pk = request.data['id_usuario'])
+            detalleStock = DspSerializer(data={'checkpoint':False,'fecha_creacion':timezone.now(),'cantidad':request.data['cantidad'] * -1,'id_producto': producto.id_producto,'id_stock':stock.id_stock,'id_usuario':usuario.id_usuario})
+            
+            if detalleStock.is_valid():
+                print('guardando detalle')
+                detalleStock.save()
+                print('guardado detalle')
+            else:
+                print(detalleStock.errors)
+                return Response(detalleStock.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
