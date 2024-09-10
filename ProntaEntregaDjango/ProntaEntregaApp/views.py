@@ -1658,7 +1658,7 @@ class GetPedidosRecibidosByUser(APIView):
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
-                'pedidos_recibidos': all,
+                'pedidos': all,
                 'stock': stock_serialized
             })
         
@@ -1687,7 +1687,7 @@ class GetPedidosDadosByUser(APIView):
             
             pedidos_por_obra.append({
                 'obra': obra_serialized,
-                'pedidos_dados': pedidos,
+                'pedidos': pedidos,
                 'stock': stock_serialized
             })
         
@@ -1716,7 +1716,7 @@ class GetPedidosRecibidosForAdmin(APIView):
 
             obras_con_pedidos.append({
                 'obra': obra_serialized,
-                'pedidos_que_se_le_hizo': pedidos,
+                'pedidos': pedidos,
                 'stock': stock_serialized
             })
 
@@ -1741,7 +1741,7 @@ class GetPedidosDadosForAdmin(APIView):
 
             obras_con_pedidos.append({
                 'obra': obra_serialized,
-                'pedidos_que_tiene': pedidos_que_tiene_serialized,
+                'pedidos': pedidos,
                 'stock': stock_serialized
             })
 
