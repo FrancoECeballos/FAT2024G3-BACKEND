@@ -444,7 +444,7 @@ class CrearObra(APIView):
     permission_classes = [AllowAny]
     
     def post(self, request):
-        serializer = ObraSerializer(data=request.data)
+        serializer = CrearObraSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

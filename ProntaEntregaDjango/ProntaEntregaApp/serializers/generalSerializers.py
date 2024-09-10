@@ -131,6 +131,14 @@ class ObraSerializer(serializers.ModelSerializer):
     def get_autos_registrados(self, obra):
         return obra.detalleobratransporte_set.count()
     
+class CrearObraSerializer(serializers.ModelSerializer):
+    id_direccion = serializers.PrimaryKeyRelatedField(queryset=Direccion.objects.all())
+
+    class Meta:
+        model = Obra
+        fields = '__all__'
+    
+    
 class DetalleobrausuarioSerializer(serializers.ModelSerializer):
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
     id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
