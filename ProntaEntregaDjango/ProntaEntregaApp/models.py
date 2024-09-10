@@ -251,6 +251,8 @@ class Categoria(models.Model):
     id_categoria = models.AutoField(db_column='id_categoria', primary_key=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     descripcion = models.CharField(max_length=255, blank=True, null=True)
+    imagen = models.ImageField(upload_to='categorias/')
+
 
     class Meta:
         managed = False

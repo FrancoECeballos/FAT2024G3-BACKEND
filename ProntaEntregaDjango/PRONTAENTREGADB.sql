@@ -119,7 +119,8 @@ CREATE TABLE IF NOT EXISTS Stock (
 CREATE TABLE IF NOT EXISTS Categoria (
 	id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255)
+    descripcion VARCHAR(255),
+    imagen VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Producto (
@@ -293,7 +294,12 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Madre de la Ternura', 'Admin9', 'madreternura', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Ternura@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, FALSE, TRUE), -- Acompañamiento a mamás, Madre de la Ternura
     ('Mamá Antula', 'Admin10', 'mamaantula', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Antula@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 8, 1, TRUE, FALSE, TRUE), -- Ejercicios espirituales gratuitos, Mamá Antula
     ('Isabel de Hungría', 'Admin11', 'isabelhungria', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'Hungría@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 3, 1, TRUE, FALSE, TRUE), -- Casa de Retiros, Señorita Isabel de Hungría
-    ('Jose', 'Bainotti', 'admin7', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'jose@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE); -- Hogar de niños, Jose Bainotti
+    ('Jose', 'Bainotti', 'admin7', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'jose@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Hogar de niños, Jose Bainotti,
+    ('Santa', 'Clara', 'adminferia', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'santaclara@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Feria Santa Clara
+    ('Recursos', 'Materiales', 'adminmateriales', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'materiales@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Recursos Materiales
+    ('Recursos', 'Economicos', 'admineconomico', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'economicos@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Recursos Economicos
+    ('Admin', 'Voluntariado', 'adminvoluntariado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntariado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Voluntariado
+    ('Administrador', 'Sede', 'adminsede', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'sede@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE); -- ADMINISTRACION/SEDE
 
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
@@ -308,7 +314,12 @@ INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VA
     ('Sueño Común', 'Acompañamiento a jóvenes adolecentes', 1, 9, 'obras/logo.png'),
     ('Madre Teresa', 'Acompañamiento a personas que sufren soledad', 1, 9, 'obras/logo.png'),
     ('Madre de la Ternura', 'Acompañamiento a mamás', 1, 9, 'obras/logo.png'),
-    ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/logo.png');
+    ('Señorita Isabel de Hungría', 'Casa de Retiros', 1, 16, 'obras/logo.png'), --
+    ('Santa Clara', 'Feria', 1, 9, 'obras/logo.png'),
+    ('Recursos Materiales', 'Material', 1, 9, 'obras/logo.png'),
+    ('Recursos Economicos', 'Capital', 1, 9, 'obras/logo.png'),
+    ('Voluntariado', 'Voluntariado', 1, 9, 'obras/logo.png'),
+    ('Administracion/Sede', 'Sede', 1, 9, 'obras/logo.png');
 
 -- Inserciones para la tabla DetalleObraUsuario
 INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, id_tipousuario) VALUES 
@@ -345,10 +356,10 @@ INSERT INTO Stock (id_obra) VALUES
     (12);
 
 -- Inserciones para la tabla Categoria
-INSERT INTO Categoria (nombre, descripcion) VALUES 
-    ('Comida', 'Alimentos, enlatados, percederos y no percederos,etc.'),
-    ('Ropa', 'Ropa, para vestir'),
-    ('Muebles', 'Muebles que pueden ser ofrecidos.');
+INSERT INTO Categoria (nombre, descripcion, imagen) VALUES 
+    ('Comida', 'Alimentos, enlatados, percederos y no percederos,etc.', 'categorias/comidaLogo.png'),
+    ('Ropa', 'Ropa, para vestir', 'categorias/ropaLogo.png'),
+    ('Muebles', 'Muebles que pueden ser ofrecidos.', 'categorias/mueblesLogo.png');
 
 -- Inserciones para la tabla Producto
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen, perecedero) VALUES 
