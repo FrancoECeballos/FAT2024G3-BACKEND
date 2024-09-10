@@ -1668,7 +1668,7 @@ class GetPedidosByUser(APIView):
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
 
 
-class GetPedidosForAdmin(APIView):
+class GetPedidosRecibidosForAdmin(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -1680,8 +1680,30 @@ class GetPedidosForAdmin(APIView):
             detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
             
             pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
-            
             pedidos = lista_pedido_con_progreso(pedidos)
+            
+            obra_serialized = ObraSerializer(obra).data
+            
+            stock_serialized = StockSerializer(stocks, many=True).data
+
+            obras_con_pedidos.append({
+                'obra': obra_serialized,
+                'pedidos_que_se_le_hizo': pedidos,
+                'stock': stock_serialized
+            })
+
+        return Response(obras_con_pedidos, status=status.HTTP_200_OK)
+
+class GetPedidosDadosForAdmin(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        obras = Obra.objects.all()
+        obras_con_pedidos = []
+
+        for obra in obras:
+            pedidos_que_tiene = Pedido.objects.filter(id_obra = obra.id_obra)
+            pedidos_que_tiene_serialized = PedidoSerializer(pedidos_que_tiene,many=True).data
             
             stock = Stock.objects.filter(id_obra=obra.id_obra)
 
@@ -1691,12 +1713,12 @@ class GetPedidosForAdmin(APIView):
 
             obras_con_pedidos.append({
                 'obra': obra_serialized,
-                'pedidos': pedidos,
+                'pedidos_que_tiene': pedidos_que_tiene_serialized,
                 'stock': stock_serialized
             })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
-    
+
 class UpdateEstadoByVencimiento(APIView):
     def get(self,request):
         pedidos = Pedido.objects.all()
