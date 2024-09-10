@@ -119,7 +119,8 @@ CREATE TABLE IF NOT EXISTS Stock (
 CREATE TABLE IF NOT EXISTS Categoria (
 	id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
-    descripcion VARCHAR(255)
+    descripcion VARCHAR(255),
+    imagen VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Producto (
@@ -345,10 +346,10 @@ INSERT INTO Stock (id_obra) VALUES
     (12);
 
 -- Inserciones para la tabla Categoria
-INSERT INTO Categoria (nombre, descripcion) VALUES 
-    ('Comida', 'Alimentos, enlatados, percederos y no percederos,etc.'),
-    ('Ropa', 'Ropa, para vestir'),
-    ('Muebles', 'Muebles que pueden ser ofrecidos.');
+INSERT INTO Categoria (nombre, descripcion, imagen) VALUES 
+    ('Comida', 'Alimentos, enlatados, percederos y no percederos,etc.', 'categorias/comidaLogo.png'),
+    ('Ropa', 'Ropa, para vestir', 'categorias/ropaLogo.png'),
+    ('Muebles', 'Muebles que pueden ser ofrecidos.', 'categorias/mueblesLogo.png');
 
 -- Inserciones para la tabla Producto
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen, perecedero) VALUES 
