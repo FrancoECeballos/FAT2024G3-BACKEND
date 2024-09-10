@@ -1632,11 +1632,11 @@ class GetDetallesProductoObra(APIView):
         serializer = DetallestockproductoSerializer(detalles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class GetPedidosByUser(APIView):
+class GetPedidosRecibidosByUser(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):
-        user = CustomUsuario.objects.get(auth_token=token)
+        user = CustomUsuario.objects.get(auth_token = token)
 
         detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
 
@@ -1653,13 +1653,41 @@ class GetPedidosByUser(APIView):
         for obra in obras:
             obra_serialized = ObraSerializer(obra).data
             stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
-            obra_pedidos = pedidos.filter(id_pedido__in=detalle_obrapedidos.filter(id_stock__in=stocks.filter(id_obra=obra).values_list('id_stock', flat=True)).values_list('id_pedido', flat=True))
             
             all = lista_pedido_con_progreso(pedidos)
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
-                'pedidos': all,
+                'pedidos_recibidos': all,
+                'stock': stock_serialized
+            })
+        
+        
+
+        return Response(pedidos_por_obra, status=status.HTTP_200_OK)
+
+class GetPedidosDadosByUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, token):
+        user = CustomUsuario.objects.get(auth_token = token)
+
+        detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
+
+        obras = Obra.objects.filter(id_obra__in=detalles_obras_usuario.values_list('id_obra', flat=True))
+        
+        stocks = Stock.objects.filter(id_obra__in=obras.values_list('id_obra', flat=True))
+
+        pedidos_por_obra = []
+        for obra in obras:
+            pedidos = Pedido.objects.filter(id_obra=obra.id_obra)
+            pedidos = lista_pedido_con_progreso(pedidos)
+            obra_serialized = ObraSerializer(obra).data
+            stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
+            
+            pedidos_por_obra.append({
+                'obra': obra_serialized,
+                'pedidos_dados': pedidos,
                 'stock': stock_serialized
             })
         
@@ -1703,7 +1731,7 @@ class GetPedidosDadosForAdmin(APIView):
 
         for obra in obras:
             pedidos_que_tiene = Pedido.objects.filter(id_obra = obra.id_obra)
-            pedidos_que_tiene_serialized = PedidoSerializer(pedidos_que_tiene,many=True).data
+            pedidos = lista_pedido_con_progreso(pedidos_que_tiene)
             
             stock = Stock.objects.filter(id_obra=obra.id_obra)
 
