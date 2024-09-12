@@ -1636,7 +1636,7 @@ class GetPedidosRecibidosByUser(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, token):
-        user = CustomUsuario.objects.get(auth_token = token)
+        user = CustomUsuario.objects.get(auth_token=token)
 
         detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
 
@@ -1647,22 +1647,30 @@ class GetPedidosRecibidosByUser(APIView):
         detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks.values_list('id_stock', flat=True))
 
         pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+        pedidos = lista_pedido_con_progreso(pedidos)
 
         pedidos_por_obra = []
 
         for obra in obras:
             obra_serialized = ObraSerializer(obra).data
             stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
-            
-            all = lista_pedido_con_progreso(pedidos)
+
+            # Collect distinct id_obra from serialized pedidos
+            distinct_id_obras = set(pedido['id_obra']['id_obra'] for pedido in pedidos)
+            obras_pidiendo = Obra.objects.filter(id_obra__in=distinct_id_obras)
+            obras_pidiendo_serialized = ObraSerializer(obras_pidiendo, many=True).data
+
+            pedidos_array = []
+            for obra_pidiendo in obras_pidiendo_serialized:
+                id_obra_pidiendo = obra_pidiendo['id_obra']
+                pedidos_for_obra = [pedido for pedido in pedidos if pedido['id_obra']['id_obra'] == id_obra_pidiendo]
+                pedidos_array.append([obra_pidiendo, pedidos_for_obra])
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
-                'pedidos': all,
+                'pedidos': pedidos_array,
                 'stock': stock_serialized
             })
-        
-        
 
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
 
@@ -1711,49 +1719,26 @@ class GetPedidosRecibidosForAdmin(APIView):
             pedidos = lista_pedido_con_progreso(pedidos)
             
             obra_serialized = ObraSerializer(obra).data
-            
             stock_serialized = StockSerializer(stocks, many=True).data
+
+            # Collect distinct id_obra from serialized pedidos
+            distinct_id_obras = set(pedido['id_obra']['id_obra'] for pedido in pedidos)
+            obras_pidiendo = Obra.objects.filter(id_obra__in=distinct_id_obras)
+            obras_pidiendo_serialized = ObraSerializer(obras_pidiendo, many=True).data
+
+            pedidos_array = []
+            for obra_pidiendo in obras_pidiendo_serialized:
+                id_obra_pidiendo = obra_pidiendo['id_obra']
+                pedidos_for_obra = [pedido for pedido in pedidos if pedido['id_obra']['id_obra'] == id_obra_pidiendo]
+                pedidos_array.append([obra_pidiendo, pedidos_for_obra])
 
             obras_con_pedidos.append({
                 'obra': obra_serialized,
-                'pedidos': pedidos,
+                'pedidos': pedidos_array,
                 'stock': stock_serialized
             })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
-
-class getPedidosPorObrasPorObra(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, id_obra):
-        obra = Obra.objects.get(id_obra = id_obra)
-        stocks = Stock.objects.filter(id_obra=id_obra)
-        detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
-        context = []
-        
-        pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
-        pedidos_piola = lista_pedido_con_progreso(pedidos)
-        obra_serialized = ObraSerializer(obra).data
-        stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
-        
-        id_obras_dadoras = []
-        for p in pedidos:
-            if p.__dict__['id_obra_id'] in id_obras_dadoras:
-                pass
-            else:
-                id_obras_dadoras.append(p.__dict__['id_obra_id'])
-                
-        for o in id_obras_dadoras:
-            pedidos_particulares= pedidos.filter(id_obra = o)
-            print(pedidos_particulares)
-            pedidos_piola = lista_pedido_con_progreso(pedidos_particulares)
-            
-            context.append({
-            'obra': ObraSerializer(Obra.objects.get(pk=o)).data,
-            'pedidos': pedidos_piola
-            })
-        
-        return Response(context, status=status.HTTP_200_OK)
 
 class GetPedidosDadosForAdmin(APIView):
     permission_classes = [IsAuthenticated]

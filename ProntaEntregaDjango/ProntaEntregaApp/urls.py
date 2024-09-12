@@ -83,7 +83,6 @@ urlpatterns = [
     path('get_pedidos_recibidos_for_user/<str:token>/', GetPedidosRecibidosByUser.as_view(), name='get_pedido_by_user'),
     path('get_pedidos_recibidos_for_admin/', GetPedidosRecibidosForAdmin.as_view(), name='get_pedido_recibido_for_admin'),
     path('get_pedidos_dados_for_admin/', GetPedidosDadosForAdmin.as_view(), name='get_pedido_dado_for_admin'),
-    path('getPedidosPorObrasPorObra/<int:id_obra>', getPedidosPorObrasPorObra.as_view(), name='getPedidosPorObrasPorObra'),
     path('detalle_pedido/', GetDetalleobrapedido.as_view(), name='ver_detalle_pedido'),
     path('crear_detalle_pedido/', CrearDetalleobrapedido.as_view(), name='crear_detalle_pedido'),
     path('delete_detalle_pedido/<int:pk>/', DeleteDetalleobrapedido.as_view(), name='editar_detalle_pedido'),
