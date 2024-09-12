@@ -337,7 +337,12 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Administrar la obra Sueño Común', '2024-3-09', 9, 10, 2),
     ('Administrar la obra Madre Teresa', '2023-12-26', 10, 11, 2),
     ('Administrar la obra Madre de la Ternura', '2024-01-12', 11, 13, 2),
-    ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 2);
+    ('Administrar la obra Señorita Isabel de Hungría', '2024-3-09', 12, 15, 2),
+    ('Administrar la feria Santa Clara', '2024-3-09', 13, 17, 2),
+    ('Administrar Recursos Materiales', '2024-3-09', 14, 18, 2),
+    ('Administrar Recursos Economicos', '2024-3-09', 15, 19, 2),
+    ('Administrar el Voluntariado', '2024-3-09', 16, 20, 2),
+    ('Administrar la Sede', '2024-3-09', 17, 21, 2);
 
 
 -- Inserciones para la tabla Stock
