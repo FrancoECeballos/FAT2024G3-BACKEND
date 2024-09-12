@@ -299,8 +299,9 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Recursos', 'Materiales', 'adminmateriales', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'materiales@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Recursos Materiales
     ('Recursos', 'Economicos', 'admineconomico', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'economicos@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Recursos Economicos
     ('Admin', 'Voluntariado', 'adminvoluntariado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntariado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Voluntariado
-    ('Administrador', 'Sede', 'adminsede', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'sede@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE); -- ADMINISTRACION/SEDE
-
+    ('Administrador', 'Sede', 'adminsede', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'sede@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- ADMINISTRACION/SEDE
+    ('Voluntario', '1', 'voluntario1preba', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntario.1.prueba@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, False, FALSE, False); -- Default user sin obra
+	
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
     ('Mama Antula', 'Ejercicios espirituales gratuitos', 1, 9, 'obras/logo.png'),
