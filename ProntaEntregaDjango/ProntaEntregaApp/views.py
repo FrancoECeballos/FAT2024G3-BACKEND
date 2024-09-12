@@ -1722,6 +1722,39 @@ class GetPedidosRecibidosForAdmin(APIView):
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
 
+class getPedidosPorObrasPorObra(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id_obra):
+        obra = Obra.objects.get(id_obra = id_obra)
+        stocks = Stock.objects.filter(id_obra=id_obra)
+        detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
+        context = []
+        
+        pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+        pedidos_piola = lista_pedido_con_progreso(pedidos)
+        obra_serialized = ObraSerializer(obra).data
+        stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
+        
+        id_obras_dadoras = []
+        for p in pedidos:
+            if p.__dict__['id_obra_id'] in id_obras_dadoras:
+                pass
+            else:
+                id_obras_dadoras.append(p.__dict__['id_obra_id'])
+                
+        for o in id_obras_dadoras:
+            pedidos_particulares= pedidos.filter(id_obra = o)
+            print(pedidos_particulares)
+            pedidos_piola = lista_pedido_con_progreso(pedidos_particulares)
+            
+            context.append({
+            'obra': ObraSerializer(Obra.objects.get(pk=o)).data,
+            'pedidos': pedidos_piola
+            })
+        
+        return Response(context, status=status.HTTP_200_OK)
+
 class GetPedidosDadosForAdmin(APIView):
     permission_classes = [IsAuthenticated]
 
