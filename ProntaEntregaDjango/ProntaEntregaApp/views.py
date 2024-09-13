@@ -617,7 +617,9 @@ class CrearPedido(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PostNotificacion(APIView):
-    def post(self,request):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
         serializer = NotificacionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
