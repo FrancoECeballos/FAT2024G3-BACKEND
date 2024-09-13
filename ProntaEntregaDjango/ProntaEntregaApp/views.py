@@ -1664,7 +1664,7 @@ class GetPedidosRecibidosByUser(APIView):
             for obra_pidiendo in obras_pidiendo_serialized:
                 id_obra_pidiendo = obra_pidiendo['id_obra']
                 pedidos_for_obra = [pedido for pedido in pedidos if pedido['id_obra']['id_obra'] == id_obra_pidiendo]
-                pedidos_array.append([obra_pidiendo, pedidos_for_obra])
+                pedidos_array.append({'obra': obra_pidiendo, 'pedidos': pedidos_for_obra})
 
             pedidos_por_obra.append({
                 'obra': obra_serialized,
@@ -1673,36 +1673,6 @@ class GetPedidosRecibidosByUser(APIView):
             })
 
         return Response(pedidos_por_obra, status=status.HTTP_200_OK)
-
-class GetPedidosDadosByUser(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, token):
-        user = CustomUsuario.objects.get(auth_token = token)
-
-        detalles_obras_usuario = Detalleobrausuario.objects.filter(id_usuario=user)
-
-        obras = Obra.objects.filter(id_obra__in=detalles_obras_usuario.values_list('id_obra', flat=True))
-        
-        stocks = Stock.objects.filter(id_obra__in=obras.values_list('id_obra', flat=True))
-
-        pedidos_por_obra = []
-        for obra in obras:
-            pedidos = Pedido.objects.filter(id_obra=obra.id_obra)
-            pedidos = lista_pedido_con_progreso(pedidos)
-            obra_serialized = ObraSerializer(obra).data
-            stock_serialized = StockSerializer(stocks.filter(id_obra=obra), many=True).data
-            
-            pedidos_por_obra.append({
-                'obra': obra_serialized,
-                'pedidos': pedidos,
-                'stock': stock_serialized
-            })
-        
-        
-
-        return Response(pedidos_por_obra, status=status.HTTP_200_OK)
-
 
 class GetPedidosRecibidosForAdmin(APIView):
     permission_classes = [IsAuthenticated]
@@ -1740,7 +1710,7 @@ class GetPedidosRecibidosForAdmin(APIView):
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
 
-class GetPedidosDadosForAdmin(APIView):
+class GetPedidosDados(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -1750,18 +1720,17 @@ class GetPedidosDadosForAdmin(APIView):
         for obra in obras:
             pedidos_que_tiene = Pedido.objects.filter(id_obra = obra.id_obra)
             pedidos = lista_pedido_con_progreso(pedidos_que_tiene)
-            
             stock = Stock.objects.filter(id_obra=obra.id_obra)
 
-            obra_serialized = ObraSerializer(obra).data
-            
-            stock_serialized = StockSerializer(stock, many=True).data
+            if pedidos:
+                obra_serialized = ObraSerializer(obra).data
+                stock_serialized = StockSerializer(stock, many=True).data
 
-            obras_con_pedidos.append({
-                'obra': obra_serialized,
-                'pedidos': pedidos,
-                'stock': stock_serialized
-            })
+                obras_con_pedidos.append({
+                    'obra': obra_serialized,
+                    'pedidos': pedidos,
+                    'stock': stock_serialized
+                })
 
         return Response(obras_con_pedidos, status=status.HTTP_200_OK)
 
