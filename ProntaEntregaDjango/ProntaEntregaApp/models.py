@@ -307,7 +307,7 @@ class Detallestockproducto(models.Model):
 
 
 class Pedido(models.Model):
-    urgencia_choices = [(1,'No es urgente'),(2,'Ligeramente Urgente'),(3,'Muy Urgente'),(4,'Inmediato')]
+    urgencia_choices = [(1,'No es urgente'),(2,'Urgente'),(3,'Inmediato')]
 
     id_pedido = models.AutoField(primary_key=True)  
     fechainicio = models.DateField(db_column='fechaInicio', blank=True, null=True)  # Field name made lowercase.

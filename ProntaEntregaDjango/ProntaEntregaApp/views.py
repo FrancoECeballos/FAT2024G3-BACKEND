@@ -1732,7 +1732,7 @@ class GetPedidosRecibidosForAdmin(APIView):
             for obra_pidiendo in obras_pidiendo_serialized:
                 id_obra_pidiendo = obra_pidiendo['id_obra']
                 pedidos_for_obra = [pedido for pedido in pedidos if pedido['id_obra']['id_obra'] == id_obra_pidiendo]
-                pedidos_array.append([obra_pidiendo, pedidos_for_obra])
+                pedidos_array.append({'obra': obra_pidiendo, 'pedidos': pedidos_for_obra})
 
             obras_con_pedidos.append({
                 'obra': obra_serialized,
