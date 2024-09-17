@@ -61,9 +61,15 @@ class PedidoSerializer(serializers.ModelSerializer):
     id_usuario = UsuarioSerializer()
     id_producto = ProductoSerializer()
 
+    urgente_label = serializers.SerializerMethodField()
+
     class Meta:
         model = Pedido
         fields = '__all__'
+        extra_fields = ['urgente_label']
+
+    def get_urgente_label(self, obj):
+        return obj.get_urgente_display()
 
 class CreatePedidoSerializer(serializers.ModelSerializer):
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
