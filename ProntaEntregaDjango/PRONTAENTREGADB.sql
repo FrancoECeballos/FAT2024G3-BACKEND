@@ -180,8 +180,13 @@ CREATE TABLE IF NOT EXISTS AportePedido (
     id_aportePedido INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255),
     cantidad INT,
+    fechaAportado DATE,
     id_pedido INT,
-    CONSTRAINT fk_aportePedido FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
+    id_obra INT,
+    id_usuario INT,
+    CONSTRAINT fk_aportePedido FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
+	CONSTRAINT fk_usuario_aportePedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
+    CONSTRAINT fk_obra_aportePedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
 );
 
 CREATE TABLE IF NOT EXISTS EstadoOferta(
@@ -209,8 +214,13 @@ CREATE TABLE IF NOT EXISTS AporteOferta (
     id_aporteOferta INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255),
     cantidad INT,
+    fechaAportado DATE,
     id_oferta INT,
-    CONSTRAINT fk_oferta_detalle FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta)
+    id_obra INT,
+    id_usuario INT,
+    CONSTRAINT fk_aporteOferta FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
+	CONSTRAINT fk_usuario_aporteOferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
+    CONSTRAINT fk_obra_aporteOferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
 );
 
 CREATE TABLE IF NOT EXISTS Transporte (
@@ -231,8 +241,39 @@ CREATE TABLE IF NOT EXISTS DetalleObraTransporte (
 	id_obra INT,
     id_transporte INT,
 	CONSTRAINT fk_obra FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
-    CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
-    );
+    CONSTRAINT fk_transporte_obra FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+);
+    
+CREATE TABLE IF NOT EXISTS Entrega (
+	id_entrega INT AUTO_INCREMENT PRIMARY KEY,
+    fechaCreacion DATE,
+	id_pedido INT NULL,
+    id_oferta INT NULL,
+    CONSTRAINT fk_pedido FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
+    CONSTRAINT fk_oferta FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta)
+);
+
+CREATE TABLE IF NOT EXISTS EstadoEntrega(
+    id_estadoEntrega INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    descripcion VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS EntregaAporte (
+	id_entregaAporte INT AUTO_INCREMENT PRIMARY KEY,
+    fechaCreacion DATE,
+    fechaEntrega DATE, 
+    id_entrega INT,
+	id_aportePedido INT NULL,
+    id_aporteOferta INT NULL,
+    id_transporte INT,
+    id_estadoEntrega INT, 
+    CONSTRAINT fk_entrega FOREIGN KEY (id_entrega) REFERENCES Entrega(id_entrega),
+    CONSTRAINT fk_aportePedido_entrega FOREIGN KEY (id_aportePedido) REFERENCES AportePedido(id_pedido),
+    CONSTRAINT fk_aporteOferta_entrega FOREIGN KEY (id_aporteOferta) REFERENCES AporteOferta(id_oferta),
+    CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte),
+    CONSTRAINT fk_estadoEntrega FOREIGN KEY (id_estadoEntrega) REFERENCES EstadoEntrega(id_estadoEntrega)
+);
 
 CREATE TABLE IF NOT EXISTS DetalleObraPedido (
     id_DetalleObraPedido INT AUTO_INCREMENT PRIMARY KEY,
@@ -488,14 +529,19 @@ INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock
     (1, FALSE, '2023-01-10 17:00:00', 1, 2, 1),
     (1, FALSE, '2023-01-11 18:00:00', 1, 3, 2);
     
-insert into AportePedido (descripcion,cantidad,id_pedido) values 
-('desc1',10,1),
-('desc2',20,2),
-('desc3',30,3)
-;
+INSERT INTO AportePedido (descripcion, cantidad, id_pedido, id_obra, id_usuario) VALUES 
+	('desc1', 10, 1, 4, 5),
+	('desc2', 20, 2, 5, 6),
+	('desc3', 30, 3, 6, 7);
 
-insert into AporteOferta (descripcion,cantidad,id_oferta) values 
-('desc1',10,1),
-('desc2',20,2),
-('desc3',30,3)
-;
+INSERT INTO AporteOferta (descripcion, cantidad, id_oferta, id_obra, id_usuario) VALUES 
+	('desc1', 10, 1, 3, 4),
+	('desc2', 20, 2, 2, 3),
+	('desc3', 30, 3, 1, 2);
+    
+INSERT INTO EstadoEntrega (nombre, descripcion) VALUES 
+    ('Pendiente', 'Solo es un pedido y no se hizo nada'),
+    ('En Proceso', 'Transporte se encarga de llevar este pedido que ahora esta en procesosta en proceso el pedido'),
+    ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.'),
+    ('Cancelado', 'El pedido fue cancelado por el usuario que lo hizo'),
+    ('Vencido', 'El pedido ya vencio y no se puede reservar');

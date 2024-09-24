@@ -458,9 +458,54 @@ class Notificacion(models.Model):
 
     def __str__(self):
         return str(self.notificacion_id)
+    
+class Entrega(models.Model):
+    id_entrega = models.AutoField(primary_key=True)
+    fecha_creacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
+    id_pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, db_column='id_pedido', blank=True, null=True)
+    id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Entrega'
+
+    def __str__(self):
+        return str(self.id_entrega)
+
+
+class EstadoEntrega(models.Model):
+    id_estadoEntrega = models.AutoField(db_column='id_estadoEntrega', primary_key=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'EstadoEntrega'
+
+    def __str__(self):
+        return str(self.nombre)
+
+
+class EntregaAporte(models.Model):
+    id_entregaAporte = models.AutoField(db_column='id_entregaAporte', primary_key=True)
+    fecha_creacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
+    fecha_entrega = models.DateField(db_column='fechaEntrega', blank=True, null=True)
+    id_entrega = models.ForeignKey('Entrega', on_delete=models.SET_NULL, db_column='id_entrega', blank=True, null=True)
+    id_aportePedido = models.ForeignKey('AportePedido', on_delete=models.SET_NULL, db_column='id_aportePedido', blank=True, null=True)
+    id_aporteOferta = models.ForeignKey('AporteOferta', on_delete=models.SET_NULL, db_column='id_aporteOferta', blank=True, null=True)
+    id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte', blank=True, null=True)
+    id_estadoEntrega = models.ForeignKey('EstadoEntrega', on_delete=models.SET_NULL, db_column='id_estadoEntrega', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'EntregaAporte'
+
+    def __str__(self):
+        return str(self.id_entrega_aporte)
+
 
 class Detalleobratransporte(models.Model):
-    id_detalleobratransporte = models.AutoField(db_column='id_detalleObraTransporte', primary_key=True)  # Field name made lowercase.
+    id_detalleobratransporte = models.AutoField(db_column='id_detalleObraTransporte', primary_key=True)
     id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
     id_transporte = models.ForeignKey('Transporte', models.DO_NOTHING, db_column='id_transporte', blank=True, null=True)
 
