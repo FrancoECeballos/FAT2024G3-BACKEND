@@ -345,6 +345,8 @@ class AportePedido(models.Model):
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
+    id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
+    id_usuario = models.ForeignKey('CustomUsuario', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -386,7 +388,9 @@ class AporteOferta(models.Model):
     id_aporteOferta = models.AutoField(db_column='id_aporteOferta', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
-    id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
+    id_oferta = models.ForeignKey('Oferta', models.DO_NOTHING, db_column='id_oferta', blank=True, null=True)
+    id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
+    id_usuario = models.ForeignKey('CustomUsuario', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
 
     class Meta:
         managed = False
