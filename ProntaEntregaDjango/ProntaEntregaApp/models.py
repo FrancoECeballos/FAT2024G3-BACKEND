@@ -461,7 +461,7 @@ class Notificacion(models.Model):
     
 class Entrega(models.Model):
     id_entrega = models.AutoField(primary_key=True)
-    fecha_creacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
+    fechaCreacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, db_column='id_pedido', blank=True, null=True)
     id_oferta = models.ForeignKey('Oferta', on_delete=models.SET_NULL, db_column='id_oferta', blank=True, null=True)
 
@@ -488,8 +488,8 @@ class EstadoEntrega(models.Model):
 
 class EntregaAporte(models.Model):
     id_entregaAporte = models.AutoField(db_column='id_entregaAporte', primary_key=True)
-    fecha_creacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
-    fecha_entrega = models.DateField(db_column='fechaEntrega', blank=True, null=True)
+    fechaCreacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
+    fechaEntrega = models.DateField(db_column='fechaEntrega', blank=True, null=True)
     id_entrega = models.ForeignKey('Entrega', on_delete=models.SET_NULL, db_column='id_entrega', blank=True, null=True)
     id_aportePedido = models.ForeignKey('AportePedido', on_delete=models.SET_NULL, db_column='id_aportePedido', blank=True, null=True)
     id_aporteOferta = models.ForeignKey('AporteOferta', on_delete=models.SET_NULL, db_column='id_aporteOferta', blank=True, null=True)
