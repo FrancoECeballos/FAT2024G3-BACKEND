@@ -23,6 +23,7 @@ from ProntaEntregaApp.serializers.stockSerializers import *
 from ProntaEntregaApp.serializers.generalSerializers import *
 from ProntaEntregaApp.serializers.offerSerializers import *
 from ProntaEntregaApp.serializers.requestSerializers import *
+from ProntaEntregaApp.serializers.deliverySerializers import *
 from ProntaEntregaApp.funciones_varias import *
 from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
@@ -925,6 +926,21 @@ class EditarDetalleOferta(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetEntrega(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        entregas = Entrega.objects.all()
+        serializer = EntregaSerializer(entregas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class CrearEntrega(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = CreateEntregaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetTransporte(APIView):
     permission_classes = [AllowAny]

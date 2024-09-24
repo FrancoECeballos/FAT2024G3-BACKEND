@@ -545,3 +545,11 @@ INSERT INTO EstadoEntrega (nombre, descripcion) VALUES
     ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.'),
     ('Cancelado', 'El pedido fue cancelado por el usuario que lo hizo'),
     ('Vencido', 'El pedido ya vencio y no se puede reservar');
+
+INSERT INTO Entrega (fechaCreacion, id_pedido, id_oferta) VALUES 
+    (CURDATE(), 1, NULL),
+    (CURDATE(), NULL, 1);
+
+INSERT INTO EntregaAporte (fechaCreacion, fechaEntrega, id_entrega, id_aportePedido, id_aporteOferta, id_transporte, id_estadoEntrega) VALUES 
+    (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 1, NULL, 1, 1),
+    (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 2, NULL, 1, 1, 1);
