@@ -3,53 +3,6 @@ from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers.stockSerializers import *
 from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
 from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
-from django.contrib.auth import authenticate
-
-class AportePedidoSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = AportePedido
-        fields = '__all__'
-
-class CreateAportePedidoSerializer(serializers.ModelSerializer):
-    id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
-    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
-    cantidad = serializers.FloatField()
-    fecha = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
-
-    class Meta:
-        model = AportePedido
-        fields = ['id_usuario', 'fecha', 'cantidad', 'id_pedido']
-
-    def create(self, validated_data):
-        id_usuario = validated_data.pop('id_usuario')
-        fecha = validated_data.pop('fecha')
-        id_pedido = validated_data.pop('id_pedido')
-        
-        # Crear el objeto AportePedido sin los campos no definidos en el modelo
-        aporte_pedido = AportePedido.objects.create(**validated_data)
-        
-        # Asignar los campos adicionales
-        aporte_pedido.id_usuario = id_usuario
-        aporte_pedido.fecha = fecha
-        aporte_pedido.id_pedido = id_pedido
-        aporte_pedido.save()
-        
-        return aporte_pedido
-
-    def validate(self, data):
-        cantidad = data.get('cantidad', None)
-        if cantidad is not None and cantidad <= 0:
-            raise serializers.ValidationError('La cantidad debe ser mayor a 0.')
-
-        id_pedido = data.get('id_pedido', None)
-        if id_pedido is not None and not Pedido.objects.filter(id_pedido=id_pedido.id_pedido).exists():
-            raise serializers.ValidationError('El pedido referenciado no existe.')
-        
-        if id_pedido is None:
-            raise serializers.ValidationError('Debe proporcionar id_pedido.')
-        
-        return data
 
 class EstadopedidoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -82,4 +35,21 @@ class CreatePedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = '__all__'
-        
+
+class AportePedidoSerializer(serializers.ModelSerializer):
+    id_pedido = PedidoSerializer()
+    id_usuario = UsuarioSerializer()
+    id_obra = ObraSerializer()
+    
+    class Meta:
+        model = AportePedido
+        fields = '__all__'
+
+class CreateAportePedidoSerializer(serializers.ModelSerializer):
+    id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
+    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
+    id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
+
+    class Meta:
+        model = AportePedido
+        fields = '__all__'

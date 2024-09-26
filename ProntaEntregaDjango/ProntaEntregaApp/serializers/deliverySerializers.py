@@ -1,18 +1,36 @@
 from rest_framework import serializers
-from ProntaEntregaApp.models import *
-from ProntaEntregaApp.serializers import *
-from ProntaEntregaApp.serializers.requestSerializers import *
-from ProntaEntregaApp.serializers.offerSerializers import *
-from ProntaEntregaApp.serializers.generalSerializers import *
-from django.contrib.auth import authenticate
+from ProntaEntregaApp.models import Entrega, EntregaAporte, EstadoEntrega, Pedido, Oferta, AportePedido, Transporte
+from ProntaEntregaApp.serializers.requestSerializers import PedidoSerializer, AportePedidoSerializer
+from ProntaEntregaApp.serializers.offerSerializers import DetalleofertaSerializer, OfertaSerializer
+from ProntaEntregaApp.serializers.generalSerializers import TransporteSerializer
+
+class EstadoEntregaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadoEntrega
+        fields = '__all__'
+
+class EntregaAporteSerializer(serializers.ModelSerializer):
+    id_aportePedido = AportePedidoSerializer()
+    id_aporteOferta = DetalleofertaSerializer()
+    id_transporte = TransporteSerializer()
+    id_estadoEntrega = EstadoEntregaSerializer()
+
+    class Meta:
+        model = EntregaAporte
+        fields = '__all__'
 
 class EntregaSerializer(serializers.ModelSerializer):
     id_pedido = PedidoSerializer()
     id_oferta = OfertaSerializer()
+    entrega_aportes = serializers.SerializerMethodField()
 
     class Meta:
         model = Entrega
         fields = '__all__'
+
+    def get_entrega_aportes(self, obj):
+        entrega_aportes = EntregaAporte.objects.filter(id_entrega=obj.id_entrega)
+        return EntregaAporteSerializer(entrega_aportes, many=True).data
 
 class CreateEntregaSerializer(serializers.ModelSerializer):
     id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
@@ -21,25 +39,6 @@ class CreateEntregaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Entrega
-        fields = '__all__'
-
-
-class EstadoEntregaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = EstadoEntrega
-        fields = '__all__'
-
-
-class EntregaAporteSerializer(serializers.ModelSerializer):
-    id_entrega = EntregaSerializer()
-    id_aportePedido = AportePedidoSerializer()
-    id_aporteOferta = DetalleofertaSerializer()
-    id_transporte = TransporteSerializer()
-    id_estadoEntrega = EstadoEntregaSerializer()
-
-    class Meta:
-        model = EntregaAporte
         fields = '__all__'
 
 class CreateEntregaAporteSerializer(serializers.ModelSerializer):
@@ -52,5 +51,5 @@ class CreateEntregaAporteSerializer(serializers.ModelSerializer):
     fechaEntrega = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
 
     class Meta:
-        model = Entrega
+        model = EntregaAporte
         fields = '__all__'
