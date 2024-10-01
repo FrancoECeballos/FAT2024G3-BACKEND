@@ -3,6 +3,7 @@ from ProntaEntregaApp.models import *
 from ProntaEntregaApp.serializers.generalSerializers import ObraSerializer
 from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 from ProntaEntregaApp.serializers.stockSerializers import ProductoSerializer
+from ProntaEntregaApp.serializers.generalSerializers import TransporteSerializer
 
 class EstadoofertaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +36,7 @@ class DetalleofertaSerializer(serializers.ModelSerializer):
     id_oferta = OfertaSerializer()
     id_usuario = UsuarioSerializer()
     id_obra = ObraSerializer()
+    id_transporte = TransporteSerializer()
 
     class Meta:
         model = AporteOferta
@@ -44,6 +46,9 @@ class CrearDetalleofertaSerializer(serializers.ModelSerializer):
     id_oferta = serializers.PrimaryKeyRelatedField(queryset=Oferta.objects.all())
     id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
+    id_transporte = serializers.PrimaryKeyRelatedField(queryset=Transporte.objects.all(), required=False, allow_null=True)
+    fechaAportado = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    fechaEntrega = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"], required=False, allow_null=True)
 
     class Meta:
         model = AporteOferta

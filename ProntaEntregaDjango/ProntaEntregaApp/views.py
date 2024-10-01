@@ -771,23 +771,22 @@ class CrearAportePedido(APIView):
             detalleStock = DspSerializer(data={'checkpoint':False,'fecha_creacion':timezone.now(),'cantidad':request.data['cantidad'] * -1,'id_producto': producto.id_producto,'id_stock':stock.id_stock,'id_usuario':usuario.id_usuario})
             
             if detalleStock.is_valid():
-                print('guardando detalle')
                 detalleStock.save()
-                print('guardado detalle')
 
-                ## checkeo de si se se alcanzo el objetivo
                 total = 0
                 aportes = AportePedido.objects.filter(id_pedido = pedido.__dict__['id_pedido'])
 
                 for a in aportes:
                     total = total + a.cantidad
-                print(total)
-                print(pedido.cantidad)
                 if total >= pedido.cantidad:
-                    print("objetivo alcanzado")
                     pedido.id_estadoPedido = Estadopedido.objects.get(pk=3)
                     pedido.save()
                     entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_pedido':pedido.__dict__['id_pedido']})
+                    for aporte in aportes:
+                        entrega_aporte_ser = CreateEntregaAporteSerializer(data={
+                            
+                        })
+
                     if entrega_ser.is_valid():
                         entrega_ser.save()
                     else:

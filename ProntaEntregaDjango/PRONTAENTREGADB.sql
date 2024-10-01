@@ -110,6 +110,27 @@ CREATE TABLE IF NOT EXISTS DetalleObraUsuario (
     CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario)
 );
 
+CREATE TABLE IF NOT EXISTS Transporte (
+    id_transporte INT AUTO_INCREMENT PRIMARY KEY,
+    marca VARCHAR(255),
+    modelo VARCHAR(255),
+    patente VARCHAR(20),
+    kilometraje INT,
+    estadoITV VARCHAR(255),
+    anio YEAR,
+    imagen VARCHAR(255),
+    necesita_mantenimiento BOOLEAN DEFAULT FALSE,
+    descripcion_mantenimiento VARCHAR(1000)
+);
+
+CREATE TABLE IF NOT EXISTS DetalleObraTransporte (
+	id_detalleObraTransporte INT AUTO_INCREMENT PRIMARY KEY,
+	id_obra INT,
+    id_transporte INT,
+	CONSTRAINT fk_obra FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_transporte_obra FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+);
+
 CREATE TABLE IF NOT EXISTS Stock (
     id_stock INT AUTO_INCREMENT PRIMARY KEY,
     id_obra INT,
@@ -181,12 +202,15 @@ CREATE TABLE IF NOT EXISTS AportePedido (
     descripcion VARCHAR(255),
     cantidad INT,
     fechaAportado DATE,
+    fechaEntrega DATE, 
     id_pedido INT,
     id_obra INT,
     id_usuario INT,
+    id_transporte INT,
     CONSTRAINT fk_aportePedido FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
 	CONSTRAINT fk_usuario_aportePedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
-    CONSTRAINT fk_obra_aportePedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
+    CONSTRAINT fk_obra_aportePedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_transporte_pedido FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
 );
 
 CREATE TABLE IF NOT EXISTS EstadoOferta(
@@ -215,33 +239,15 @@ CREATE TABLE IF NOT EXISTS AporteOferta (
     descripcion VARCHAR(255),
     cantidad INT,
     fechaAportado DATE,
+    fechaEntrega DATE, 
     id_oferta INT,
     id_obra INT,
     id_usuario INT,
+    id_transporte INT,
     CONSTRAINT fk_aporteOferta FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
 	CONSTRAINT fk_usuario_aporteOferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
-    CONSTRAINT fk_obra_aporteOferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
-);
-
-CREATE TABLE IF NOT EXISTS Transporte (
-    id_transporte INT AUTO_INCREMENT PRIMARY KEY,
-    marca VARCHAR(255),
-    modelo VARCHAR(255),
-    patente VARCHAR(20),
-    kilometraje INT,
-    estadoITV VARCHAR(255),
-    anio YEAR,
-    imagen VARCHAR(255),
-    necesita_mantenimiento BOOLEAN DEFAULT FALSE,
-    descripcion_mantenimiento VARCHAR(1000)
-);
-
-CREATE TABLE IF NOT EXISTS DetalleObraTransporte (
-	id_detalleObraTransporte INT AUTO_INCREMENT PRIMARY KEY,
-	id_obra INT,
-    id_transporte INT,
-	CONSTRAINT fk_obra FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
-    CONSTRAINT fk_transporte_obra FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+    CONSTRAINT fk_obra_aporteOferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    CONSTRAINT fk_transporte_oferta FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
 );
     
 CREATE TABLE IF NOT EXISTS Entrega (
@@ -261,17 +267,13 @@ CREATE TABLE IF NOT EXISTS EstadoEntrega(
 
 CREATE TABLE IF NOT EXISTS EntregaAporte (
 	id_entregaAporte INT AUTO_INCREMENT PRIMARY KEY,
-    fechaCreacion DATE,
-    fechaEntrega DATE, 
     id_entrega INT,
 	id_aportePedido INT NULL,
     id_aporteOferta INT NULL,
-    id_transporte INT,
     id_estadoEntrega INT, 
     CONSTRAINT fk_entrega FOREIGN KEY (id_entrega) REFERENCES Entrega(id_entrega),
     CONSTRAINT fk_aportePedido_entrega FOREIGN KEY (id_aportePedido) REFERENCES AportePedido(id_pedido),
     CONSTRAINT fk_aporteOferta_entrega FOREIGN KEY (id_aporteOferta) REFERENCES AporteOferta(id_oferta),
-    CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte),
     CONSTRAINT fk_estadoEntrega FOREIGN KEY (id_estadoEntrega) REFERENCES EstadoEntrega(id_estadoEntrega)
 );
 
@@ -788,15 +790,15 @@ INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock
     (16, FALSE, '2023-09-15 14:00:00', 8, 26, 10),  -- Ropa 26 en stock de la obra 8
     (20, FALSE, '2023-09-16 15:00:00', 1, 27, 11);   -- Ropa 27 en stock de la obra 1
     
-INSERT INTO AportePedido (descripcion, cantidad, id_pedido, id_obra, id_usuario) VALUES 
-	('desc1', 10, 1, 4, 5),
-	('desc2', 20, 2, 5, 6),
-	('desc3', 30, 3, 6, 7);
+INSERT INTO AportePedido (descripcion, cantidad, fechaAportado, fechaEntrega, id_pedido, id_obra, id_usuario) VALUES 
+	('desc1', 10, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 4, 5),
+	('desc2', 20, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 2, 5, 6),
+	('desc3', 30, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 3, 6, 7);
 
-INSERT INTO AporteOferta (descripcion, cantidad, id_oferta, id_obra, id_usuario) VALUES 
-	('desc1', 10, 1, 3, 4),
-	('desc2', 20, 2, 2, 3),
-	('desc3', 30, 3, 1, 2);
+INSERT INTO AporteOferta (descripcion, cantidad, fechaAportado, fechaEntrega, id_oferta, id_obra, id_usuario) VALUES 
+	('desc1', 10, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 3, 4),
+	('desc2', 20, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 2, 2, 3),
+	('desc3', 30, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 3, 1, 2);
     
 INSERT INTO EstadoEntrega (nombre, descripcion) VALUES 
     ('Pendiente', 'Solo es un pedido y no se hizo nada'),
@@ -809,6 +811,6 @@ INSERT INTO Entrega (fechaCreacion, id_pedido, id_oferta) VALUES
     (CURDATE(), 1, NULL),
     (CURDATE(), NULL, 1);
 
-INSERT INTO EntregaAporte (fechaCreacion, fechaEntrega, id_entrega, id_aportePedido, id_aporteOferta, id_transporte, id_estadoEntrega) VALUES 
-    (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 1, NULL, 1, 1),
-    (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 2, NULL, 1, 1, 1);
+INSERT INTO EntregaAporte (id_entrega, id_aportePedido, id_aporteOferta, id_estadoEntrega) VALUES 
+    (1, 1, NULL, 1),
+    (2, NULL, 1, 1);

@@ -344,9 +344,12 @@ class AportePedido(models.Model):
     id_aportePedido = models.AutoField(db_column='id_aportePedido', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
+    fechaAportado = models.DateField(db_column='fechaAportado', blank=True, null=True)
+    fechaEntrega = models.DateField(db_column='fechaEntrega', blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
     id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+    id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -388,9 +391,12 @@ class AporteOferta(models.Model):
     id_aporteOferta = models.AutoField(db_column='id_aporteOferta', primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField(blank=True, null=True)
+    fechaAportado = models.DateField(db_column='fechaAportado', blank=True, null=True)
+    fechaEntrega = models.DateField(db_column='fechaEntrega', blank=True, null=True)
     id_oferta = models.ForeignKey('Oferta', models.DO_NOTHING, db_column='id_oferta', blank=True, null=True)
     id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+    id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -492,12 +498,9 @@ class EstadoEntrega(models.Model):
 
 class EntregaAporte(models.Model):
     id_entregaAporte = models.AutoField(db_column='id_entregaAporte', primary_key=True)
-    fechaCreacion = models.DateField(db_column='fechaCreacion', blank=True, null=True)
-    fechaEntrega = models.DateField(db_column='fechaEntrega', blank=True, null=True)
     id_entrega = models.ForeignKey('Entrega', on_delete=models.SET_NULL, db_column='id_entrega', blank=True, null=True)
     id_aportePedido = models.ForeignKey('AportePedido', on_delete=models.SET_NULL, db_column='id_aportePedido', blank=True, null=True)
     id_aporteOferta = models.ForeignKey('AporteOferta', on_delete=models.SET_NULL, db_column='id_aporteOferta', blank=True, null=True)
-    id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte', blank=True, null=True)
     id_estadoEntrega = models.ForeignKey('EstadoEntrega', on_delete=models.SET_NULL, db_column='id_estadoEntrega', blank=True, null=True)
 
     class Meta:
