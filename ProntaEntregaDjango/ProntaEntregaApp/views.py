@@ -781,18 +781,24 @@ class CrearAportePedido(APIView):
                 if total >= pedido.cantidad:
                     pedido.id_estadoPedido = Estadopedido.objects.get(pk=3)
                     pedido.save()
-                    entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_pedido':pedido.__dict__['id_pedido']})
-                    for aporte in aportes:
-                        entrega_aporte_ser = CreateEntregaAporteSerializer(data={
-                            
-                        })
+                    entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_pedido': pedido.__dict__['id_pedido']})
 
                     if entrega_ser.is_valid():
-                        entrega_ser.save()
+                        entrega = entrega_ser.save()
+                        for aporte in aportes:
+                            entrega_aporte_ser = CreateEntregaAporteSerializer(data={
+                                'id_entrega': entrega.id_entrega,
+                                'id_aportePedido': aporte.id_aportePedido,
+                                'id_estadoEntrega': 1
+                            })
+
+                            if entrega_aporte_ser.is_valid():
+                                entrega_aporte_ser.save()
+                            else:
+                                return Response(entrega_aporte_ser.errors, status=status.HTTP_400_BAD_REQUEST)
                     else:
                         return Response(entrega_ser.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
-                print(detalleStock.errors)
                 return Response(detalleStock.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -926,6 +932,7 @@ class GetAporteOferta(APIView):
 class CrearDetalleOferta(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
+        ahora = timezone.now().date()
         serializer = CrearDetalleofertaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -936,8 +943,23 @@ class CrearDetalleOferta(APIView):
             for a in aportes:
                 total = total + a.cantidad
             if total >= oferta.cantidad:
-                print("objetivo alcanzado")
                 oferta.id_estadoOferta = Estadooferta.objects.get(pk=3)
+                entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_oferta': oferta.__dict__['id_oferta']})
+
+                if entrega_ser.is_valid():
+                    entrega = entrega_ser.save()
+                    for aporte in aportes:
+                        entrega_aporte_ser = CreateEntregaAporteSerializer(data={
+                            'id_entrega': entrega.id_entrega,
+                            'id_aporteOferta': aporte.id_aporteOferta,
+                            'id_estadoEntrega': 1
+                        })
+
+                        if entrega_aporte_ser.is_valid():
+                            entrega_aporte_ser.save()
+                        else:
+                            return Response(entrega_aporte_ser.errors, status=status.HTTP_400_BAD_REQUEST)
+                
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
