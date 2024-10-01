@@ -600,7 +600,6 @@ INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES
     (1, 14),
     (2, 14),
     (3, 15),
-    (4, 15),
     (5, 15),
     (6, 16),
     (7, 16),
@@ -626,7 +625,6 @@ INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES
     (10, 23),
     (11, 23),
     (12, 23),
-    (13, 24),
     (14, 24),
     (15, 24),
     (16, 25),
@@ -667,10 +665,8 @@ INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES
     (17, 36),
     (1, 37),
     (2, 37),
-    (3, 37),
     (4, 38),
-    (5, 38),
-    (6, 38);
+    (5, 38);
 
 -- Inserciones para la tabla EstadoOferta
 INSERT INTO EstadoOferta (nombre, descripcion) VALUES 
