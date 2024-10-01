@@ -340,9 +340,9 @@ INSERT INTO TipoDocumento (nombre, descripcion) VALUES
 
 -- Inserciones para la tabla Usuario
 INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento, telefono, email, genero, imagen, fechaUnion, last_login, id_direccion, id_tipoDocumento, is_staff, is_superuser, is_active) VALUES 
-    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 1, 1, FALSE, FALSE, TRUE),
-    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
-    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
+    ('Joaquin', 'Lopez', 'JoaLopez', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25129735', '+54 3517639546', 'JoaquinL@hotmail.com', 1, 'profilePictures/the-legend-of-zelda-minimalista_8000x4500_xtrafondos.com.jpg', NOW(), NOW(), 1, 1, FALSE, FALSE, TRUE),
+    ('Timoteo', 'Wuewuan', 'TimoelWawan', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '46505926', '+54 3517639546', 'TimoteoW@gmail.com', 1, 'profilePictures/One_billion_Draculas.jpeg', NOW(), NOW(), 3, 2, FALSE, FALSE, TRUE),
+    ('Teresa', 'Diaz', 'TeresitaD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39284767', '+54 3517639546', 'TereDiaz@gmail.com', 1, 'profilePictures/maria.jpeg', NOW(), NOW(), 4, 3, FALSE, FALSE, TRUE),
     ('Admin', 'Istrador', 'admin', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'admin@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 1, 1, TRUE, TRUE, TRUE),
     ('Alberto Hurtado', 'Admin1', 'albertohurtado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 3514234682', 'hospederia.cba@manosabiertas.org.ar', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 2, 1, TRUE, FALSE, TRUE), -- Hospedería y centro de día de hombres, P. Alberto Hurtado
     ('Casa de la Bondad', 'Admin2', 'casabondad', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 3518947780', 'casadelabondad.cba@manosabiertas.org.ar', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 5, 1, TRUE, FALSE, TRUE), -- Centro de Cuidados Paliativos, Casa de la Bondad
@@ -362,9 +362,9 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Admin', 'Voluntariado', 'adminvoluntariado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntariado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Voluntariado
     ('Administrador', 'Sede', 'adminsede', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'sede@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- ADMINISTRACION/SEDE
     ('Voluntario', '1', 'voluntario1preba', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntario.1.prueba@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, False, FALSE, False), -- Default user sin obra
-    ('Matias', 'Gonzalez', 'matiasg', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '33225478', '+54 3517631111', 'matiasg@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 17, 1, FALSE, FALSE, TRUE),
-    ('Lucia', 'Martinez', 'luciam', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '41356789', '+54 3517632222', 'luciam@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 18, 2, FALSE, FALSE, TRUE),
-    ('Santiago', 'Lopez', 'santil', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '38567890', '+54 3517633333', 'santil@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 19, 1, FALSE, FALSE, TRUE),
+    ('Matias', 'Gonzalez', 'matiasg', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '33225478', '+54 3517631111', 'matiasg@gmail.com', 1, 'profilePictures/dino.png', NOW(), NOW(), 17, 1, FALSE, FALSE, TRUE),
+    ('Lucia', 'Martinez', 'luciam', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '41356789', '+54 3517632222', 'luciam@gmail.com', 2, 'profilePictures/llama.webp', NOW(), NOW(), 18, 2, FALSE, FALSE, TRUE),
+    ('Santiago', 'Lopez', 'santil', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '38567890', '+54 3517633333', 'santil@gmail.com', 1, 'profilePictures/the-legend-of-zelda-minimalista_8000x4500_xtrafondos.com.jpg', NOW(), NOW(), 19, 1, FALSE, FALSE, TRUE),
     ('Carla', 'Suarez', 'carlas', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '29765432', '+54 3517634444', 'carlas@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 20, 2, FALSE, FALSE, TRUE),
     ('Pablo', 'Fernandez', 'pablof', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '34512345', '+54 3517635555', 'pablof@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 21, 1, FALSE, FALSE, TRUE),
     ('Natalia', 'Perez', 'nataliap', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39123456', '+54 3517636666', 'nataliap@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 22, 2, FALSE, FALSE, TRUE),
@@ -475,32 +475,31 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen, p
 	('Yerba', 'Paquete de Yerba de 1Kg', 1, 1, 'productos/yerba.jpg', FALSE),
     ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 1, 1, 'productos/queso.jpg', TRUE),
     ('Avena', 'Paquete de avena de 400 g', 1, 1, 'productos/avena.jpg', FALSE),
-    ('Harina', 'Paquete de harina de trigo 1Kg', 1, 1, 'productos/no_image.png', FALSE),
-    ('Leche', 'Botella de leche de 1 litro', 1, 2, 'productos/no_image.png', TRUE),
-    ('Azúcar', 'Paquete de azúcar de 1Kg', 1, 1, 'productos/no_image.png', FALSE),
-    ('Aceite', 'Botella de aceite de girasol 1 litro', 1, 2, 'productos/no_image.png', FALSE),
-    ('Galletitas', 'Paquete de galletitas dulces 200g', 1, 1, 'productos/no_image.png', FALSE),
-    ('Jugo de Naranja', 'Jugo de naranja en caja 1 litro', 1, 2, 'productos/no_image.png', TRUE);
+    ('Harina', 'Paquete de harina de trigo 1Kg', 1, 1, 'productos/harina.webp', FALSE),
+    ('Leche', 'Botella de leche de 1 litro', 1, 2, 'productos/leche.webp', TRUE),
+    ('Azúcar', 'Paquete de azúcar de 1Kg', 1, 1, 'productos/azucar.webp', FALSE),
+    ('Aceite', 'Botella de aceite de girasol 1 litro', 1, 2, 'productos/aceite.webp', FALSE),
+    ('Galletitas', 'Paquete de galletitas dulces 200g', 1, 1, 'productos/galletitas.webp', FALSE),
+    ('Jugo de Naranja', 'Jugo de naranja en caja 1 litro', 1, 2, 'productos/jugoNaranja.webp', TRUE);
     
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen) VALUES 
     ('Pupitre', 'Pupitre basico', 3, 0, 'productos/mueble1.jpg'),
     ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg'),
-    ('Silla', 'Silla de madera básica', 3, 0, 'productos/no_image.png'),
-    ('Mesa de comedor', 'Mesa de comedor para 4 personas', 3, 0, 'productos/no_image.png'),
-    ('Estante', 'Estante de pared de madera', 3, 0, 'productos/no_image.png'),
-    ('Sofá', 'Sofá de 2 plazas', 3, 0, 'productos/no_image.png'),
-    ('Escritorio', 'Escritorio básico de madera', 3, 0, 'productos/no_image.png');
+    ('Silla', 'Silla de madera básica', 3, 0, 'productos/silla.webp'),
+    ('Mesa de comedor', 'Mesa de comedor para 4 personas', 3, 0, 'productos/mesaCOmedor.webp'),
+    ('Estante', 'Estante de pared de madera', 3, 0, 'productos/Estante.webp'),
+    ('Sofá', 'Sofá de 2 plazas', 3, 0, 'productos/Sofá.webp'),
+    ('Escritorio', 'Escritorio básico de madera', 3, 0, 'productos/Escritorio.webp');
 
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, talle, imagen, perecedero) VALUES 
     ('Camisa', 'Camisa de manga larga', 2, 0, "l", 'productos/camisa.webp', FALSE),
     ('Pantalón', 'Pantalón de mezclilla', 2, 0, "s", 'productos/pantalon.webp', FALSE),
     ('Vestido', 'Vestido elegante', 2, 0, "xl", 'productos/vestido.webp', FALSE),
-    ('Camiseta', 'Camiseta de algodón', 2, 0, 'm', 'productos/no_image.png', FALSE),
-    ('Chaleco', 'Chaleco abrigado', 2, 0, 'l', 'productos/no_image.png', FALSE),
-    ('Falda', 'Falda corta', 2, 0, 's', 'productos/no_image.png', FALSE),
-    ('Abrigo', 'Abrigo de invierno', 2, 0, 'xl', 'productos/no_image.png', FALSE),
-    ('Zapatos', 'Zapatos deportivos', 2, 0, '42', 'productos/no_image.png', FALSE);
-    
+    ('Camiseta', 'Camiseta de algodón', 2, 0, 'm', 'productos/Camiseta-negra.webp', FALSE),
+    ('Chaleco', 'Chaleco abrigado', 2, 0, 'l', 'productos/Chaleco.webp', FALSE),
+    ('Falda', 'Falda corta', 2, 0, 's', 'productos/Falda.webp', FALSE),
+    ('Abrigo', 'Abrigo de invierno', 2, 0, 'xl', 'productos/Abrigo.webp', FALSE),
+    ('Zapatos', 'Zapatos deportivos', 2, 0, '42', 'productos/Zapatos.webp', FALSE);
 
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
