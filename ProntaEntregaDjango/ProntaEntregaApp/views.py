@@ -752,7 +752,12 @@ class GetAportePedido(APIView):
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
     def get (self, request):
-        return Response({"id_usuario":1,"cantidad":1,"id_pedido":1})
+        return Response({
+    "id_usuario": 1,
+    "cantidad": 1,
+    "id_pedido": 1,
+    "id_obra":1
+})
     def post(self, request):
         
         request.data.update({'fecha':timezone.now().date()})
@@ -769,6 +774,19 @@ class CrearAportePedido(APIView):
                 print('guardando detalle')
                 detalleStock.save()
                 print('guardado detalle')
+
+                ## checkeo de si se se alcanzo el objetivo
+                total = 0
+                aportes = AportePedido.objects.filter(id_pedido = pedido.__dict__['id_pedido'])
+
+                for a in aportes:
+                    total = total + a.cantidad
+                print(total)
+                print(pedido.cantidad)
+                if total >= pedido.cantidad:
+                    print("objetivo alcanzado")
+                    pedido.id_estadoPedido = Estadopedido.objects.get(pk=3)
+                    pedido.save()
             else:
                 print(detalleStock.errors)
                 return Response(detalleStock.errors, status=status.HTTP_400_BAD_REQUEST)
