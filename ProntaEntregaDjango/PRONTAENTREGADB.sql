@@ -720,14 +720,42 @@ INSERT INTO Oferta (fechaInicio, fechaVencimiento, cantidad, id_usuario, id_obra
 INSERT INTO Transporte (marca, modelo, patente, kilometraje, estadoITV, anio, imagen, necesita_mantenimiento, descripcion_mantenimiento) VALUES 
     ('Toyota', 'Hilux', 'NXD838', 10000, 'En Forma', '2022', 'vehiculos/toyota-hilux-on-the-road.webp', FALSE, ''),
     ('Renault', 'Logan', 'AA001AB', 20000, 'Vencido', '2020', 'vehiculos/renault-sandero-y-logan-1269058.webp', FALSE, ''),
-    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, '');
+    ('Peugeot', '3008 GT', 'AG500AA', 30000, 'En Forma', '2018', 'vehiculos/zaatogjy9axfzmntave4.webp', FALSE, ''),
+    ('Renault', 'Kangoo', 'AB123CD', 15000, 'En Forma', '2019', 'vehiculos/renault-kangoo.webp', FALSE, ''),
+    ('Fiat', 'Dobló', 'EF456GH', 25000, 'En Forma', '2018', 'vehiculos/fiat-doblo.webp', FALSE, ''),
+    ('Peugeot', 'Partner', 'IJ789KL', 20000, 'En Forma', '2020', 'vehiculos/peugeot-partner.webp', FALSE, ''),
+    ('Citroen', 'Berlingo', 'MN012OP', 18000, 'Vencido', '2017', 'vehiculos/citroen-berlingo.webp', FALSE, ''),
+    ('Ford', 'Transit Connect', 'QR345ST', 22000, 'En Forma', '2020', 'vehiculos/ford-transit-connect.webp', FALSE, ''),
+    ('Opel', 'Combo', 'UV678WX', 19000, 'En Forma', '2019', 'vehiculos/opel-combo.webp', FALSE, ''),
+    ('Mercedes-Benz', 'Citan', 'YZ901AB', 16000, 'En Forma', '2021', 'vehiculos/mercedes-benz-citan.webp', FALSE, ''),
+    ('Volkswagen', 'Caddy', 'CD234EF', 23000, 'En Forma', '2020', 'vehiculos/volkswagen-caddy.webp', FALSE, ''),
+    ('Nissan', 'NV200', 'GH567IJ', 21000, 'En Forma', '2021', 'vehiculos/nissan-nv200.webp', FALSE, ''),
+    ('Toyota', 'Proace City', 'KL890MN', 17000, 'En Forma', '2020', 'vehiculos/toyota-proace-city.webp', FALSE, ''),
+    ('Hyundai', 'H350', 'OP123QR', 24000, 'Vencido', '2018', 'vehiculos/hyundai-h350.webp', FALSE, ''),
+    ('Kia', 'Bongo', 'ST456UV', 20000, 'En Forma', '2019', 'vehiculos/kia-bongo.webp', FALSE, ''),
+    ('Chevrolet', 'N300', 'WX789YZ', 26000, 'En Forma', '2020', 'vehiculos/chevrolet-n300.webp', FALSE, ''),
+    ('Suzuki', 'Every', 'AB901CD', 13000, 'En Forma', '2021', 'vehiculos/suzuki-every.webp', FALSE, '');
     
     -- Inserciones para la tabla DetalleObraTransporte
 INSERT INTO DetalleObraTransporte (id_obra, id_transporte) VALUES 
-        (1, 1),
-        (1, 2),
-        (2, 2),
-        (3, 3);
+	(1, 1),
+	(1, 2),
+	(2, 2),
+	(3, 3),
+	(4, 4),
+	(5, 5),
+	(6, 6),
+	(7, 7),
+	(8, 8),
+	(9, 9),
+	(10, 10),
+    (11, 11),
+    (12, 12),
+    (13, 13),
+    (14, 14),
+    (15, 15),
+    (16, 16),
+    (17, 17);
 
 INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock, id_producto, id_usuario) VALUES
     (100, FALSE, '2023-01-01 08:00:00', 1, 2, 1),
