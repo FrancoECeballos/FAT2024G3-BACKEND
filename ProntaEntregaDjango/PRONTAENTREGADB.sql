@@ -300,7 +300,27 @@ INSERT INTO Direccion (calle, numero, localidad) VALUES
     ('Turrado Juárez 2188, 5000 Córdoba', 2188, 'B° Colinas de Vélez Sársfield'), -- Acompañamiento a mujeres HIV, Caminar de Nuevo
     ('Ruta prov. 28 al pie de Los Gigantes (ex nacional 20 km 784), Córdoba', 784, 'al pie de Los Gigantes'), -- Escuela Albergue, Nuestra Señora del Valle
     ('Establecimiento Carcelario Padre Luchesse (Cárcel de Bower)', 797, 'Santa María'), -- Acompañamientos a Privados de libertad, Cura Brochero
-    ('Ruta N° 5, Km. 20', 20, 'Camino a Alta Gracia'); -- Casa de Retiros, Señorita Isabel de Hungría
+    ('Ruta N° 5, Km. 20', 20, 'Camino a Alta Gracia'), -- Casa de Retiros, Señorita Isabel de Hungría
+    ('Calle Sol de Mayo', 100, 'Nueva Cordoba'),
+    ('Av. Las Heras', 200, 'General Paz'),
+    ('Calle Lavalle', 150, 'Alberdi'),
+    ('Av. Colon', 300, 'Centro'),
+    ('Calle Buenos Aires', 250, 'Nueva Cordoba'),
+    ('Av. Sabattini', 600, 'San Vicente'),
+    ('Calle San Juan', 80, 'Centro'),
+    ('Calle Italia', 120, 'General Paz'),
+    ('Av. La Voz del Interior', 700, 'Aeropuerto'),
+    ('Calle Obispo Trejo', 450, 'Centro'),
+    ('Calle Paraguay', 340, 'General Paz'),
+    ('Calle Dean Funes', 210, 'Centro'),
+    ('Calle Salta', 180, 'Alta Cordoba'),
+    ('Calle Mendoza', 130, 'Alberdi'),
+    ('Av. Santa Fe', 275, 'General Paz'),
+    ('Calle Tucumán', 190, 'Centro'),
+    ('Calle Catamarca', 500, 'San Vicente'),
+    ('Calle La Rioja', 175, 'Alta Cordoba'),
+    ('Av. Fuerza Aérea', 540, 'Las Palmas'),
+    ('Calle Bolivia', 600, 'Parque Liceo');
     
 
 -- Inserciones para la tabla Organizacion
@@ -341,7 +361,27 @@ INSERT INTO CustomUsuario (nombre, apellido, nombreusuario, password, documento,
     ('Recursos', 'Economicos', 'admineconomico', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'economicos@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Recursos Economicos
     ('Admin', 'Voluntariado', 'adminvoluntariado', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntariado@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- Voluntariado
     ('Administrador', 'Sede', 'adminsede', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'sede@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, TRUE, FALSE, TRUE), -- ADMINISTRACION/SEDE
-    ('Voluntario', '1', 'voluntario1preba', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntario.1.prueba@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, False, FALSE, False); -- Default user sin obra
+    ('Voluntario', '1', 'voluntario1preba', 'pbkdf2_sha256$720000$byAGpfEaFDWh8edVUetdkL$yWaV0a6nPiFOqq5mWRfbOdiL25rDzMBXKGb1awJYJuM=', '00000000', '+54 00000000', 'voluntario.1.prueba@admin', 3, 'profilePictures/perro-gafas.webp', NOW(), NOW(), 10, 1, False, FALSE, False), -- Default user sin obra
+    ('Matias', 'Gonzalez', 'matiasg', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '33225478', '+54 3517631111', 'matiasg@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 17, 1, FALSE, FALSE, TRUE),
+    ('Lucia', 'Martinez', 'luciam', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '41356789', '+54 3517632222', 'luciam@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 18, 2, FALSE, FALSE, TRUE),
+    ('Santiago', 'Lopez', 'santil', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '38567890', '+54 3517633333', 'santil@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 19, 1, FALSE, FALSE, TRUE),
+    ('Carla', 'Suarez', 'carlas', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '29765432', '+54 3517634444', 'carlas@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 20, 2, FALSE, FALSE, TRUE),
+    ('Pablo', 'Fernandez', 'pablof', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '34512345', '+54 3517635555', 'pablof@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 21, 1, FALSE, FALSE, TRUE),
+    ('Natalia', 'Perez', 'nataliap', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39123456', '+54 3517636666', 'nataliap@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 22, 2, FALSE, FALSE, TRUE),
+    ('Andres', 'Gutierrez', 'andresg', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '40765432', '+54 3517637777', 'andresg@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 23, 1, FALSE, FALSE, TRUE),
+    ('Valeria', 'Lopez', 'valerial', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '39233456', '+54 3517638888', 'valerial@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 24, 2, FALSE, FALSE, TRUE),
+    ('Federico', 'Ramirez', 'federicor', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '38123432', '+54 3517639999', 'federicor@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 25, 1, FALSE, FALSE, TRUE),
+    ('Julia', 'Hernandez', 'juliah', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '41234567', '+54 3517640000', 'juliah@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 26, 2, FALSE, FALSE, TRUE),
+    ('Emiliano', 'Gomez', 'emilianog', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '30234567', '+54 3517641111', 'emilianog@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 27, 1, FALSE, FALSE, TRUE),
+    ('Micaela', 'Torres', 'micaelat', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '41123457', '+54 3517642222', 'micaelat@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 28, 2, FALSE, FALSE, TRUE),
+    ('Leandro', 'Sosa', 'leandros', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '36345678', '+54 3517643333', 'leandros@gmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 29, 1, FALSE, FALSE, TRUE),
+    ('Ana', 'Mendez', 'anam', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '38765432', '+54 3517644444', 'anam@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 30, 2, FALSE, FALSE, TRUE),
+    ('Juan', 'Alvarez', 'JuanA', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '31123456', '+54 3517890123', 'juan.alvarez@hotmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 31, 1, FALSE, FALSE, TRUE),
+    ('Marta', 'Sanchez', 'MartaS', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '27123456', '+54 3518901234', 'martasanchez@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 32, 1, FALSE, FALSE, TRUE),
+    ('Luis', 'Diaz', 'LuisD', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '25123456', '+54 3519012345', 'luis.diaz@yahoo.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 33, 1, FALSE, FALSE, TRUE),
+    ('Paula', 'Moreno', 'PaulaM', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '24123456', '+54 3510123456', 'paula.moreno@gmail.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 34, 1, FALSE, FALSE, TRUE),
+    ('Tomas', 'Garcia', 'TomasG', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '23123456', '+54 3511123456', 'tomasgarcia@hotmail.com', 1, 'profilePictures/user_default.png', NOW(), NOW(), 35, 1, FALSE, FALSE, TRUE),
+    ('Clara', 'Castro', 'ClaraC', 'pbkdf2_sha256$720000$RkSTwAdm8dhu9zo4lLWKyb$faBGt4+ZG9bo+kihGfvj97sxktvsALIe3Q+c4bnvEqU=', '22123456', '+54 3512234567', 'claracastro@yahoo.com', 2, 'profilePictures/user_default.png', NOW(), NOW(), 36, 1, FALSE, FALSE, TRUE);
 	
 -- Inserciones para la tabla Obra
 INSERT INTO Obra (nombre, descripcion, id_Organizacion, id_direccion, imagen) VALUES 
@@ -384,7 +424,21 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Administrar Recursos Materiales', '2024-3-09', 14, 18, 2),
     ('Administrar Recursos Economicos', '2024-3-09', 15, 19, 2),
     ('Administrar el Voluntariado', '2024-3-09', 16, 20, 2),
-    ('Administrar la Sede', '2024-3-09', 17, 21, 2);
+    ('Administrar la Sede', '2024-3-09', 17, 21, 2),
+    ('Apoyo en la distribución de alimentos a personas necesitadas', '2023-12-26', 1, 23, 1),
+    ('Colaboración en talleres de desarrollo personal y emocional', '2024-01-12', 2, 24, 1),
+    ('Ayuda en la organización de eventos comunitarios', '2024-03-09', 3, 25, 1), 
+    ('Coordinación del equipo de voluntarios en la obra Mama Antula', '2023-12-26', 1, 26, 2),
+    ('Gestión administrativa y apoyo logístico en la obra Cura Brochero', '2024-01-12', 2, 27, 2),
+    ('Supervisión de actividades en la obra Casa de la Bondad', '2024-03-09', 3, 28, 2),
+    ('Responsable de coordinación de voluntariado en la obra Jose Bainotti', '2023-12-26', 4, 29, 2),
+    ('Encargado de logística en la obra P. Alberto Hurtado', '2024-01-12', 5, 30, 2),
+    ('Gestión de recursos en la obra Caminar de Nuevo', '2024-03-09', 6, 31, 2),
+    ('Supervisión de actividades y voluntariado en la obra Nuestra Señora del Valle', '2023-12-26', 7, 32, 2),
+    ('Coordinación de la obra Nuestra familia Siria', '2024-01-12', 8, 33, 2),
+    ('Responsable de organización en la obra Sueño Común', '2024-03-09', 9, 34, 2),
+    ('Encargado de la obra Madre Teresa', '2023-12-26', 10, 35, 2),
+    ('Apoyo en la obra Madre de la Ternura', '2024-01-12', 11, 36, 2);
 
 
 -- Inserciones para la tabla Stock
@@ -420,16 +474,33 @@ INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen, p
     ('Pure de tomate', 'Pure de tomate 500 ml', 1, 2, 'productos/Pur-de-Tomate-Marolio-520-Gr-1-4243.webp', FALSE),
 	('Yerba', 'Paquete de Yerba de 1Kg', 1, 1, 'productos/yerba.jpg', FALSE),
     ('Queso Cremoso', 'Orna de Queso cremoso de 4 Kg', 1, 1, 'productos/queso.jpg', TRUE),
-    ('Avena', 'Paquete de avena de 400 g', 1, 1, 'productos/avena.jpg', FALSE);
+    ('Avena', 'Paquete de avena de 400 g', 1, 1, 'productos/avena.jpg', FALSE),
+    ('Harina', 'Paquete de harina de trigo 1Kg', 1, 1, 'productos/default.png', FALSE),
+    ('Leche', 'Botella de leche de 1 litro', 1, 2, 'productos/default.png', TRUE),
+    ('Azúcar', 'Paquete de azúcar de 1Kg', 1, 1, 'productos/default.png', FALSE),
+    ('Aceite', 'Botella de aceite de girasol 1 litro', 1, 2, 'productos/default.png', FALSE),
+    ('Galletitas', 'Paquete de galletitas dulces 200g', 1, 1, 'productos/default.png', FALSE),
+    ('Jugo de Naranja', 'Jugo de naranja en caja 1 litro', 1, 2, 'productos/default.png', TRUE);
     
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, imagen) VALUES 
     ('Pupitre', 'Pupitre basico', 3, 0, 'productos/mueble1.jpg'),
-    ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg');
+    ('Placar', 'Placar 2 puertas basico', 3, 0, 'productos/mueble2.jpg'),
+    ('Silla', 'Silla de madera básica', 3, 0, 'productos/default.png'),
+    ('Mesa de comedor', 'Mesa de comedor para 4 personas', 3, 0, 'productos/default.png'),
+    ('Estante', 'Estante de pared de madera', 3, 0, 'productos/default.png'),
+    ('Sofá', 'Sofá de 2 plazas', 3, 0, 'productos/default.png'),
+    ('Escritorio', 'Escritorio básico de madera', 3, 0, 'productos/default.png');
 
 INSERT INTO Producto (nombre, descripcion, id_categoria, unidadMedida, talle, imagen, perecedero) VALUES 
     ('Camisa', 'Camisa de manga larga', 2, 0, "l", 'productos/camisa.webp', FALSE),
     ('Pantalón', 'Pantalón de mezclilla', 2, 0, "s", 'productos/pantalon.webp', FALSE),
-    ('Vestido', 'Vestido elegante', 2, 0, "xl", 'productos/vestido.webp', FALSE);
+    ('Vestido', 'Vestido elegante', 2, 0, "xl", 'productos/vestido.webp', FALSE),
+    ('Camiseta', 'Camiseta de algodón', 2, 0, 'm', 'productos/default.png', FALSE),
+    ('Chaleco', 'Chaleco abrigado', 2, 0, 'l', 'productos/default.png', FALSE),
+    ('Falda', 'Falda corta', 2, 0, 's', 'productos/default.png', FALSE),
+    ('Abrigo', 'Abrigo de invierno', 2, 0, 'xl', 'productos/default.png', FALSE),
+    ('Zapatos', 'Zapatos deportivos', 2, 0, '42', 'productos/default.png', FALSE);
+    
 
 -- Inserciones para la tabla EstadoPedido
 INSERT INTO EstadoPedido (nombre, descripcion) VALUES 
@@ -451,7 +522,36 @@ INSERT INTO Pedido (fechaInicio, fechaVencimiento, cantidad, id_obra, id_usuario
     ('2024-04-08', '2024-04-15', 200, 2, 2, 8, 2, 2),
     ('2024-09-23', '2024-10-23', 200, 3, 3, 1, 3, 3),
     ('2024-04-08', '2024-04-15', 1, 2, 1, 2, 2, 2),
-    ('2024-09-23', '2024-10-23', 1, 3, 1, 3, 3, 3);
+    ('2024-09-23', '2024-10-23', 1, 3, 1, 3, 3, 3),
+    ('2024-07-01', '2024-07-15', 150, 1, 2, 9, 1, 1),
+    ('2024-05-10', '2024-05-24', 300, 3, 3, 10, 1, 1),
+    ('2024-03-05', '2024-03-19', 250, 2, 2, 11, 1, 4),
+    ('2024-06-20', '2024-07-05', 100, 4, 4, 12, 1, 1),
+    ('2024-07-10', '2024-07-24', 200, 5, 5, 13, 1, 1),
+    ('2024-04-15', '2024-04-29', 180, 6, 6, 14, 1, 2),
+    ('2024-07-30', '2024-08-14', 220, 7, 7, 15, 2, 1),
+    ('2024-05-20', '2024-06-03', 130, 8, 8, 16, 2, 1),
+    ('2024-04-01', '2024-04-15', 150, 9, 9, 17, 1, 3),
+    ('2024-03-22', '2024-04-05', 250, 10, 10, 18, 1, 5),
+    ('2024-08-01', '2024-08-15', 120, 11, 11, 19, 2, 1),
+    ('2024-02-10', '2024-02-24', 90, 12, 12, 20, 1, 4),
+    ('2024-06-05', '2024-06-19', 110, 13, 13, 21, 1, 1),
+    ('2024-03-15', '2024-03-29', 100, 14, 14, 22, 3, 2),
+    ('2024-07-20', '2024-08-03', 200, 15, 15, 23, 1, 1),
+    ('2024-04-05', '2024-04-19', 300, 16, 16, 24, 3, 1),
+    ('2024-05-12', '2024-05-26', 175, 17, 17, 25, 1, 5),
+    ('2024-06-17', '2024-07-01', 80, 18, 18, 26, 3, 1),
+    ('2024-07-07', '2024-07-21', 100, 19, 19, 27, 1, 1),
+    
+    -- Pedidos adicionales para productos ya existentes
+    ('2024-04-01', '2024-04-15', 250, 20, 1, 1, 1, 1),
+    ('2024-05-20', '2024-06-03', 180, 21, 2, 1, 1, 3),
+    ('2024-06-01', '2024-06-15', 140, 22, 3, 2, 3, 1),
+    ('2024-04-10', '2024-04-24', 160, 23, 4, 3, 1, 2),
+    ('2024-08-15', '2024-08-29', 90, 24, 5, 4, 3, 1),
+    ('2024-09-01', '2024-09-15', 200, 25, 6, 5, 1, 4),
+    ('2024-07-25', '2024-08-08', 130, 26, 7, 6, 3, 1),
+    ('2024-06-30', '2024-07-14', 220, 27, 8, 7, 1, 2);
 
 
 INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES 
