@@ -929,6 +929,15 @@ class CrearDetalleOferta(APIView):
         serializer = CrearDetalleofertaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            oferta = Oferta.objects.get(pk = request.data['id_oferta'])
+            total = 0
+            aportes = AporteOferta.objects.filter(id_oferta = oferta.id_oferta)
+
+            for a in aportes:
+                total = total + a.cantidad
+            if total >= oferta.cantidad:
+                print("objetivo alcanzado")
+                oferta.id_estadoOferta = Estadooferta.objects.get(pk=3)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
