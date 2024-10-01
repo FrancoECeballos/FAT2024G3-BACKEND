@@ -33,13 +33,19 @@ class EntregaSerializer(serializers.ModelSerializer):
         return EntregaAporteSerializer(entrega_aportes, many=True).data
 
 class CreateEntregaSerializer(serializers.ModelSerializer):
-    id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
-    id_oferta = serializers.PrimaryKeyRelatedField(queryset=Oferta.objects.all())
-    fechaCreacion = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all(), required=False, allow_null=True)
+    id_oferta = serializers.PrimaryKeyRelatedField(queryset=Oferta.objects.all(), required=False, allow_null=True)
+    fechaCreacion = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"], required=False)
 
     class Meta:
         model = Entrega
         fields = '__all__'
+
+    def validate(self, data):
+        # Ensure at least one of 'id_pedido' or 'id_oferta' is provided
+        if not data.get('id_pedido') and not data.get('id_oferta'):
+            raise serializers.ValidationError("You must provide either 'id_pedido' or 'id_oferta'.")
+        return data
 
 class CreateEntregaAporteSerializer(serializers.ModelSerializer):
     id_entrega = serializers.PrimaryKeyRelatedField(queryset=Entrega.objects.all())
