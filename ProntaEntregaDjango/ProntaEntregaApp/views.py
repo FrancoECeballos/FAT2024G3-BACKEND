@@ -1663,7 +1663,7 @@ class GetPedidosRecibidosByUser(APIView):
 
         detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks.values_list('id_stock', flat=True))
 
-        pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+        pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True), id_estadoPedido__in=[1, 2])
         pedidos = lista_pedido_con_progreso(pedidos)
 
         pedidos_por_obra = []
@@ -1702,7 +1702,7 @@ class GetPedidosRecibidosForAdmin(APIView):
             stocks = Stock.objects.filter(id_obra=obra.id_obra)
             detalle_obrapedidos = Detalleobrapedido.objects.filter(id_stock__in=stocks)
             
-            pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True))
+            pedidos = Pedido.objects.filter(id_pedido__in=detalle_obrapedidos.values_list('id_pedido', flat=True), id_estadoPedido__in=[1, 2])
             pedidos = lista_pedido_con_progreso(pedidos)
             
             obra_serialized = ObraSerializer(obra).data
@@ -1735,7 +1735,7 @@ class GetPedidosDados(APIView):
         obras_con_pedidos = []
 
         for obra in obras:
-            pedidos_que_tiene = Pedido.objects.filter(id_obra = obra.id_obra)
+            pedidos_que_tiene = Pedido.objects.filter(id_obra=obra.id_obra, id_estadoPedido__in=[1, 2])
             pedidos = lista_pedido_con_progreso(pedidos_que_tiene)
             stock = Stock.objects.filter(id_obra=obra.id_obra)
 
