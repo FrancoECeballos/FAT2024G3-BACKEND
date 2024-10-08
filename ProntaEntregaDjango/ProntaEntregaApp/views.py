@@ -787,10 +787,11 @@ class GetAportePedido(APIView):
 
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
-    
+    def get(self,request):
+        return Response({"id_pedido":1,"id_usuario":1,"id_obra":1,"cantidad":1})
     def post(self, request):
         ahora = timezone.now().date()
-        request.data.update({'fecha':ahora})
+        request.data.update({'fechaAportado':ahora})
         serializer = CreateAportePedidoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -961,8 +962,13 @@ class GetAporteOferta(APIView):
     
 class CrearDetalleOferta(APIView):
     permission_classes = [AllowAny]
+
+    def get(self,request):
+        return Response({"id_aporteOferta":1,"descripcion":"d","cantidad":1,"id_oferta":1,"id_obra":1,"id_usuario":1})
+
     def post(self, request):
         ahora = timezone.now().date()
+        request.data.update({'fechaAportado':ahora})
         serializer = CrearDetalleofertaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -1024,6 +1030,20 @@ class CrearEntrega(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EditarEntregaAporte(APIView):
+    permission_classes = [AllowAny]
+    def put(self, request, pk):
+        try:
+            entrega = Entrega.objects.get(pk=pk)
+        except Entrega.DoesNotExist:
+            return Response({'error': 'No se encontró una entrega con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = EntregaSerializer(entrega, data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': 'Los atributos de la entrega han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetTransporte(APIView):
     permission_classes = [AllowAny]
