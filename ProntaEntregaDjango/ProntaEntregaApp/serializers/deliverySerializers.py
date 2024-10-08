@@ -13,6 +13,7 @@ class EntregaAporteSerializer(serializers.ModelSerializer):
     id_aportePedido = AportePedidoSerializer()
     id_aporteOferta = DetalleofertaSerializer()
     id_estadoEntrega = EstadoEntregaSerializer()
+    id_transporte = TransporteSerializer()
 
     class Meta:
         model = EntregaAporte
@@ -48,8 +49,10 @@ class CreateEntregaSerializer(serializers.ModelSerializer):
 
 class CreateEntregaAporteSerializer(serializers.ModelSerializer):
     id_entrega = serializers.PrimaryKeyRelatedField(queryset=Entrega.objects.all())
+    fechaEntrega = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"], required=False, allow_null=True)
     id_aportePedido = serializers.PrimaryKeyRelatedField(queryset=AportePedido.objects.all(), required=False, allow_null=True)
     id_aporteOferta = serializers.PrimaryKeyRelatedField(queryset=AporteOferta.objects.all(), required=False, allow_null=True)
+    id_transporte = serializers.PrimaryKeyRelatedField(queryset=Transporte.objects.all(), required=False, allow_null=True)
     id_estadoEntrega = serializers.PrimaryKeyRelatedField(queryset=EstadoEntrega.objects.all())
 
     class Meta:
