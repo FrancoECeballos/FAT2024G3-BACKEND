@@ -65,7 +65,43 @@ class GetNotificacionesDeUser(APIView):
         notif = Notificacion.objects.filter(id_usuario = pk, viewed=False)
         serializer = NotificacionSerializer(notif,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+class CrearNotificacion(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        titulo = request.data.get('titulo')
+        descripcion = request.data.get('descripcion')
+        fecha_creacion = request.data.get('fecha_creacion', timezone.now())
+        id_obra = request.data.get('id_obra')
+
+        if not titulo or not descripcion or not id_obra:
+            return Response({'error': 'Faltan datos requeridos'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            obra = Obra.objects.get(id_obra=id_obra)
+        except Obra.DoesNotExist:
+            return Response({'error': 'Obra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Obtener los usuarios relacionados con la obra a través de Detalleobrausuario
+        detalles_obra_usuario = Detalleobrausuario.objects.filter(id_obra=obra)
+        usuarios = CustomUsuario.objects.filter(id_usuario__in=detalles_obra_usuario.values_list('id_usuario', flat=True))
+
+        notificaciones = []
+        for usuario in usuarios:
+            notificacion = Notificacion(
+                titulo=titulo,
+                descripcion=descripcion,
+                fecha_creacion=fecha_creacion,
+                id_usuario=usuario
+            )
+            notificaciones.append(notificacion)
+
+        Notificacion.objects.bulk_create(notificaciones)
+
+        return Response({'message': 'Notificaciones creadas correctamente'}, status=status.HTTP_201_CREATED)
+
+
 class GetDirecciones(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
