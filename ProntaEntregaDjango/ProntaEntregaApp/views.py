@@ -992,7 +992,7 @@ class CrearEntrega(APIView):
     
 class EditarEntregaAporte(APIView):
     permission_classes = [AllowAny]
-    def post(self, request, pk):
+    def put(self, request, pk):
         try:
             entrega = Entrega.objects.get(pk=pk)
         except Entrega.DoesNotExist:

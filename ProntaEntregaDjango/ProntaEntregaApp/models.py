@@ -506,7 +506,7 @@ class EntregaAporte(models.Model):
         db_table = 'EntregaAporte'
 
     def __str__(self):
-        return str(self.id_entrega_aporte)
+        return str(self.id_entregaAporte)
 
 
 class Detalleobratransporte(models.Model):
