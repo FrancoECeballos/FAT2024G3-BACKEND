@@ -202,15 +202,12 @@ CREATE TABLE IF NOT EXISTS AportePedido (
     descripcion VARCHAR(255),
     cantidad INT,
     fechaAportado DATE,
-    fechaEntrega DATE, 
     id_pedido INT,
     id_obra INT,
     id_usuario INT,
-    id_transporte INT,
     CONSTRAINT fk_aportePedido FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
 	CONSTRAINT fk_usuario_aportePedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
-    CONSTRAINT fk_obra_aportePedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
-    CONSTRAINT fk_transporte_pedido FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+    CONSTRAINT fk_obra_aportePedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
 );
 
 CREATE TABLE IF NOT EXISTS EstadoOferta(
@@ -243,11 +240,9 @@ CREATE TABLE IF NOT EXISTS AporteOferta (
     id_oferta INT,
     id_obra INT,
     id_usuario INT,
-    id_transporte INT,
     CONSTRAINT fk_aporteOferta FOREIGN KEY (id_oferta) REFERENCES Oferta(id_oferta),
 	CONSTRAINT fk_usuario_aporteOferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
-    CONSTRAINT fk_obra_aporteOferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
-    CONSTRAINT fk_transporte_oferta FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
+    CONSTRAINT fk_obra_aporteOferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
 );
     
 CREATE TABLE IF NOT EXISTS Entrega (
@@ -267,14 +262,17 @@ CREATE TABLE IF NOT EXISTS EstadoEntrega(
 
 CREATE TABLE IF NOT EXISTS EntregaAporte (
 	id_entregaAporte INT AUTO_INCREMENT PRIMARY KEY,
+    fechaEntrega DATE, 
     id_entrega INT,
 	id_aportePedido INT NULL,
     id_aporteOferta INT NULL,
+    id_transporte INT,
     id_estadoEntrega INT, 
     CONSTRAINT fk_entrega FOREIGN KEY (id_entrega) REFERENCES Entrega(id_entrega),
     CONSTRAINT fk_aportePedido_entrega FOREIGN KEY (id_aportePedido) REFERENCES AportePedido(id_pedido),
     CONSTRAINT fk_aporteOferta_entrega FOREIGN KEY (id_aporteOferta) REFERENCES AporteOferta(id_oferta),
-    CONSTRAINT fk_estadoEntrega FOREIGN KEY (id_estadoEntrega) REFERENCES EstadoEntrega(id_estadoEntrega)
+    CONSTRAINT fk_estadoEntrega FOREIGN KEY (id_estadoEntrega) REFERENCES EstadoEntrega(id_estadoEntrega),
+    CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
 );
 
 CREATE TABLE IF NOT EXISTS DetalleObraPedido (
@@ -767,34 +765,34 @@ INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock
     (500, FALSE, '2023-01-09 16:00:00', 1, 1, 3),
     (1, FALSE, '2023-01-10 17:00:00', 1, 2, 1),
     (1, FALSE, '2023-01-11 18:00:00', 1, 3, 2),
-    (150, FALSE, '2023-05-01 08:00:00', 1, 3, 1),  -- Producto 3 en stock de la obra 1
-    (250, FALSE, '2023-05-02 09:00:00', 1, 4, 1),  -- Producto 4 en stock de la obra 1
-    (100, FALSE, '2023-05-03 10:00:00', 2, 5, 2),  -- Producto 5 en stock de la obra 2
-    (300, FALSE, '2023-05-04 11:00:00', 3, 1, 2),  -- Producto 1 en stock de la obra 3
-    (80, FALSE, '2023-05-05 12:00:00', 2, 6, 1),   -- Producto 6 en stock de la obra 2
-    (120, FALSE, '2023-05-06 13:00:00', 1, 7, 1),  -- Producto 7 en stock de la obra 1
-    (200, FALSE, '2023-05-07 14:00:00', 2, 2, 3),  -- Producto 2 en stock de la obra 2
-    (400, FALSE, '2023-05-08 15:00:00', 3, 3, 2),  -- Producto 3 en stock de la obra 3
-    (50, FALSE, '2023-05-09 16:00:00', 1, 8, 5),   -- Producto 8 en stock de la obra 1
-    (300, FALSE, '2023-05-10 17:00:00', 1, 9, 1),   -- Producto 9 en stock de la obra 1
-    (20, FALSE, '2023-09-09 08:00:00', 2, 20, 4),  -- Ropa 20 en stock de la obra 2
-    (30, FALSE, '2023-09-10 09:00:00', 3, 21, 5),  -- Ropa 21 en stock de la obra 3
-    (15, FALSE, '2023-09-11 10:00:00', 4, 22, 6),  -- Ropa 22 en stock de la obra 4
-    (10, FALSE, '2023-09-12 11:00:00', 5, 23, 7),  -- Ropa 23 en stock de la obra 5
-    (17, FALSE, '2023-09-13 12:00:00', 6, 24, 8),   -- Ropa 24 en stock de la obra 6
-    (9, FALSE, '2023-09-14 13:00:00', 7, 25, 9),  -- Ropa 25 en stock de la obra 7
-    (16, FALSE, '2023-09-15 14:00:00', 8, 26, 10),  -- Ropa 26 en stock de la obra 8
-    (20, FALSE, '2023-09-16 15:00:00', 1, 27, 11);   -- Ropa 27 en stock de la obra 1
+    (150, FALSE, '2023-05-01 08:00:00', 1, 3, 1),
+    (250, FALSE, '2023-05-02 09:00:00', 1, 4, 1),
+    (100, FALSE, '2023-05-03 10:00:00', 2, 5, 2),
+    (300, FALSE, '2023-05-04 11:00:00', 3, 1, 2),
+    (80, FALSE, '2023-05-05 12:00:00', 2, 6, 1),
+    (120, FALSE, '2023-05-06 13:00:00', 1, 7, 1),
+    (200, FALSE, '2023-05-07 14:00:00', 2, 2, 3),
+    (400, FALSE, '2023-05-08 15:00:00', 3, 3, 2),
+    (50, FALSE, '2023-05-09 16:00:00', 1, 8, 5),
+    (300, FALSE, '2023-05-10 17:00:00', 1, 9, 1),
+    (20, FALSE, '2023-09-09 08:00:00', 2, 20, 4),
+    (30, FALSE, '2023-09-10 09:00:00', 3, 21, 5),
+    (15, FALSE, '2023-09-11 10:00:00', 4, 22, 6),
+    (10, FALSE, '2023-09-12 11:00:00', 5, 23, 7),
+    (17, FALSE, '2023-09-13 12:00:00', 6, 24, 8),
+    (9, FALSE, '2023-09-14 13:00:00', 7, 25, 9),
+    (16, FALSE, '2023-09-15 14:00:00', 8, 26, 10),
+    (20, FALSE, '2023-09-16 15:00:00', 1, 27, 11);
     
-INSERT INTO AportePedido (descripcion, cantidad, fechaAportado, fechaEntrega, id_pedido, id_obra, id_usuario) VALUES 
-	('desc1', 10, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 4, 5),
-	('desc2', 20, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 2, 5, 6),
-	('desc3', 30, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 3, 6, 7);
+INSERT INTO AportePedido (descripcion, cantidad, fechaAportado, id_pedido, id_obra, id_usuario) VALUES 
+	('desc1', 10, CURDATE(), 1, 4, 5),
+	('desc2', 20, CURDATE(), 2, 5, 6),
+	('desc3', 30, CURDATE(), 3, 6, 7);
 
-INSERT INTO AporteOferta (descripcion, cantidad, fechaAportado, fechaEntrega, id_oferta, id_obra, id_usuario) VALUES 
-	('desc1', 10, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, 3, 4),
-	('desc2', 20, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 2, 2, 3),
-	('desc3', 30, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), 3, 1, 2);
+INSERT INTO AporteOferta (descripcion, cantidad, fechaAportado, id_oferta, id_obra, id_usuario) VALUES 
+	('desc1', 10, CURDATE(), 1, 3, 4),
+	('desc2', 20, CURDATE(), 2, 2, 3),
+	('desc3', 30, CURDATE(), 3, 1, 2);
     
 INSERT INTO EstadoEntrega (nombre, descripcion) VALUES 
     ('Pendiente', 'Solo es un pedido y no se hizo nada'),
@@ -807,6 +805,6 @@ INSERT INTO Entrega (fechaCreacion, id_pedido, id_oferta) VALUES
     (CURDATE(), 1, NULL),
     (CURDATE(), NULL, 1);
 
-INSERT INTO EntregaAporte (id_entrega, id_aportePedido, id_aporteOferta, id_estadoEntrega) VALUES 
-    (1, 1, NULL, 1),
-    (2, NULL, 1, 1);
+INSERT INTO EntregaAporte (id_entrega, fechaEntrega, id_aportePedido, id_aporteOferta, id_estadoEntrega) VALUES 
+    (1, DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, NULL, 1),
+    (2, DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1, 1);

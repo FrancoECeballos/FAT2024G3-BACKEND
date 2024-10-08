@@ -751,13 +751,7 @@ class GetAportePedido(APIView):
 
 class CrearAportePedido(APIView):
     permission_classes = [AllowAny]
-    def get (self, request):
-        return Response({
-    "id_usuario": 1,
-    "cantidad": 1,
-    "id_pedido": 1,
-    "id_obra":1
-})
+    
     def post(self, request):
         ahora = timezone.now().date()
         request.data.update({'fecha':ahora})
