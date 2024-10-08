@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS Pedido (
 CREATE TABLE IF NOT EXISTS AportePedido (
     id_aportePedido INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255),
-    cantidad INT,
+    cantidad INT not null,
     fechaAportado DATE,
     id_pedido INT,
     id_obra INT,
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS Oferta (
 CREATE TABLE IF NOT EXISTS AporteOferta (
     id_aporteOferta INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255),
-    cantidad INT,
+    cantidad INT not null,
     fechaAportado DATE,
     fechaEntrega DATE, 
     id_oferta INT,
