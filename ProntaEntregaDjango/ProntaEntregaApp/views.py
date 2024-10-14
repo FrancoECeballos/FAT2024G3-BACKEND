@@ -1869,3 +1869,9 @@ class UpdateEstadoByVencimiento(APIView):
                 pedido.id_estadoPedido = 5
                 pedido.save()
         return Response({'success': 'Los estados de los pedidos y las ofertas han sido actualizados exitosamente.'}, status=status.HTTP_200_OK)
+
+class EliminarTodosDetalleStockProductoView(APIView):
+    def post(self, request, id_stock, id_producto):
+        detalle_stock_productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
+        detalle_stock_productos.delete()
+        return Response({'message': 'DetalleStockProducto eliminados correctamente'}, status=status.HTTP_200_OK)
