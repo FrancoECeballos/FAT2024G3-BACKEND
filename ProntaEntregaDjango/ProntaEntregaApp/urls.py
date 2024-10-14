@@ -68,6 +68,7 @@ urlpatterns = [
     path('producto/categoria/<int:id_categoria>/', GetProductoByCategoria.as_view(), name='ver_producto_categoria'),
     path('crear_productos/', CrearProductos.as_view(), name='crear_producto'),
     path('editar_producto/<int:pk>/', EditarProducto.as_view(), name='editar_producto'),
+    path('EliminarTodosDetalleStockProductoView/<int:id_stock>/<int:id_producto>/', EliminarTodosDetalleStockProductoView.as_view(), name='EliminarTodosDetalleStockProductoView'),
 
     path('pedido/', GetPedido.as_view(), name='ver_pedido'),
     path('crear_pedido/', CrearPedido.as_view(), name='crear_pedido'),
@@ -155,8 +156,6 @@ urlpatterns = [
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_stock>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
     path('GetTotalProductoObra/<int:id_stock>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
 
-
-    path('EliminarTodosDetalleStockProductoView/<int:id_stock>/<int:id_producto>/', EliminarTodosDetalleStockProductoView.as_view(), name='EliminarTodosDetalleStockProductoView'),
 ]
 
 if settings.DEBUG:
