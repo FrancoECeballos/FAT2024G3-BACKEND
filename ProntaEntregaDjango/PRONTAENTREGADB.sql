@@ -225,10 +225,14 @@ CREATE TABLE IF NOT EXISTS Oferta (
     id_obra INT,
     id_producto INT,
     id_estadoOferta INT,
-    CONSTRAINT fk_producto_oferta FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
-    CONSTRAINT fk_obra_oferta FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
-    CONSTRAINT fk_usuario_oferta FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
-	CONSTRAINT fk_estado_oferta FOREIGN KEY (id_estadoOferta) REFERENCES EstadoOferta(id_estadoOferta)
+    CONSTRAINT fk_producto_oferta FOREIGN KEY (id_producto)
+        REFERENCES Producto (id_producto),
+    CONSTRAINT fk_obra_oferta FOREIGN KEY (id_obra)
+        REFERENCES Obra (id_obra),
+    CONSTRAINT fk_usuario_oferta FOREIGN KEY (id_usuario)
+        REFERENCES CustomUsuario (id_usuario),
+    CONSTRAINT fk_estado_oferta FOREIGN KEY (id_estadoOferta)
+        REFERENCES EstadoOferta (id_estadoOferta)
 );
 
 CREATE TABLE IF NOT EXISTS AporteOferta (
@@ -269,8 +273,8 @@ CREATE TABLE IF NOT EXISTS EntregaAporte (
     id_transporte INT,
     id_estadoEntrega INT, 
     CONSTRAINT fk_entrega FOREIGN KEY (id_entrega) REFERENCES Entrega(id_entrega),
-    CONSTRAINT fk_aportePedido_entrega FOREIGN KEY (id_aportePedido) REFERENCES AportePedido(id_pedido),
-    CONSTRAINT fk_aporteOferta_entrega FOREIGN KEY (id_aporteOferta) REFERENCES AporteOferta(id_oferta),
+    CONSTRAINT fk_aportePedido_entrega FOREIGN KEY (id_aportePedido) REFERENCES AportePedido(id_aportePedido),
+    CONSTRAINT fk_aporteOferta_entrega FOREIGN KEY (id_aporteOferta) REFERENCES AporteOferta(id_aporteOferta),
     CONSTRAINT fk_estadoEntrega FOREIGN KEY (id_estadoEntrega) REFERENCES EstadoEntrega(id_estadoEntrega),
     CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
 );
@@ -552,7 +556,7 @@ INSERT INTO Pedido (fechaInicio, fechaVencimiento, cantidad, id_obra, id_usuario
     ('2024-07-25', '2024-08-08', 130, 3, 7, 6, 3, 1),
     ('2024-06-30', '2024-07-14', 220, 6, 8, 7, 1, 2);
 
-select d.id_DetalleObraPedido, d.id_stock, d.id_pedido, p.id_obra from Stock s inner join DetalleObraPedido d ON s.id_stock = d.id_stock inner join Pedido p ON d.id_pedido = p.id_pedido where s.id_obra = p.id_obra group by (d.id_DetalleObraPedido) order by (d.id_DetalleObraPedido);
+-- select d.id_DetalleObraPedido, d.id_stock, d.id_pedido, p.id_obra from Stock s inner join DetalleObraPedido d ON s.id_stock = d.id_stock inner join Pedido p ON d.id_pedido = p.id_pedido where s.id_obra = p.id_obra group by (d.id_DetalleObraPedido) order by (d.id_DetalleObraPedido);
 
 INSERT INTO DetalleObraPedido(id_stock, id_pedido) VALUES
     (5, 1),

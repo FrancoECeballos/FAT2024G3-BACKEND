@@ -978,15 +978,17 @@ class CrearDetalleOferta(APIView):
 
             for a in aportes:
                 total = total + a.cantidad
+            
             if total >= oferta.cantidad:
                 oferta.id_estadoOferta = Estadooferta.objects.get(pk=3)
                 entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_oferta': oferta.__dict__['id_oferta']})
 
                 if entrega_ser.is_valid():
                     entrega = entrega_ser.save()
+
                     for aporte in aportes:
                         entrega_aporte_ser = CreateEntregaAporteSerializer(data={
-                            'id_entrega': entrega.id_entrega,
+                            'id_entrega': entrega.__dict__['id_entrega'],
                             'id_aporteOferta': aporte.id_aporteOferta,
                             'id_estadoEntrega': 1
                         })
