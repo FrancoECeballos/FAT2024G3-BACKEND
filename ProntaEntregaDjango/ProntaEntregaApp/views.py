@@ -311,6 +311,28 @@ class DeleteUser(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class EsAdminDeObraView(APIView):
+    def get(self, request):
+        id_obra = request.GET.get('id_obra')
+        id_usuario = request.GET.get('id_usuario')
+
+        if not id_obra or not id_usuario:
+            return Response({'error': 'Faltan parámetros'}, status=status.HTTP_400_BAD_REQUEST)
+
+        obra = get_object_or_404(Obra, pk=id_obra)
+        usuario = get_object_or_404(CustomUsuario, pk=id_usuario)
+
+        # Verificar si el usuario pertenece a la obra
+        detalle = Detalleobrausuario.objects.filter(id_obra=obra, id_usuario=usuario).first()
+        if not detalle:
+            return Response({'error': 'El usuario no pertenece a esta obra.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Verificar si el usuario es administrador basado en is_staff
+        es_admin = usuario.is_staff
+
+        return Response({'es_admin': es_admin}, status=status.HTTP_200_OK)
+    
+
 class UserPage(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -1869,3 +1891,35 @@ class EliminarTodosDetalleStockProductoView(APIView):
         detalle_stock_productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
         detalle_stock_productos.delete()
         return Response({'message': 'DetalleStockProducto eliminados correctamente'}, status=status.HTTP_200_OK)
+
+class EliminarObra(APIView):
+    def delete(self, request, id_obra):
+        try:
+            Detalleobratransporte.objects.filter(id_obra=id_obra).delete()
+            Detalleobrausuario.objects.filter(id_obra=id_obra).delete()
+
+            ofertas = Oferta.objects.filter(id_obra=id_obra)
+            pedidos = Pedido.objects.filter(id_obra=id_obra)
+            stocks = Stock.objects.filter(id_obra=id_obra)
+
+            Entrega.objects.filter(Q(id_oferta__in=ofertas) | Q(id_pedido__in=pedidos)).delete()
+
+
+            AporteOferta.objects.filter(id_obra=id_obra).delete()
+
+            AportePedido.objects.filter(id_pedido__in=pedidos.values_list('id_pedido', flat=True)).delete()
+            AportePedido.objects.filter(id_obra=id_obra).delete()
+
+            Detalleobrapedido.objects.filter(id_pedido__in=pedidos.values_list('id_pedido', flat=True)).delete()
+            Detalleobrapedido.objects.filter(id_stock__in=stocks).delete()
+
+            Detallestockproducto.objects.filter(id_stock__in=stocks).delete()
+
+            Pedido.objects.filter(id_obra=id_obra).delete()
+            Stock.objects.filter(id_obra=id_obra).delete()
+
+            Obra.objects.filter(id_obra=id_obra).delete()
+
+            return Response({'message': 'Obra y tablas derivadas eliminadas correctamente'}, status=status.HTTP_204_NO_CONTENT)
+        except Obra.DoesNotExist:
+            return Response({'error': 'Obra no encontrada'}, status=status.HTTP_404_NOT_FOUND)

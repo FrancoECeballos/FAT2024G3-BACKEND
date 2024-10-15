@@ -22,6 +22,7 @@ urlpatterns = [
     path('obra/user/<str:token>/', ObraByUser.as_view(), name='ver_obra_user'),
     path('obra/nouser/<str:token>/', ObraSinUsuario.as_view(), name='AllUsersByObra_null'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
+    path('admin_obra/', EsAdminDeObraView.as_view(), name='es_admin_de_obra'),
     
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
     path('crear_direccion/', CrearDirecciones.as_view(), name='direcciones_post'),
@@ -155,6 +156,8 @@ urlpatterns = [
     path('GetProductosPorCategoriaExcluidos/<int:id_categoria>/', GetProductosPorCategoriaExcluidos.as_view(), name='getProductosPorCategoriaExcluidos'),
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_stock>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
     path('GetTotalProductoObra/<int:id_stock>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
+
+    path('DeleteObra/<int:id_obra>/', EliminarObra.as_view(), name='DeleteObra')
 
 ]
 
