@@ -22,6 +22,7 @@ urlpatterns = [
     path('obra/user/<str:token>/', ObraByUser.as_view(), name='ver_obra_user'),
     path('obra/nouser/<str:token>/', ObraSinUsuario.as_view(), name='AllUsersByObra_null'),
     path('user/obra/<int:id_obra>/', UserByObra.as_view(), name='ver_user_obra'),
+    path('admin_obra/', EsAdminDeObraView.as_view(), name='es_admin_de_obra'),
     
     path('direcciones/', GetDirecciones.as_view(), name='direcciones_get'),
     path('crear_direccion/', CrearDirecciones.as_view(), name='direcciones_post'),

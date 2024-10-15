@@ -311,6 +311,28 @@ class DeleteUser(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class EsAdminDeObraView(APIView):
+    def get(self, request):
+        id_obra = request.GET.get('id_obra')
+        id_usuario = request.GET.get('id_usuario')
+
+        if not id_obra or not id_usuario:
+            return Response({'error': 'Faltan parámetros'}, status=status.HTTP_400_BAD_REQUEST)
+
+        obra = get_object_or_404(Obra, pk=id_obra)
+        usuario = get_object_or_404(CustomUsuario, pk=id_usuario)
+
+        # Verificar si el usuario pertenece a la obra
+        detalle = Detalleobrausuario.objects.filter(id_obra=obra, id_usuario=usuario).first()
+        if not detalle:
+            return Response({'error': 'El usuario no pertenece a esta obra.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Verificar si el usuario es administrador basado en is_staff
+        es_admin = usuario.is_staff
+
+        return Response({'es_admin': es_admin}, status=status.HTTP_200_OK)
+    
+
 class UserPage(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
