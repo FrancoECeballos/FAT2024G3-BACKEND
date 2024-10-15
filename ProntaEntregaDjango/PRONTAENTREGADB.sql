@@ -271,11 +271,13 @@ CREATE TABLE IF NOT EXISTS EntregaAporte (
     id_entrega INT,
 	id_aportePedido INT NULL,
     id_aporteOferta INT NULL,
+    id_usuario INT,
     id_transporte INT,
     id_estadoEntrega INT, 
     CONSTRAINT fk_entrega FOREIGN KEY (id_entrega) REFERENCES Entrega(id_entrega),
     CONSTRAINT fk_aportePedido_entrega FOREIGN KEY (id_aportePedido) REFERENCES AportePedido(id_aportePedido),
     CONSTRAINT fk_aporteOferta_entrega FOREIGN KEY (id_aporteOferta) REFERENCES AporteOferta(id_aporteOferta),
+    CONSTRAINT fk_usuario_entrega FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
     CONSTRAINT fk_estadoEntrega FOREIGN KEY (id_estadoEntrega) REFERENCES EstadoEntrega(id_estadoEntrega),
     CONSTRAINT fk_transporte FOREIGN KEY (id_transporte) REFERENCES Transporte(id_transporte)
 );
@@ -809,6 +811,6 @@ INSERT INTO Entrega (fechaCreacion, id_pedido, id_oferta) VALUES
     (CURDATE(), 1, NULL),
     (CURDATE(), NULL, 1);
 
-INSERT INTO EntregaAporte (id_entrega, fechaEntrega, id_aportePedido, id_aporteOferta, id_estadoEntrega) VALUES 
-    (1, DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, NULL, 1),
-    (2, DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1, 1);
+INSERT INTO EntregaAporte (id_entrega, fechaEntrega, id_aportePedido, id_aporteOferta, id_usuario, id_estadoEntrega) VALUES 
+    (1, DATE_ADD(CURDATE(), INTERVAL 7 DAY), 1, NULL, 4, 1),
+    (2, DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1, 6, 1);
