@@ -286,8 +286,6 @@ class Producto(models.Model):
     def __str__(self):
         return f'{self.nombre}'
 
-
-
 class Detallestockproducto(models.Model):
     id_detallestockproducto = models.AutoField(db_column='id_detalleStockProducto', primary_key=True)  # Field name made lowercase.
     cantidad = models.FloatField(blank=True, null=True)
@@ -305,7 +303,6 @@ class Detallestockproducto(models.Model):
 
     def __str__(self):
         return f'{self.id_producto}, {self.id_stock}'
-
 
 class Pedido(models.Model):
     urgencia_choices = [(1,'No es urgente'),(2,'Urgente'),(3,'Inmediato')]
