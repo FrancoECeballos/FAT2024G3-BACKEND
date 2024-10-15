@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS DetalleStockProducto (
     cantidad FLOAT,
     checkpoint BOOLEAN,
     fecha_creacion DATETIME,
+    no_display boolean,
     id_stock INT,
     id_producto INT,
     id_usuario INT,
