@@ -1039,10 +1039,10 @@ class EditarEntregaAporte(APIView):
     permission_classes = [AllowAny]
     def put(self, request, pk):
         try:
-            entrega = Entrega.objects.get(pk=pk)
-        except Entrega.DoesNotExist:
+            entrega = EntregaAporte.objects.get(pk=pk)
+        except EntregaAporte.DoesNotExist:
             return Response({'error': 'No se encontró una entrega con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = EntregaSerializer(entrega, data=request.data,partial=True)
+        serializer = CreateEntregaAporteSerializer(entrega, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({'success': 'Los atributos de la entrega han sido modificados exitosamente.'}, status=status.HTTP_200_OK)

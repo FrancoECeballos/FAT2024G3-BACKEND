@@ -496,6 +496,7 @@ class EntregaAporte(models.Model):
     id_entrega = models.ForeignKey('Entrega', on_delete=models.SET_NULL, db_column='id_entrega', blank=True, null=True)
     id_aportePedido = models.ForeignKey('AportePedido', on_delete=models.SET_NULL, db_column='id_aportePedido', blank=True, null=True)
     id_aporteOferta = models.ForeignKey('AporteOferta', on_delete=models.SET_NULL, db_column='id_aporteOferta', blank=True, null=True)
+    id_usuario = models.ForeignKey('CustomUsuario', on_delete=models.SET_NULL, db_column='id_usuario', blank=True, null=True)
     id_transporte = models.ForeignKey('Transporte', on_delete=models.SET_NULL, db_column='id_transporte', blank=True, null=True)
     id_estadoEntrega = models.ForeignKey('EstadoEntrega', on_delete=models.SET_NULL, db_column='id_estadoEntrega', blank=True, null=True)
 

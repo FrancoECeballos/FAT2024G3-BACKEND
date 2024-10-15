@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from ProntaEntregaApp.models import Entrega, EntregaAporte, EstadoEntrega, Pedido, Oferta, AportePedido, AporteOferta, Transporte
+from ProntaEntregaApp.models import Entrega, EntregaAporte, EstadoEntrega, Pedido, Oferta, AportePedido, AporteOferta, Transporte, CustomUsuario
 from ProntaEntregaApp.serializers.requestSerializers import PedidoSerializer, AportePedidoSerializer
 from ProntaEntregaApp.serializers.offerSerializers import DetalleofertaSerializer, OfertaSerializer
 from ProntaEntregaApp.serializers.generalSerializers import TransporteSerializer
+from ProntaEntregaApp.serializers.userSerializers import UsuarioSerializer
 
 class EstadoEntregaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,6 +14,7 @@ class EntregaAporteSerializer(serializers.ModelSerializer):
     id_aportePedido = AportePedidoSerializer()
     id_aporteOferta = DetalleofertaSerializer()
     id_estadoEntrega = EstadoEntregaSerializer()
+    id_usuario = UsuarioSerializer()
     id_transporte = TransporteSerializer()
 
     class Meta:
@@ -52,6 +54,7 @@ class CreateEntregaAporteSerializer(serializers.ModelSerializer):
     fechaEntrega = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"], required=False, allow_null=True)
     id_aportePedido = serializers.PrimaryKeyRelatedField(queryset=AportePedido.objects.all(), required=False, allow_null=True)
     id_aporteOferta = serializers.PrimaryKeyRelatedField(queryset=AporteOferta.objects.all(), required=False, allow_null=True)
+    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all(), required=False, allow_null=True)
     id_transporte = serializers.PrimaryKeyRelatedField(queryset=Transporte.objects.all(), required=False, allow_null=True)
     id_estadoEntrega = serializers.PrimaryKeyRelatedField(queryset=EstadoEntrega.objects.all())
 
