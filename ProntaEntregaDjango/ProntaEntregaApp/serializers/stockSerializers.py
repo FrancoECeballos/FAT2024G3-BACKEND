@@ -79,17 +79,17 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion','no_display', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
 
 class DspSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion','no_display', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
 
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
-        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
+        fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion','no_display', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
         extra_kwargs = {
             'id_producto': {'required': True, 'allow_null': False},
             'id_stock': {'required': True, 'allow_null': False},

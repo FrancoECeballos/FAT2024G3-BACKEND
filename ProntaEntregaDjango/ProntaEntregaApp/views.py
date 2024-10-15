@@ -1677,25 +1677,17 @@ class StockInformePDFView(APIView):
         # Obtener la obra a la que pertenece el stock
         obra = Stock.objects.get(id_stock=id_stock).id_obra
 
-        # Obtener el nombre de la obra
         nombre_obra = obra.nombre
-        # Obtener el stock y el producto específico
         stocks = Stock.objects.filter(id_stock=id_stock)
         producto = Producto.objects.get(id_producto=id_producto)
 
-        # Filtrar los detalles del stock de ese producto
-        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False)
+        preDetalles = Detallestockproducto.objects.filter(id_producto=id_producto, id_stock__in=stocks, checkpoint=False).exclude(no_display=0)
 
-        # Serializar los datos
         detalles = DetallestockproductoSerializer(preDetalles, many=True).data
 
-
-        # Obtener el usuario loggeado y la fecha actual
         current_time = datetime.now() + timedelta(hours=-3)
         formatted_time = current_time.strftime("%Y-%m-%d_%H-%M")
 
-
-        # Renderizar el contenido a una plantilla HTML con detalles y producto
         html_string = render_to_string('informeStock.html', {
             'detalles': detalles,
             'producto': producto,
