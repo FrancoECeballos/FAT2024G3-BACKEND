@@ -794,18 +794,20 @@ class CrearAportePedido(APIView):
         request.data.update({'fechaAportado':ahora})
         serializer = CreateAportePedidoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
             pedido = Pedido.objects.get(pk = request.data['id_pedido'])
-            stock = Stock.objects.get(id_obra = pedido.id_obra)
+            stock = Stock.objects.get(id_obra = request.data['id_obra'])
             producto = Producto.objects.get(id_producto =pedido.__dict__['id_producto_id'])
             usuario = CustomUsuario.objects.get(pk = request.data['id_usuario'])
             detalleStock = DspSerializer(data={'checkpoint':False,'fecha_creacion':timezone.now(),'cantidad':request.data['cantidad'] * -1,'id_producto': producto.id_producto,'id_stock':stock.id_stock,'id_usuario':usuario.id_usuario})
             
+            serializer.save()
             if detalleStock.is_valid():
                 detalleStock.save()
 
                 total = 0
                 aportes = AportePedido.objects.filter(id_pedido = pedido.__dict__['id_pedido'])
+                
+                ## aca voy a poner la parte donde se resta del stock del que aporta
 
                 for a in aportes:
                     total = total + a.cantidad
@@ -1630,7 +1632,7 @@ class GetCantidadTotalProductoObra(APIView):
         d.update({'total':total})
 
         return Response(d,status=status.HTTP_200_OK)
-  
+
 class DeleteDetallestockproductoView(APIView):
     permission_classes = [IsAuthenticated]
 
