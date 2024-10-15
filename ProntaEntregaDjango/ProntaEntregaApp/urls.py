@@ -157,6 +157,8 @@ urlpatterns = [
     path('GetDetallesProductoObra/<int:id_producto>/<int:id_stock>/', GetDetallesProductoObra.as_view(), name='GetDetallesProductoObra'),
     path('GetTotalProductoObra/<int:id_stock>/<int:id_producto>/', GetCantidadTotalProductoObra.as_view(), name='GetTotalProductoObra'),
 
+    path('DeleteObra/<int:id_obra>/', EliminarObra.as_view(), name='DeleteObra')
+
 ]
 
 if settings.DEBUG:
