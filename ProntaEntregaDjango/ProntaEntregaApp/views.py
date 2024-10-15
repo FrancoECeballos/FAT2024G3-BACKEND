@@ -1875,3 +1875,35 @@ class EliminarTodosDetalleStockProductoView(APIView):
         detalle_stock_productos = Detallestockproducto.objects.filter(id_stock=id_stock, id_producto=id_producto)
         detalle_stock_productos.delete()
         return Response({'message': 'DetalleStockProducto eliminados correctamente'}, status=status.HTTP_200_OK)
+
+class EliminarObra(APIView):
+    def delete(self, request, id_obra):
+        try:
+            Detalleobratransporte.objects.filter(id_obra=id_obra).delete()
+            Detalleobrausuario.objects.filter(id_obra=id_obra).delete()
+
+            ofertas = Oferta.objects.filter(id_obra=id_obra)
+            pedidos = Pedido.objects.filter(id_obra=id_obra)
+            stocks = Stock.objects.filter(id_obra=id_obra)
+
+            Entrega.objects.filter(Q(id_oferta__in=ofertas) | Q(id_pedido__in=pedidos)).delete()
+
+
+            AporteOferta.objects.filter(id_obra=id_obra).delete()
+
+            AportePedido.objects.filter(id_pedido__in=pedidos.values_list('id_pedido', flat=True)).delete()
+            AportePedido.objects.filter(id_obra=id_obra).delete()
+
+            Detalleobrapedido.objects.filter(id_pedido__in=pedidos.values_list('id_pedido', flat=True)).delete()
+            Detalleobrapedido.objects.filter(id_stock__in=stocks).delete()
+
+            Detallestockproducto.objects.filter(id_stock__in=stocks).delete()
+
+            Pedido.objects.filter(id_obra=id_obra).delete()
+            Stock.objects.filter(id_obra=id_obra).delete()
+
+            Obra.objects.filter(id_obra=id_obra).delete()
+
+            return Response({'message': 'Obra y tablas derivadas eliminadas correctamente'}, status=status.HTTP_204_NO_CONTENT)
+        except Obra.DoesNotExist:
+            return Response({'error': 'Obra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
