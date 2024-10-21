@@ -1923,3 +1923,12 @@ class EliminarObra(APIView):
             return Response({'message': 'Obra y tablas derivadas eliminadas correctamente'}, status=status.HTTP_204_NO_CONTENT)
         except Obra.DoesNotExist:
             return Response({'error': 'Obra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+class GetPedidoCreadoPorUsuario(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id_usuario):
+        pedidos = Pedido.objects.filter(id_usuario = id_usuario)
+        all = []
+
+        all = lista_pedido_con_progreso(pedidos)
+        return Response(all, status=status.HTTP_200_OK)
