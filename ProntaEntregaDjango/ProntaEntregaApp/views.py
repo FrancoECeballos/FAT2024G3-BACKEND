@@ -1932,3 +1932,30 @@ class GetPedidoCreadoPorUsuario(APIView):
 
         all = lista_pedido_con_progreso(pedidos)
         return Response(all, status=status.HTTP_200_OK)
+    
+class GetPedidosRecientes(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id_usuario):
+        pedidos = Pedido.objects.exclude(id_usuario=id_usuario).order_by('-id_pedido')[:5]
+        all = []
+
+        all = lista_pedido_con_progreso(pedidos)
+        return Response(all, status=status.HTTP_200_OK)
+    
+class GetOfertaCreadaPorUsuario(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id_usuario):
+        pedidos = Oferta.objects.filter(id_usuario = id_usuario)
+        all = []
+
+        all = lista_oferta_con_progreso(pedidos)
+        return Response(all, status=status.HTTP_200_OK)
+
+class (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id_usuario):
+        ofertas = Oferta.objects.exclude(id_usuario=id_usuario).order_by('-id_oferta')[:5]
+        all = []
+
+        all = lista_oferta_con_progreso(ofertas)
+        return Response(all, status=status.HTTP_200_OK)
