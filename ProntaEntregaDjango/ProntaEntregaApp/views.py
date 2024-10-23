@@ -792,9 +792,9 @@ class CrearDetalleobrapedido(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DeleteDetalleobrapedido(APIView):
-    def delete(self, request, pk):
+    def delete(self, request, id_stock, id_pedido):
         try:
-            detalle = get_object_or_404(Detalleobrapedido, id_detalleobrapedido=pk)
+            detalle = get_object_or_404(Detalleobrapedido, id_stock=id_stock, id_pedido=id_pedido)
             detalle.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Detalleobrapedido.DoesNotExist:
@@ -1951,7 +1951,7 @@ class GetOfertaCreadaPorUsuario(APIView):
         all = lista_oferta_con_progreso(pedidos)
         return Response(all, status=status.HTTP_200_OK)
 
-class (APIView):
+class GetOfertasRecientes(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, id_usuario):
         ofertas = Oferta.objects.exclude(id_usuario=id_usuario).order_by('-id_oferta')[:5]
