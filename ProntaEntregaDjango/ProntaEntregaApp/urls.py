@@ -84,7 +84,7 @@ urlpatterns = [
     path('editar_aporte_pedido/<int:pk>/', EditarAportePedido.as_view(), name='editar_aporte_pedido'),
     path('get_pedidos_recibidos_for_user/<str:token>/', GetPedidosRecibidosByUser.as_view(), name='get_pedido_by_user'),
     path('get_pedidos_recibidos_for_admin/', GetPedidosRecibidosForAdmin.as_view(), name='get_pedido_recibido_for_admin'),
-    path('GetPedidoCreadoPorUsuario/<int:id_usuario>/', GetPedidoCreadoPorUsuario.as_view(), name='GetPedidoCreadoPorUsuario'),
+    path('GetPedidoCreadoPorUsuario/<str:token>/', GetPedidoCreadoPorUsuario.as_view(), name='GetPedidoCreadoPorUsuario'),
     path('GetPedidosRecientes/<int:id_usuario>/', GetPedidosRecientes.as_view(), name='GetPedidosRecientes'),
     path('get_pedidos_dados/', GetPedidosDados.as_view(), name='get_pedido_dado'),
     path('detalle_pedido/', GetDetalleobrapedido.as_view(), name='ver_detalle_pedido'),
@@ -92,7 +92,7 @@ urlpatterns = [
     path('delete_detalle_pedido/<int:id_stock>/<int:id_pedido>/', DeleteDetalleobrapedido.as_view(), name='editar_detalle_pedido'),
 
     path('oferta/', GetOferta.as_view(), name='ver_oferta'),
-    path('GetOfertaCreadaPorUsuario/<int:id_usuario>', GetOfertaCreadaPorUsuario.as_view(), name='GetOfertaCreadaPorUsuario'),
+    path('GetOfertaCreadaPorUsuario/<str:token>/', GetOfertaCreadaPorUsuario.as_view(), name='GetOfertaCreadaPorUsuario'),
     path('GetOfertasRecientes/<int:id_usuario>', GetOfertasRecientes.as_view(), name='GetOfertasRecientes'),
     path('GetOfertaSimilar/<int:id_obra>/<int:id_producto>/', GetOfertaSimilar.as_view(), name='GetOfertaSimilar'),
     path('oferta/<int:pk>/', GetOfertaById.as_view(), name='ver_oferta_por_id'),

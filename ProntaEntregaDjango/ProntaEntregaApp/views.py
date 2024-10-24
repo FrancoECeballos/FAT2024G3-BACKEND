@@ -1926,8 +1926,9 @@ class EliminarObra(APIView):
 
 class GetPedidoCreadoPorUsuario(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request, id_usuario):
-        pedidos = Pedido.objects.filter(id_usuario = id_usuario)
+    def get(self, request, token):
+        user = CustomUsuario.objects.get(auth_token=token)
+        pedidos = Pedido.objects.filter(id_usuario=user.id_usuario)
         all = []
 
         all = lista_pedido_con_progreso(pedidos)
@@ -1944,8 +1945,9 @@ class GetPedidosRecientes(APIView):
     
 class GetOfertaCreadaPorUsuario(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request, id_usuario):
-        pedidos = Oferta.objects.filter(id_usuario = id_usuario)
+    def get(self, request, token):
+        user = CustomUsuario.objects.get(auth_token=token)
+        pedidos = Oferta.objects.filter(id_usuario = user.id_usuario)
         all = []
 
         all = lista_oferta_con_progreso(pedidos)
