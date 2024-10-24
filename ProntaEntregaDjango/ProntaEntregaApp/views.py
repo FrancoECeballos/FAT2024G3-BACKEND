@@ -1961,3 +1961,94 @@ class GetOfertasRecientes(APIView):
 
         all = lista_oferta_con_progreso(ofertas)
         return Response(all, status=status.HTTP_200_OK)
+
+#view que le pasas pedido, lo cancela y elimina aportes
+
+
+class CancelPedido(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+            aportes = AportePedido.objects.filter(id_pedido=pedido.id_pedido)
+            aportes.delete()
+            print('b')
+            pedido.id_estadoPedido = Estadopedido.objects.get(pk=4)
+            print('a')
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Pedido.DoesNotExist:
+            return Response({'error': 'Pedido no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+#view que le pasas pedido, lo termina y pasa a entregas
+class EndPedido(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self,request,pk):
+        ahora = timezone.now().date()
+        pedido = Pedido.objects.get(pk=pk)
+        aportes = AportePedido.objects.filter(id_pedido = pk)
+        pedido.id_estadoPedido = Estadopedido.objects.get(pk=3)
+        pedido.save()
+        entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_pedido': pedido.__dict__['id_pedido']})
+
+        if entrega_ser.is_valid():
+            entrega = entrega_ser.save()
+            for aporte in aportes:
+                entrega_aporte_ser = CreateEntregaAporteSerializer(data={
+                    'id_entrega': entrega.id_entrega,
+                    'id_aportePedido': aporte.id_aportePedido,
+                    'id_estadoEntrega': 1
+                })
+
+                if entrega_aporte_ser.is_valid():
+                    entrega_aporte_ser.save()
+                else:
+                    return Response(entrega_aporte_ser.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(entrega_ser.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(entrega_ser.data, status=status.HTTP_201_CREATED)
+#lo mismo para ofertas
+
+
+class CancelOferta(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            oferta = Oferta.objects.get(pk=pk)
+            aportes = AporteOferta.objects.filter(id_oferta=oferta.id_oferta)
+            aportes.delete()
+            print('b')
+            oferta.id_estadoOferta = Estadooferta.objects.get(pk=4)
+            print('a')
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Oferta.DoesNotExist:
+            return Response({'error': 'Oferta no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+#view que le pasas oferta, lo termina y pasa a entregas
+class EndOferta(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self,request,pk):
+        ahora = timezone.now().date()
+        oferta = Oferta.objects.get(pk=pk)
+        aportes = AporteOferta.objects.filter(id_oferta = pk)
+        oferta.id_estadoOferta = Estadooferta.objects.get(pk=3)
+        oferta.save()
+        entrega_ser = CreateEntregaSerializer(data={'fechaCreacion': ahora, 'id_oferta': oferta.__dict__['id_id_oferta']})
+
+        if entrega_ser.is_valid():
+            entrega = entrega_ser.save()
+            for aporte in aportes:
+                entrega_aporte_ser = CreateEntregaAporteSerializer(data={
+                    'id_entrega': entrega.id_entrega,
+                    'id_aporteferta': aporte.id_aporteOferta,
+                    'id_estadoEntrega': 1
+                })
+
+                if entrega_aporte_ser.is_valid():
+                    entrega_aporte_ser.save()
+                else:
+                    return Response(entrega_aporte_ser.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(entrega_ser.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(entrega_ser.data, status=status.HTTP_201_CREATED)
