@@ -801,9 +801,10 @@ INSERT INTO AporteOferta (descripcion, cantidad, fechaAportado, id_oferta, id_ob
 	('desc3', 30, CURDATE(), 3, 1, 2);
     
 INSERT INTO EstadoEntrega (nombre, descripcion) VALUES 
-    ('Pendiente', 'Solo es un pedido y no se hizo nada'),
-    ('En Proceso', 'Transporte se encarga de llevar este pedido que ahora esta en procesosta en proceso el pedido'),
-    ('Finalizado', 'El pedido llego a la obral pedido ya esta finalizado.'),
+    ('Pendiente', 'Necesita ser tomado para entregar'),
+    ('En Espera', 'Se esta esperando que llegue la fecha de entrega / se marque como en proceso'),
+    ('En proceso', 'La entrega debería esta siendo realizada. El usuario que realizó la entrega o la obra que lo recibió debe confirmar.'),
+    ('Por confirmar', 'La entrega fue completada. La obra que lo recibió debe confirmar'),
     ('Cancelado', 'El pedido fue cancelado por el usuario que lo hizo'),
     ('Vencido', 'El pedido ya vencio y no se puede reservar');
 
