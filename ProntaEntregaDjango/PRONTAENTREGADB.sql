@@ -805,6 +805,7 @@ INSERT INTO EstadoEntrega (nombre, descripcion) VALUES
     ('En Espera', 'Se esta esperando que llegue la fecha de entrega / se marque como en proceso'),
     ('En proceso', 'La entrega debería esta siendo realizada. El usuario que realizó la entrega o la obra que lo recibió debe confirmar.'),
     ('Por confirmar', 'La entrega fue completada. La obra que lo recibió debe confirmar'),
+    ('Finalizado', 'La entrega fue realizada con éxito'),
     ('Cancelado', 'El pedido fue cancelado por el usuario que lo hizo'),
     ('Vencido', 'El pedido ya vencio y no se puede reservar');
 

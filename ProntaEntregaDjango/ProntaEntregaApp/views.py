@@ -1070,6 +1070,29 @@ class EditarEntregaAporte(APIView):
             return Response({'success': 'Los atributos de la entrega han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class EditarEntregaAporteEstado(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, pk, new_estado):
+        try:
+            entrega = EntregaAporte.objects.get(pk=pk)
+        except EntregaAporte.DoesNotExist:
+            return Response({'error': 'No se encontró una entrega con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            estado_entrega = EstadoEntrega.objects.get(pk=new_estado)
+        except EstadoEntrega.DoesNotExist:
+            return Response({'error': 'No se encontró un estado de entrega con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+
+        entrega.id_estadoEntrega = estado_entrega
+        serializer = CreateEntregaAporteSerializer(entrega, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': 'Los atributos de la entrega han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetTransporte(APIView):
     permission_classes = [AllowAny]

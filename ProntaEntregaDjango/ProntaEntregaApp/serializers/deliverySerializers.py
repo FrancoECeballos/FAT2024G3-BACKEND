@@ -10,7 +10,16 @@ class EstadoEntregaSerializer(serializers.ModelSerializer):
         model = EstadoEntrega
         fields = '__all__'
 
+class SimpleEntregaSerializer(serializers.ModelSerializer):
+    id_pedido = PedidoSerializer()
+    id_oferta = OfertaSerializer()
+
+    class Meta:
+        model = Entrega
+        fields = '__all__'
+
 class EntregaAporteSerializer(serializers.ModelSerializer):
+    id_entrega = SimpleEntregaSerializer()
     id_aportePedido = AportePedidoSerializer()
     id_aporteOferta = DetalleofertaSerializer()
     id_estadoEntrega = EstadoEntregaSerializer()
@@ -44,7 +53,6 @@ class CreateEntregaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, data):
-        # Ensure at least one of 'id_pedido' or 'id_oferta' is provided
         if not data.get('id_pedido') and not data.get('id_oferta'):
             raise serializers.ValidationError("You must provide either 'id_pedido' or 'id_oferta'.")
         return data
