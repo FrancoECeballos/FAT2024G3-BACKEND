@@ -13,6 +13,7 @@ class PedidoSerializer(serializers.ModelSerializer):
     id_obra = ObraSerializer()
     id_usuario = UsuarioSerializer()
     id_producto = ProductoSerializer()
+    id_estadoPedido = EstadopedidoSerializer()
 
     urgente_label = serializers.SerializerMethodField()
 
