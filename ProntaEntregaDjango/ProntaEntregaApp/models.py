@@ -455,13 +455,14 @@ class Notificacion(models.Model):
     viewed = models.BooleanField(default=False)
     fecha_creacion = models.DateField(blank=True, null=True)
     id_usuario = models.ForeignKey(CustomUsuario, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+    id_obra = models.ForeignKey(Obra, models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'notificacion'
 
     def __str__(self):
-        return str(self.notificacion_id)
+        return f"{self.notificacion_id} : {self.titulo}"
     
 class Entrega(models.Model):
     id_entrega = models.AutoField(primary_key=True)
