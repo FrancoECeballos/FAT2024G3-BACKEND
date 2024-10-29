@@ -156,6 +156,12 @@ class DetalleobrausuarioSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("El usuario ya está registrado en esta obra.")
         
         return data
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        fecha_ingreso = instance.fechaingreso.strftime("%d/%m/%Y")
+        representation['fechaingreso'] = fecha_ingreso
+        return representation
     
 class CodigosDeVerificacionSerializer(serializers.ModelSerializer):
     
@@ -164,10 +170,14 @@ class CodigosDeVerificacionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class NotificacionSerializer(serializers.ModelSerializer):
-    
+    fecha_creacion = serializers.SerializerMethodField()
+
     class Meta:
         model = Notificacion
         fields = '__all__'
+
+    def get_fecha_creacion(self, notificacion):
+        return notificacion.fecha_creacion.strftime("%d/%m/%Y")
 
 class DetalleObraTransporteSerializer(serializers.ModelSerializer):
     class Meta:
