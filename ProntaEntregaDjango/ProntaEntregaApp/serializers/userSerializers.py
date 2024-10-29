@@ -15,12 +15,16 @@ class TipodocumentoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UsuarioSerializer(serializers.ModelSerializer):
-    id_direccion = DireccionSerializer(many = False)
-    id_tipodocumento = TipodocumentoSerializer(many = False)
-    
+    id_direccion = DireccionSerializer(many=False)
+    id_tipodocumento = TipodocumentoSerializer(many=False)
+    fechaUnion = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomUsuario
-        fields = ['id_usuario','nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'fechaUnion', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+        fields = ['id_usuario', 'nombre', 'apellido', 'nombreusuario', 'password', 'documento', 'telefono', 'email', 'genero', 'imagen', 'fechaUnion', 'id_direccion', 'id_tipodocumento', 'is_staff', 'is_superuser', 'is_active', 'is_verified']
+
+    def get_fechaUnion(self, obj):
+        return obj.fechaUnion.strftime("%H:%M %d/%m/%Y")
 
 class UsuarioUpdateSerializer(serializers.ModelSerializer):
     nombreusuario = serializers.CharField(validators=[])
