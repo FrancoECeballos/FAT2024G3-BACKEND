@@ -81,10 +81,24 @@ class DetallestockproductoSerializer(serializers.ModelSerializer):
         model = Detallestockproducto
         fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion','no_display', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        fecha_creacion = instance.fecha_creacion
+        if fecha_creacion:
+            representation['fecha_creacion'] = fecha_creacion.strftime('%H:%M %d/%m/%Y')
+        return representation
+
 class DspSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detallestockproducto
         fields = ['id_detallestockproducto', 'checkpoint', 'fecha_creacion','no_display', 'cantidad', 'id_producto', 'id_stock', 'id_usuario']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        fecha_creacion = instance.fecha_creacion
+        if fecha_creacion:
+            representation['fecha_creacion'] = fecha_creacion.strftime('%H:%M/%Y')
+        return representation
 
 class CrearDetallestockproductoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -12,7 +12,6 @@ class EstadoofertaSerializer(serializers.ModelSerializer):
 class OfertaSerializer(serializers.ModelSerializer):
     id_obra = ObraSerializer()
     id_usuario = UsuarioSerializer()
-    id_estadoOferta = EstadoofertaSerializer()
     id_producto = ProductoSerializer()
     id_estadoOferta = EstadoofertaSerializer()
 
