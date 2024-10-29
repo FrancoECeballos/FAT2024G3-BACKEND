@@ -76,17 +76,6 @@ CREATE TABLE CustomUsuario_user_permissions (
     FOREIGN KEY (customusuario_id) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS notificacion(
-    notificacion_id INT auto_increment NOT NULL,
-    titulo VARCHAR(255) NOT NULL,
-    descripcion VARCHAR(255),
-    viewed BOOLEAN DEFAULT FALSE,
-    fecha_creacion DATE,
-    id_usuario INT,
-    FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE,
-    PRIMARY KEY (notificacion_id)
-);
-
 CREATE TABLE IF NOT EXISTS Obra (
     id_obra INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
@@ -108,6 +97,19 @@ CREATE TABLE IF NOT EXISTS DetalleObraUsuario (
     CONSTRAINT fk_obra_detalle FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
     CONSTRAINT fk_usuario_detalle FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
     CONSTRAINT fk_tipo_usuario FOREIGN KEY (id_tipoUsuario) REFERENCES TipoUsuario(id_tipoUsuario)
+);
+
+CREATE TABLE IF NOT EXISTS notificacion(
+    notificacion_id INT auto_increment NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255),
+    viewed BOOLEAN DEFAULT FALSE,
+    fecha_creacion DATE,
+    id_usuario INT,
+    id_obra INT,
+    CONSTRAINT fk_usuario_notificacion FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario) ON DELETE CASCADE,
+    CONSTRAINT fk_obra_notificacion FOREIGN KEY (id_obra) REFERENCES Obra(id_obra),
+    PRIMARY KEY (notificacion_id)
 );
 
 CREATE TABLE IF NOT EXISTS Transporte (
@@ -447,6 +449,13 @@ INSERT INTO DetalleObraUsuario (descripcion, fechaIngreso, id_obra, id_usuario, 
     ('Encargado de la obra Madre Teresa', '2023-12-26', 10, 35, 2),
     ('Apoyo en la obra Madre de la Ternura', '2024-01-12', 11, 36, 2);
 
+-- Notificacion
+INSERT INTO notificacion (titulo, descripcion, viewed, fecha_creacion, id_usuario, id_obra) VALUES 
+    ('Prueba1', 'Notificacion de prueba 1 -- defaultviewed : False', False, '2024-04-20', 1, 1),
+    ('Prueba2', 'Notificacion de prueba 2 -- defaultviewed : False', False, '2024-04-21', 1, 1),
+    ('Prueba3', 'Notificacion de prueba 3 -- defaultviewed : True', True, '2024-04-22', 1, 1),
+    ('Prueba4', 'Notificacion de prueba 4 -- defaultviewed : False', False, '2024-04-23', 1, 1),
+    ('Prueba5', 'Notificacion de prueba 5 -- defaultviewed : True', True, '2024-04-24', 1, 1);
 
 -- Inserciones para la tabla Stock
 INSERT INTO Stock (id_obra) VALUES 
