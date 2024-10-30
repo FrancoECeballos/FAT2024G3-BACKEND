@@ -2023,7 +2023,8 @@ class EndPedido(APIView):
                 entrega_aporte_ser = CreateEntregaAporteSerializer(data={
                     'id_entrega': entrega.id_entrega,
                     'id_aportePedido': aporte.id_aportePedido,
-                    'id_estadoEntrega': 1
+                    'id_estadoEntrega': 1,
+                    'id_usuario': aporte.id_usuario
                 })
 
                 if entrega_aporte_ser.is_valid():
@@ -2064,10 +2065,13 @@ class EndOferta(APIView):
         if entrega_ser.is_valid():
             entrega = entrega_ser.save()
             for aporte in aportes:
+
                 entrega_aporte_ser = CreateEntregaAporteSerializer(data={
                     'id_entrega': entrega.id_entrega,
-                    'id_aporteferta': aporte.id_aporteOferta,
-                    'id_estadoEntrega': 1
+                    'id_aporteOferta': aporte.id_aporteOferta,
+                    'id_estadoEntrega': 1,
+                    'id_usuario': aporte.id_usuario.__dict__['id_usuario']
+                    
                 })
 
                 if entrega_aporte_ser.is_valid():
