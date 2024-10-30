@@ -1510,8 +1510,12 @@ class GetStockAsignadoByEmail(APIView):
         try:
             usuario = CustomUsuario.objects.get(email = email)
             detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = StockSerializer(detalle_obras, many=True)
+            obra_ids = [detalle_obra.id_obra for detalle_obra in detalle_obras]
+            stocks = Stock.objects.filter(id_obra__in=obra_ids)
+            serializer = StockSerializer(stocks, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         except Detalleobrausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -1520,10 +1524,14 @@ class GetStockAsignadoByToken(APIView):
 
     def get(self, request, token):
         try:
-            usuario = CustomUsuario.objects.get(auth_token = token)
+            usuario = CustomUsuario.objects.get(auth_token=token)
             detalle_obras = Detalleobrausuario.objects.filter(id_usuario=usuario.id_usuario)
-            serializer = StockSerializer(detalle_obras, many=True)
+            obra_ids = [detalle_obra.id_obra for detalle_obra in detalle_obras]
+            stocks = Stock.objects.filter(id_obra__in=obra_ids)
+            serializer = StockSerializer(stocks, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        except CustomUsuario.DoesNotExist:
+            return Response({'error': 'Usuario no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
         except Detalleobrausuario.DoesNotExist:
             return Response({'error': 'El usuario no pertenece a ninguna obra.'}, status=status.HTTP_404_NOT_FOUND)
         
