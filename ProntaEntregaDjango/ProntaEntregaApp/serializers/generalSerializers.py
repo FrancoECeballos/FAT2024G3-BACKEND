@@ -177,7 +177,9 @@ class NotificacionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_fecha_creacion(self, notificacion):
-        return notificacion.fecha_creacion.strftime("%d/%m/%Y")
+        if notificacion.fecha_creacion:
+            return notificacion.fecha_creacion.strftime("%d/%m/%Y")
+        return None
 
 class DetalleObraTransporteSerializer(serializers.ModelSerializer):
     class Meta:
