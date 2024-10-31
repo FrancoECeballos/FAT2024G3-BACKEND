@@ -74,9 +74,12 @@ class GetNotificacionesObrasDeUsuario(APIView):
         detalles = Detalleobrausuario.objects.filter(id_usuario=pk)
         obras = Obra.objects.filter(id_obra__in=detalles)
         for o in obras:
+            seccion = []
             notif = Notificacion.objects.filter(id_obra = o.id_obra, viewed=False)
             serializer = NotificacionSerializer(notif,many=True)
-            result.append(serializer.data)
+            seccion.append(o.nombre)
+            seccion.append(serializer.data)
+            result.append(seccion)
         return Response(result, status=status.HTTP_200_OK)
 
 class CrearNotificacion(APIView):
