@@ -66,6 +66,19 @@ class GetNotificacionesDeUser(APIView):
         serializer = NotificacionSerializer(notif,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class GetNotificacionesObrasDeUsuario(APIView):
+    permission_classes = [AllowAny]
+    def get(self,request,pk):
+
+        result = []
+        detalles = Detalleobrausuario.objects.filter(id_usuario=pk)
+        obras = Obra.objects.filter(id_obra__in=detalles)
+        for o in obras:
+            notif = Notificacion.objects.filter(id_obra = o.id_obra, viewed=False)
+            serializer = NotificacionSerializer(notif,many=True)
+            result.append(serializer.data)
+        return Response(result, status=status.HTTP_200_OK)
+
 class CrearNotificacion(APIView):
     permission_classes = [AllowAny]
 
