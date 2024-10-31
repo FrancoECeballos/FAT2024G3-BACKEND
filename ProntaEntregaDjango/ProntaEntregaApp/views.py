@@ -76,8 +76,9 @@ class GetNotificacionesObrasDeUsuario(APIView):
         for o in obras:
             
             notif = Notificacion.objects.filter(id_obra = o.id_obra, viewed=False)
+            obraSerializer = ObraSerializer(o)
             serializer = NotificacionSerializer(notif,many=True)
-            seccion = [{"nombre":o.nombre}]
+            seccion =[obraSerializer.data]
             seccion.append(serializer.data)
             
             result.append(seccion)
