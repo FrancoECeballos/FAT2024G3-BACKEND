@@ -693,15 +693,57 @@ class CrearPedido(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PostNotificacion(APIView):
+class PostNotificacionForAll(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = NotificacionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        users = CustomUsuario.objects.all()
+        notificaciones = []
+        for user in users:
+            notificacion = Notificacion(
+                titulo=request.data['titulo'],
+                descripcion=request.data['descripcion'],
+                fecha_creacion=timezone.now(),
+                id_usuario=user
+            )
+            notificaciones.append(notificacion)
+        Notificacion.objects.bulk_create(notificaciones)
+        return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
+    
+class PostNotificacionForObra(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id_obra):
+        obras = Detalleobrausuario.objects.filter(id_obra=id_obra)
+        users = CustomUsuario.objects.filter(id_usuario__in=obras.values_list('id_usuario', flat=True))
+        notificaciones = []
+        for user in users:
+            notificacion = Notificacion(
+                titulo=request.data['titulo'],
+                descripcion=request.data['descripcion'],
+                fecha_creacion=timezone.now(),
+                id_usuario=user
+            )
+            notificaciones.append(notificacion)
+        Notificacion.objects.bulk_create(notificaciones)
+        return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
+    
+class PostNotificacionForUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id_usuario):
+        users = CustomUsuario.objects.filter(id_usuario=id_usuario)
+        notificaciones = []
+        for user in users:
+            notificacion = Notificacion(
+                titulo=request.data['titulo'],
+                descripcion=request.data['descripcion'],
+                fecha_creacion=timezone.now(),
+                id_usuario=user
+            )
+            notificaciones.append(notificacion)
+        Notificacion.objects.bulk_create(notificaciones)
+        return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
     
 class DeleteNotificacion(APIView):
     permission_classes = [AllowAny]
