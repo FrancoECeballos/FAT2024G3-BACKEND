@@ -9,7 +9,7 @@ urlpatterns = [
 
     path('getNotificacion/<int:pk>', GetNotificacionesDeUser.as_view(), name='GetNotificacionesDeUsr'),
     path('getNotificacion/', GetNotificaciones.as_view(), name='GetNotificaciones'),
-    path('GetNotificacionesObrasDeUsuario/<int:pk>', GetNotificacionesObrasDeUsuario.as_view(), name='GetNotificacionesObrasDeUsuario'),
+    path('GetNotificacionesObrasDeUsuario/<int:pk>/', GetNotificacionesObrasDeUsuario.as_view(), name='GetNotificacionesObrasDeUsuario'),
     path('PostNotificacionForAll/', PostNotificacionForAll.as_view(), name='PostNotificacionForAll'),
     path('PostNotificacionForObra/<int:id_obra>/', PostNotificacionForObra.as_view(), name='PostNotificacionForObra'),
     path('PostNotificacionForUser/<int:id_usuario>/', PostNotificacionForUser.as_view(), name='PostNotificacionForUser'),
