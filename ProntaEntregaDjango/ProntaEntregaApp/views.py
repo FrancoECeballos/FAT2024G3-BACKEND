@@ -2052,7 +2052,7 @@ class GetOfertaCreadaPorUsuario(APIView):
 class GetOfertasRecientes(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, id_usuario):
-        ofertas = Oferta.objects.exclude(id_usuario=id_usuario).order_by('-id_oferta')[:5]
+        ofertas = Oferta.objects.exclude(id_usuario=id_usuario).order_by('-id_oferta')[:3]
         all = []
 
         all = lista_oferta_con_progreso(ofertas)
