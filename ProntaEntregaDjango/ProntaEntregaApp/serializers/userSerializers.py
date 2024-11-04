@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
-from ProntaEntregaApp.serializers.generalSerializers import *
+from ProntaEntregaApp.serializers.generalSerializers import DireccionSerializer
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 

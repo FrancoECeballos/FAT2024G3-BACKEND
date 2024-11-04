@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from ProntaEntregaApp.models import *
-from ProntaEntregaApp.serializers import *
 from django.contrib.auth import authenticate
 
 
@@ -170,6 +169,20 @@ class CodigosDeVerificacionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class NotificacionSerializer(serializers.ModelSerializer):
+    fecha_creacion = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Notificacion
+        fields = '__all__'
+
+    def get_fecha_creacion(self, notificacion):
+        if notificacion.fecha_creacion:
+            return notificacion.fecha_creacion.strftime("%d/%m/%Y")
+        return None
+    
+class CrearNotificacionSerializer(serializers.ModelSerializer):
+    id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
+    id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
     fecha_creacion = serializers.SerializerMethodField()
 
     class Meta:

@@ -72,10 +72,11 @@ class GetNotificacionesObrasDeUsuario(APIView):
 
         result = []
         detalles = Detalleobrausuario.objects.filter(id_usuario=pk)
-        obras = Obra.objects.filter(id_obra__in=detalles)
+        obra_ids = detalles.values_list('id_obra', flat=True)
+        obras = Obra.objects.filter(id_obra__in=obra_ids)
         for o in obras:
             
-            notif = Notificacion.objects.filter(id_obra = o.id_obra, viewed=False)
+            notif = Notificacion.objects.filter(id_obra = o.id_obra, id_usuario_id = pk, viewed=False)
             obraSerializer = ObraSerializer(o)
             serializer = NotificacionSerializer(notif,many=True)
             seccion =[obraSerializer.data]
@@ -700,14 +701,18 @@ class PostNotificacionForAll(APIView):
         users = CustomUsuario.objects.all()
         notificaciones = []
         for user in users:
-            notificacion = Notificacion(
-                titulo=request.data['titulo'],
-                descripcion=request.data['descripcion'],
-                fecha_creacion=timezone.now(),
-                id_usuario=user
-            )
-            notificaciones.append(notificacion)
-        Notificacion.objects.bulk_create(notificaciones)
+            data = {
+                'titulo': request.data['titulo'],
+                'descripcion': request.data['descripcion'],
+                'fecha_creacion': timezone.now(),
+                'id_obra': request.data['id_obra'],
+                'id_usuario': user.id_usuario
+            }
+            serializer = CrearNotificacionSerializer(data=data)
+            if serializer.is_valid():
+                notificaciones.append(serializer.save())
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
     
 class PostNotificacionForObra(APIView):
@@ -718,14 +723,18 @@ class PostNotificacionForObra(APIView):
         users = CustomUsuario.objects.filter(id_usuario__in=obras.values_list('id_usuario', flat=True))
         notificaciones = []
         for user in users:
-            notificacion = Notificacion(
-                titulo=request.data['titulo'],
-                descripcion=request.data['descripcion'],
-                fecha_creacion=timezone.now(),
-                id_usuario=user
-            )
-            notificaciones.append(notificacion)
-        Notificacion.objects.bulk_create(notificaciones)
+            data = {
+                'titulo': request.data['titulo'],
+                'descripcion': request.data['descripcion'],
+                'fecha_creacion': timezone.now(),
+                'id_obra': request.data['id_obra'],
+                'id_usuario': user.id_usuario
+            }
+            serializer = CrearNotificacionSerializer(data=data)
+            if serializer.is_valid():
+                notificaciones.append(serializer.save())
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
     
 class PostNotificacionForUser(APIView):
@@ -735,14 +744,18 @@ class PostNotificacionForUser(APIView):
         users = CustomUsuario.objects.filter(id_usuario=id_usuario)
         notificaciones = []
         for user in users:
-            notificacion = Notificacion(
-                titulo=request.data['titulo'],
-                descripcion=request.data['descripcion'],
-                fecha_creacion=timezone.now(),
-                id_usuario=user
-            )
-            notificaciones.append(notificacion)
-        Notificacion.objects.bulk_create(notificaciones)
+            data = {
+                'titulo': request.data['titulo'],
+                'descripcion': request.data['descripcion'],
+                'fecha_creacion': timezone.now(),
+                'id_obra': request.data['id_obra'],
+                'id_usuario': user.id_usuario
+            }
+            serializer = CrearNotificacionSerializer(data=data)
+            if serializer.is_valid():
+                notificaciones.append(serializer.save())
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
     
 class DeleteNotificacion(APIView):
