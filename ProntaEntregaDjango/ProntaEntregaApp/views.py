@@ -698,21 +698,26 @@ class PostNotificacionForAll(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        users = CustomUsuario.objects.all()
+        obras = Obra.objects.all()
         notificaciones = []
-        for user in users:
-            data = {
-                'titulo': request.data['titulo'],
-                'descripcion': request.data['descripcion'],
-                'fecha_creacion': timezone.now(),
-                'id_obra': request.data['id_obra'],
-                'id_usuario': user.id_usuario
-            }
-            serializer = CrearNotificacionSerializer(data=data)
-            if serializer.is_valid():
-                notificaciones.append(serializer.save())
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        for obra in obras:
+            detalles = Detalleobrausuario.objects.filter(id_obra=obra.id_obra)
+            users = CustomUsuario.objects.filter(id_usuario__in=detalles.values_list('id_usuario', flat=True))
+            for user in users:
+                data = {
+                    'titulo': request.data['titulo'],
+                    'descripcion': request.data['descripcion'],
+                    'fecha_creacion': timezone.now(),
+                    'id_obra': obra.id_obra,
+                    'id_usuario': user.id_usuario
+                }
+                serializer = CrearNotificacionSerializer(data=data)
+                if serializer.is_valid():
+                    notificaciones.append(serializer.save())
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         return Response({"detail": "Notifications created successfully."}, status=status.HTTP_201_CREATED)
     
 class PostNotificacionForObra(APIView):
