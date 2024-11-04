@@ -98,7 +98,7 @@ urlpatterns = [
 
     path('oferta/', GetOferta.as_view(), name='ver_oferta'),
     path('oferta_all/', GetAllOfertas.as_view(), name='ver_all_oferta'),
-    path('GetOfertaCreadaPorUsuario/<str:token>/', GetOfertaCreadaPorUsuario.as_view(), name='GetOfertaCreadaPorUsuario'),
+    path('GetOfertaCreadaPorUsuario/<str:pk>/', GetOfertaCreadaPorUsuario.as_view(), name='GetOfertaCreadaPorUsuario'),
     path('GetOfertasRecientes/<int:id_usuario>', GetOfertasRecientes.as_view(), name='GetOfertasRecientes'),
     path('GetOfertaSimilar/<int:id_obra>/<int:id_producto>/', GetOfertaSimilar.as_view(), name='GetOfertaSimilar'),
     path('CancelOferta/<int:pk>/', CancelOferta.as_view(), name='CancelOferta'),

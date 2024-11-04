@@ -2043,8 +2043,8 @@ class GetPedidosRecientes(APIView):
 class GetOfertaCreadaPorUsuario(APIView):
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, token):
-        user = CustomUsuario.objects.get(auth_token=token)
+    def get(self, request, pk):
+        user = CustomUsuario.objects.get(id_usuario=pk)
         ofertas = Oferta.objects.filter(id_usuario=user.id_usuario, id_estadoOferta__in=[1, 2])
         all = lista_oferta_con_progreso(ofertas)
         return Response(all, status=status.HTTP_200_OK)
