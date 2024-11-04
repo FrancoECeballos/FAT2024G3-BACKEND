@@ -2043,26 +2043,17 @@ class EliminarObra(APIView):
 class GetPedidoCreadoPorUsuario(APIView):
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, token):
-        user = CustomUsuario.objects.get(auth_token=token)
+    def get(self, request, pk):
+        user = CustomUsuario.objects.get(id_usuario=pk)
         pedidos = Pedido.objects.filter(id_usuario=user.id_usuario, id_estadoPedido__in=[1, 2])
         all = lista_pedido_con_progreso(pedidos)
         return Response(all, status=status.HTTP_200_OK)
-    
-class GetPedidosRecientes(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request, id_usuario):
-        pedidos = Pedido.objects.exclude(id_usuario=id_usuario).order_by('-id_pedido')[:5]
-        all = []
 
-        all = lista_pedido_con_progreso(pedidos)
-        return Response(all, status=status.HTTP_200_OK)
-    
 class GetOfertaCreadaPorUsuario(APIView):
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, token):
-        user = CustomUsuario.objects.get(auth_token=token)
+    def get(self, request, pk):
+        user = CustomUsuario.objects.get(id_usuario=pk)
         ofertas = Oferta.objects.filter(id_usuario=user.id_usuario, id_estadoOferta__in=[1, 2])
         all = lista_oferta_con_progreso(ofertas)
         return Response(all, status=status.HTTP_200_OK)
