@@ -1219,10 +1219,13 @@ class GetTransporteByObra(APIView):
 class CrearTransporte(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
+        print("Datos recibidos:", request.data)  # Agregar mensaje de depuración
         serializer = crearTransporteSerializer(data=request.data)
         if serializer.is_valid():
+            print("Datos validados:", serializer.validated_data)  # Agregar mensaje de depuración
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print("Errores de validación:", serializer.errors)  # Agregar mensaje de depuración
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class EditarTransporte(APIView):
