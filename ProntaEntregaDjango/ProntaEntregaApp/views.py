@@ -2062,7 +2062,22 @@ class GetPedidoCreadoPorUsuario(APIView):
     def get(self, request, pk):
         user = CustomUsuario.objects.get(id_usuario=pk)
         pedidos = Pedido.objects.filter(id_usuario=user.id_usuario, id_estadoPedido__in=[1, 2])
-        all = lista_pedido_con_progreso(pedidos)
+        all = []
+
+        for p in pedidos:
+            serializer = PedidoSerializer(p)
+
+            total = 0
+            aportes = AportePedido.objects.filter(id_pedido = p.id_pedido)
+
+            for a in aportes:
+                total = total + a.cantidad
+
+            s = serializer.data
+            s.update({"progreso":total})
+            s.update({"aportes":AportePedidoSerializer(aportes, many=True).data})
+            all.append(s)
+
         return Response(all, status=status.HTTP_200_OK)
 
 class GetOfertaCreadaPorUsuario(APIView):
@@ -2071,8 +2086,23 @@ class GetOfertaCreadaPorUsuario(APIView):
     def get(self, request, pk):
         user = CustomUsuario.objects.get(id_usuario=pk)
         ofertas = Oferta.objects.filter(id_usuario=user.id_usuario, id_estadoOferta__in=[1, 2])
-        all = lista_oferta_con_progreso(ofertas)
-        return Response(all, status=status.HTTP_200_OK)
+        
+        all_ = []
+        for p in ofertas:
+            serializer = OfertaSerializer(p)
+
+            total = 0
+            aportes = AporteOferta.objects.filter(id_oferta = p.id_oferta)
+
+            for a in aportes:
+                total = total + a.cantidad
+
+            s = serializer.data
+            s.update({"progreso":total})
+            s.update({"aportes":DetalleofertaSerializer(aportes, many=True).data})
+            all_.append(s)
+            
+        return Response(all_, status=status.HTTP_200_OK)
 
 class GetOfertasRecientes(APIView):
     permission_classes = [IsAuthenticated]
