@@ -684,6 +684,15 @@ class GetPedido(APIView):
 
         all = lista_pedido_con_progreso(pedidos)
         return Response(all, status=status.HTTP_200_OK)
+    
+class GetPedidoByID(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, pk):
+        pedidos = Pedido.objects.filter(id_pedido=pk)
+        all = []
+
+        all = lista_pedido_con_progreso(pedidos)
+        return Response(all, status=status.HTTP_200_OK)
 
 class CrearPedido(APIView):
     permission_classes = [AllowAny]
@@ -732,7 +741,7 @@ class PostNotificacionForObra(APIView):
                 'titulo': request.data['titulo'],
                 'descripcion': request.data['descripcion'],
                 'fecha_creacion': timezone.now(),
-                'id_obra': request.data['id_obra'],
+                'id_obra': id_obra,
                 'id_usuario': user.id_usuario
             }
             serializer = CrearNotificacionSerializer(data=data)
@@ -959,7 +968,6 @@ class EditarAportePedido(APIView):
             serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+producto.nombre+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
-            ##FIN SECCION NOTIFICACION
 
 
             return Response({'success': 'Los atributos del detalle de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
@@ -971,6 +979,14 @@ class GetOferta(APIView):
 
     def get(self, request):
         ofertas = Oferta.objects.filter(id_estadoOferta=1)
+        all_ofertas = lista_oferta_con_progreso(ofertas)
+        return Response(all_ofertas, status=status.HTTP_200_OK)
+    
+class GetOfertaByID(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        ofertas = Oferta.objects.filter(id_oferta=pk)
         all_ofertas = lista_oferta_con_progreso(ofertas)
         return Response(all_ofertas, status=status.HTTP_200_OK)
     

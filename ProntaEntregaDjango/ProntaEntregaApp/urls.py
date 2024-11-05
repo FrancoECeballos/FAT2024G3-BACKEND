@@ -75,6 +75,7 @@ urlpatterns = [
     path('EliminarTodosDetalleStockProductoView/<int:id_stock>/<int:id_producto>/', EliminarTodosDetalleStockProductoView.as_view(), name='EliminarTodosDetalleStockProductoView'),
 
     path('pedido/', GetPedido.as_view(), name='ver_pedido'),
+    path('pedido/<int:pk>/', GetPedidoByID.as_view(), name='ver_pedido_id'),
     path('crear_pedido/', CrearPedido.as_view(), name='crear_pedido'),
     path('eliminar_pedido/<int:pk>/', DeletePedido.as_view(), name='eliminar_pedido'),
     path('CancelPedido/<int:pk>/', CancelPedido.as_view(), name='CancelPedido'),
@@ -96,6 +97,7 @@ urlpatterns = [
     path('delete_detalle_pedido/<int:id_stock>/<int:id_pedido>/', DeleteDetalleobrapedido.as_view(), name='editar_detalle_pedido'),
 
     path('oferta/', GetOferta.as_view(), name='ver_oferta'),
+    path('oferta/<int:pk>/', GetOfertaByID.as_view(), name='ver_oferta_id'),
     path('oferta_all/', GetAllOfertas.as_view(), name='ver_all_oferta'),
     path('GetOfertaCreadaPorUsuario/<int:pk>/', GetOfertaCreadaPorUsuario.as_view(), name='GetOfertaCreadaPorUsuario'),
     path('GetOfertasRecientes/<int:id_usuario>', GetOfertasRecientes.as_view(), name='GetOfertasRecientes'),
