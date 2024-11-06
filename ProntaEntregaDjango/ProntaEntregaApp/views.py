@@ -1219,20 +1219,20 @@ class GetTransporteByObra(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CrearTransporte(APIView):
-    permission_classes = [IsAdminUser]  # Aplicar el permiso personalizado
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print("Datos recibidos:", request.data)  # Agregar mensaje de depuración
+        print("Datos recibidos:", request.data)
         serializer = crearTransporteSerializer(data=request.data)
         if serializer.is_valid():
-            print("Datos validados:", serializer.validated_data)  # Agregar mensaje de depuración
+            print("Datos validados:", serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("Errores de validación:", serializer.errors)  # Agregar mensaje de depuración
+        print("Errores de validación:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EditarTransporte(APIView):
-    permission_classes = [IsAdminUser]  # Aplicar el permiso personalizado
+    permission_classes = [IsAuthenticated]
 
     def put(self, request, pk):
         try:
