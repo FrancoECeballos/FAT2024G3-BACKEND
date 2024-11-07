@@ -984,6 +984,15 @@ class GetOferta(APIView):
         all_ofertas = lista_oferta_con_progreso(ofertas)
         return Response(all_ofertas, status=status.HTTP_200_OK)
     
+class GetOfertaExceptUser(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, token):
+        user = CustomUsuario.objects.get(auth_token=token)
+        ofertas = Oferta.objects.filter(id_estadoOferta=1).exclude(id_usuario=user.id_usuario)
+        all_ofertas = lista_oferta_con_progreso(ofertas)
+        return Response(all_ofertas, status=status.HTTP_200_OK)
+    
 class GetOfertaByID(APIView):
     permission_classes = [AllowAny]
 
