@@ -6,3 +6,4 @@ cd /home/user/Escritorio/FAT2024G3-BACKEND/ProntaEntregaDjango
 pipenv run python manage.py auto_vencimiento_pedido
 pipenv run python manage.py auto_vencimiento_entrega
 pipenv run python manage.py auto_vencimiento_oferta
+pipenv run python manage.py auto_borrar_notifs
