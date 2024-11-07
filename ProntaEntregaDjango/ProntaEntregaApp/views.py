@@ -40,6 +40,8 @@ from django.http import HttpResponse
 from weasyprint import HTML
 from .models import Pedido
 from datetime import datetime, timedelta, date
+from .permissions import IsAdminUser
+
 
 def index(request):
     return render(request, 'index.html')
@@ -684,6 +686,15 @@ class GetPedido(APIView):
 
         all = lista_pedido_con_progreso(pedidos)
         return Response(all, status=status.HTTP_200_OK)
+    
+class GetPedidoByID(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, pk):
+        pedidos = Pedido.objects.filter(id_pedido=pk)
+        all = []
+
+        all = lista_pedido_con_progreso(pedidos)
+        return Response(all, status=status.HTTP_200_OK)
 
 class CrearPedido(APIView):
     permission_classes = [AllowAny]
@@ -732,7 +743,7 @@ class PostNotificacionForObra(APIView):
                 'titulo': request.data['titulo'],
                 'descripcion': request.data['descripcion'],
                 'fecha_creacion': timezone.now(),
-                'id_obra': request.data['id_obra'],
+                'id_obra': id_obra,
                 'id_usuario': user.id_usuario
             }
             serializer = CrearNotificacionSerializer(data=data)
@@ -959,7 +970,6 @@ class EditarAportePedido(APIView):
             serializerN = NotificacionSerializer(data={'titulo':'Se modifico su pedido','descripcion':'su pedido de '+producto.nombre+' se modifico','fecha_creacion':str(timezone.now().date()),'id_usuario':1})
             if serializerN.is_valid():
                 serializerN.save()
-            ##FIN SECCION NOTIFICACION
 
 
             return Response({'success': 'Los atributos del detalle de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
@@ -971,6 +981,14 @@ class GetOferta(APIView):
 
     def get(self, request):
         ofertas = Oferta.objects.filter(id_estadoOferta=1)
+        all_ofertas = lista_oferta_con_progreso(ofertas)
+        return Response(all_ofertas, status=status.HTTP_200_OK)
+    
+class GetOfertaByID(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        ofertas = Oferta.objects.filter(id_oferta=pk)
         all_ofertas = lista_oferta_con_progreso(ofertas)
         return Response(all_ofertas, status=status.HTTP_200_OK)
     
@@ -1201,29 +1219,32 @@ class GetTransporteByObra(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CrearTransporte(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
+        print("Datos recibidos:", request.data)
         serializer = crearTransporteSerializer(data=request.data)
         if serializer.is_valid():
+            print("Datos validados:", serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print("Errores de validación:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class EditarTransporte(APIView):
+    permission_classes = [IsAuthenticated]
+
     def put(self, request, pk):
         try:
             transporte = Transporte.objects.get(pk=pk)
         except Transporte.DoesNotExist:
-            return Response({'error': 'No se encontró un transporte con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = TransporteSerializer(transporte, data=request.data,partial=True)
+            return Response({'error': 'Transporte no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
+        serializer = crearTransporteSerializer(transporte, data=request.data)
         if serializer.is_valid():
-
             serializer.save()
-            return Response({'success': 'Los atributos del transporte han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class EliminarTransporte(APIView):
     permission_classes = [IsAuthenticated]

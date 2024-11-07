@@ -398,25 +398,27 @@ class AporteOferta(models.Model):
 
 
 class TransporteManager(models.Manager): 
-    def crear_transporte(self, marca, modelo, patente, kilometraje, imagen ):
+    def crear_transporte(self, marca, modelo, patente, kilometraje, imagen):
         if not marca:
             raise ValueError('El transporte debe tener una marca')
         if not modelo:
             raise ValueError('El transporte debe tener un modelo')
         if not patente:
             raise ValueError('El transporte debe tener una patente')
-        if not kilometraje:
+        if kilometraje is None:
             raise ValueError('El transporte debe tener un kilometraje')
+        if kilometraje < 0:
+            raise ValueError('El kilometraje no puede ser negativo')
 
-        Transporte = self.model(
+        transporte = self.model(
             imagen=imagen,
             marca=marca,
             modelo=modelo,
             patente=patente,
             kilometraje=kilometraje,
         )
-        Transporte.save(using=self._db)
-        return Transporte
+        transporte.save(using=self._db)
+        return transporte
     
 
 class Transporte(models.Model):
@@ -424,9 +426,9 @@ class Transporte(models.Model):
     marca = models.CharField(max_length=255, blank=True, null=True)
     modelo = models.CharField(max_length=255, blank=True, null=True)
     patente = models.CharField(max_length=20, blank=True, null=True)
-    kilometraje = models.IntegerField(blank=True, null=True)
-    estadoitv = models.CharField(db_column='estadoITV', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    anio = models.TextField(blank=True, null=True)  # This field type is a guess.
+    kilometraje = models.PositiveIntegerField(default=0)  # Asegúrate de que el valor 0 sea permitido
+    estadoitv = models.CharField(db_column='estadoITV', max_length=255, blank=True, null=True)
+    anio = models.TextField(blank=True, null=True)
     imagen = models.ImageField(upload_to='vehiculos/', null=True, blank=True)
     necesita_mantenimiento = models.BooleanField(default=False)
     descripcion_mantenimiento = models.CharField(max_length=1000, blank=True, null=True, default='')

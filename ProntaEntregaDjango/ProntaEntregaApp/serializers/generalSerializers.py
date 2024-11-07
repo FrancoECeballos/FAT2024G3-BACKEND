@@ -93,12 +93,7 @@ class CreateDetalleobrapedidoSerializer(serializers.ModelSerializer):
 class TransporteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transporte
-        fields = '__all__'
-
-class crearTransporteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Transporte
-        fields = ['id_transporte', 'imagen', 'marca', 'modelo', 'patente', 'kilometraje']
+        fields = ['id_transporte', 'imagen', 'marca', 'modelo', 'patente', 'kilometraje', 'necesita_mantenimiento', 'descripcion_mantenimiento']
 
     def create(self, validated_data):
         auto = Transporte.objects.crear_transporte(
@@ -107,6 +102,26 @@ class crearTransporteSerializer(serializers.ModelSerializer):
             modelo=validated_data['modelo'],
             patente=validated_data['patente'],
             kilometraje=validated_data['kilometraje']
+        )
+        return auto
+
+class crearTransporteSerializer(serializers.ModelSerializer):
+    necesita_mantenimiento = serializers.BooleanField(required=False, allow_null=True)
+    descripcion_mantenimiento = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+
+    class Meta:
+        model = Transporte
+        fields = ['id_transporte', 'imagen', 'marca', 'modelo', 'patente', 'kilometraje', 'necesita_mantenimiento', 'descripcion_mantenimiento']
+
+    def create(self, validated_data):
+        auto = Transporte.objects.crear_transporte(
+            imagen=validated_data['imagen'],
+            marca=validated_data['marca'],
+            modelo=validated_data['modelo'],
+            patente=validated_data['patente'],
+            kilometraje=validated_data['kilometraje'],
+            necesita_mantenimiento=validated_data.get('necesita_mantenimiento'),
+            descripcion_mantenimiento=validated_data.get('descripcion_mantenimiento')
         )
         return auto
     
