@@ -203,11 +203,13 @@ CREATE TABLE IF NOT EXISTS Pedido (
 CREATE TABLE IF NOT EXISTS AportePedido (
     id_aportePedido INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255),
-    cantidad INT not null,
+    cantidad INT NOT NULL,
     fechaAportado DATE,
+    id_producto INT,
     id_pedido INT,
     id_obra INT,
     id_usuario INT,
+    CONSTRAINT fk_aporte_producto FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
     CONSTRAINT fk_aportePedido FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
 	CONSTRAINT fk_usuario_aportePedido FOREIGN KEY (id_usuario) REFERENCES CustomUsuario(id_usuario),
     CONSTRAINT fk_obra_aportePedido FOREIGN KEY (id_obra) REFERENCES Obra(id_obra)
@@ -799,10 +801,10 @@ INSERT INTO DetalleStockProducto (cantidad, checkpoint, fecha_creacion, id_stock
     (16, FALSE, '2023-09-15 14:00:00', 8, 26, 10),
     (20, FALSE, '2023-09-16 15:00:00', 1, 27, 11);
     
-INSERT INTO AportePedido (descripcion, cantidad, fechaAportado, id_pedido, id_obra, id_usuario) VALUES 
-	('desc1', 10, CURDATE(), 1, 4, 5),
-	('desc2', 20, CURDATE(), 2, 5, 6),
-	('desc3', 30, CURDATE(), 3, 6, 7);
+INSERT INTO AportePedido (descripcion, cantidad, fechaAportado, id_producto, id_pedido, id_obra, id_usuario) VALUES 
+	('desc1', 10, CURDATE(), 3, 1, 4, 5),
+	('desc2', 20, CURDATE(), 1, 2, 5, 6),
+	('desc3', 30, CURDATE(), 2, 3, 6, 7);
 
 INSERT INTO AporteOferta (descripcion, cantidad, fechaAportado, id_oferta, id_obra, id_usuario) VALUES 
 	('desc1', 10, CURDATE(), 1, 3, 4),

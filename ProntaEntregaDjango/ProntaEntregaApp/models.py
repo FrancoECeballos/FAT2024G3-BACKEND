@@ -343,6 +343,7 @@ class AportePedido(models.Model):
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     cantidad = models.IntegerField()
     fechaAportado = models.DateField(db_column='fechaAportado', blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
     id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
     id_obra = models.ForeignKey('Obra', models.DO_NOTHING, db_column='id_obra', blank=True, null=True)
     id_usuario = models.ForeignKey('CustomUsuario', models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)

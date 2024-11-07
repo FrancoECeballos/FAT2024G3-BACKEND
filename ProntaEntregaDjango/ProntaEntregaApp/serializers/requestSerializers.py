@@ -38,6 +38,7 @@ class CreatePedidoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AportePedidoSerializer(serializers.ModelSerializer):
+    id_producto = ProductoSerializer()
     id_pedido = PedidoSerializer()
     id_usuario = UsuarioSerializer()
     id_obra = ObraSerializer()
@@ -47,6 +48,7 @@ class AportePedidoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CreateAportePedidoSerializer(serializers.ModelSerializer):
+    id_producto = serializers.PrimaryKeyRelatedField(queryset=Producto.objects.all())
     id_pedido = serializers.PrimaryKeyRelatedField(queryset=Pedido.objects.all())
     id_usuario = serializers.PrimaryKeyRelatedField(queryset=CustomUsuario.objects.all())
     id_obra = serializers.PrimaryKeyRelatedField(queryset=Obra.objects.all())
