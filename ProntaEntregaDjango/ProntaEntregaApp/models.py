@@ -398,7 +398,7 @@ class AporteOferta(models.Model):
 
 
 class TransporteManager(models.Manager): 
-    def crear_transporte(self, marca, modelo, patente, kilometraje, imagen):
+    def crear_transporte(self, marca, modelo, patente, kilometraje, imagen, necesita_mantenimiento=False, descripcion_mantenimiento=''):
         if not marca:
             raise ValueError('El transporte debe tener una marca')
         if not modelo:
@@ -415,7 +415,7 @@ class TransporteManager(models.Manager):
             marca=marca,
             modelo=modelo,
             patente=patente,
-            kilometraje=kilometraje,
+            kilometraje=kilometraje
         )
         transporte.save(using=self._db)
         return transporte
