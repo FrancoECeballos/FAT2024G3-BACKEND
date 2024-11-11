@@ -1167,9 +1167,16 @@ class GetEntrega(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         entregas = Entrega.objects.all()
+
+        for e in entregas:
+            e_a = EntregaAporte.objects.filter(id_entrega = e.id_entrega)
+            print(len(e_a))
+            if len(e_a) == 0:
+                e.delete()
+        
         serializer = EntregaSerializer(entregas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 class CrearEntrega(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
