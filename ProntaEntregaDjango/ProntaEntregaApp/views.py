@@ -2178,7 +2178,7 @@ class EndPedido(APIView):
                     'id_entrega': entrega.id_entrega,
                     'id_aportePedido': aporte.id_aportePedido,
                     'id_estadoEntrega': 1,
-                    'id_usuario': aporte.id_usuario
+                    'id_usuario': aporte.id_usuario.id_usuario
                 })
 
                 if entrega_aporte_ser.is_valid():
