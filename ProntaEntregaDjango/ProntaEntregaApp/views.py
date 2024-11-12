@@ -1177,12 +1177,23 @@ class GetEntrega(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         entregas = Entrega.objects.all()
-
         for e in entregas:
+            display = True
             e_a = EntregaAporte.objects.filter(id_entrega = e.id_entrega)
             print(len(e_a))
+            
             if len(e_a) == 0:
                 e.delete()
+            
+            for x in e_a:
+                print(x.__dict__['id_estadoEntrega_id'])
+                if x.__dict__['id_estadoEntrega_id'] > 5:
+                    display = False
+            
+            if display == False:
+                print('no valido; id de entrega: '+ str(e.id_entrega))
+                entregas = entregas.exclude(id_entrega = e.id_entrega)
+            
         
         serializer = EntregaSerializer(entregas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
