@@ -695,6 +695,10 @@ class GetPedido(APIView):
         all = []
 
         all = lista_pedido_con_progreso(pedidos)
+
+        for x in all:
+            detalle= Detalleobrapedido.objects.filter(id_pedido = x['id_pedido'])
+            x.update({"Detalleobrapedido":DetalleobrapedidoSerializer(detalle,many=True).data})
         return Response(all, status=status.HTTP_200_OK)
     
 class GetPedidoByID(APIView):
