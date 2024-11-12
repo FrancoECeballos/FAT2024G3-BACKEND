@@ -1019,17 +1019,6 @@ class GetAllOfertas(APIView):
         all_ofertas = lista_oferta_con_progreso(ofertas)
         return Response(all_ofertas, status=status.HTTP_200_OK)
 
-class GetOfertaById(APIView):
-    permission_classes = [AllowAny]
-    
-    def get(self, request, pk):
-        try:
-            oferta = Oferta.objects.get(pk=pk)
-            serializer = OfertaSerializer(oferta)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Oferta.DoesNotExist:
-            return Response({'error': 'Oferta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
-
 
 class CrearOferta(APIView):
     permission_classes = [IsAuthenticated]
