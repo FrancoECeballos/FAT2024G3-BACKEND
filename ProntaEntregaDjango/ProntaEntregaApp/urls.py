@@ -89,6 +89,7 @@ urlpatterns = [
     path('aporte_pedido/', GetAportePedido.as_view(), name='ver_detalle_pedido'),
     path('crear_aporte_pedido/', CrearAportePedido.as_view(), name='crear_aporte_pedido'),
     path('editar_aporte_pedido/<int:pk>/', EditarAportePedido.as_view(), name='editar_aporte_pedido'),
+    path('delete_aporte_pedido/<int:pk>/', DeleteAportePedido.as_view(), name='delete_aporte_pedido'),
     path('get_pedidos_recibidos_for_user/<str:token>/', GetPedidosRecibidosByUser.as_view(), name='get_pedido_by_user'),
     path('get_pedidos_recibidos_for_admin/', GetPedidosRecibidosForAdmin.as_view(), name='get_pedido_recibido_for_admin'),
     path('GetPedidoCreadoPorUsuario/<int:pk>/', GetPedidoCreadoPorUsuario.as_view(), name='GetPedidoCreadoPorUsuario'),
@@ -114,6 +115,7 @@ urlpatterns = [
     path('aporte_oferta/', GetAporteOferta.as_view(), name='ver_detalle_oferta'),
     path('crear_detalle_oferta/', CrearDetalleOferta.as_view(), name='crear_detalle_oferta'),
     path('editar_detalle_oferta/<int:pk>/', EditarDetalleOferta.as_view(), name='editar_detalle_oferta'),
+    path('delete_detalle_oferta/<int:pk>/', DeleteDetalleOferta.as_view(), name='delete_detalle_oferta'),
 
     path('entrega/', GetEntrega.as_view(), name='ver_entrega'),
     path('crear_entrega/', CrearEntrega.as_view(), name='crear_entrega'),

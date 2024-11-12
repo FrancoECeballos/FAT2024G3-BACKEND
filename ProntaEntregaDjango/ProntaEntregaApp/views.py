@@ -985,6 +985,17 @@ class EditarAportePedido(APIView):
             return Response({'success': 'Los atributos del detalle de pedido han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class DeleteAportePedido(APIView):
+    def delete(self, request, pk):
+        try:
+            aporte = AportePedido.objects.get(id_aportePedido=pk)
+        except AportePedido.DoesNotExist:
+            return Response({'error': 'No se encontró un detalle de pedido con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        aporte.delete()
+
+        return Response({'success': 'El detalle de pedido ha sido eliminado exitosamente.'}, status=status.HTTP_200_OK)
 
 class GetOferta(APIView):
     permission_classes = [AllowAny]
@@ -1151,6 +1162,16 @@ class EditarDetalleOferta(APIView):
             return Response({'success': 'Los atributos del detalle de oferta han sido modificados exitosamente.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class DeleteDetalleOferta(APIView):
+    def delete(self, request, pk):
+        try:
+            detalle = AporteOferta.objects.get(pk=pk)
+        except AporteOferta.DoesNotExist:
+            return Response({'error': 'No se encontró un detalle de oferta con el ID proporcionado.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        detalle.delete()
+        return Response({'success': 'El detalle de oferta ha sido eliminado exitosamente.'}, status=status.HTTP_200_OK)
 
 class GetEntrega(APIView):
     permission_classes = [AllowAny]
