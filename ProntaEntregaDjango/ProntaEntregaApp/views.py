@@ -1536,7 +1536,7 @@ class DeleteProducto(APIView):
 
 
 class VerUsuarios(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         usuarios = CustomUsuario.objects.all()
