@@ -17,9 +17,11 @@ google-cloud-storage==2.18.0
 google-crc32c==1.5.0
 google-resumable-media==2.7.1
 googleapis-common-protos==1.63.2
+gunicorn==23.0.0
 html5lib==1.1
 idna==3.7
 mysqlclient==2.2.4
+packaging==24.2
 pillow==10.3.0
 proto-plus==1.24.0
 protobuf==5.27.2
@@ -39,4 +41,5 @@ typing_extensions==4.11.0
 urllib3==2.2.2
 weasyprint==62.3
 webencodings==0.5.1
+whitenoise==6.8.2
 zopfli==0.2.3

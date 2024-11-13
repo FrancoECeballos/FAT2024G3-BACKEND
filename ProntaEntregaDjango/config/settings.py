@@ -2,15 +2,35 @@ from pathlib import Path
 from dotenv import load_dotenv
 from google.oauth2 import service_account
 import os
+import json
+import base64
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+gcloud_credentials_base64 = os.getenv('GCLOUD_CREDENTIALS_BASE64')
 
-# Configurar credenciales de Google Cloud Storage
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'credentials/my-gcloud-credentials.json')
-)
+if gcloud_credentials_base64 is None:
+    raise ValueError("La variable de entorno GCLOUD_CREDENTIALS_BASE64 no está definida")
+
+# Agrega el padding correcto a la cadena base64
+missing_padding = len(gcloud_credentials_base64) % 4
+if missing_padding != 0:
+    gcloud_credentials_base64 += '=' * (4 - missing_padding)
+
+# Decodifica la cadena base64
+try:
+    gcloud_credentials_json = base64.b64decode(gcloud_credentials_base64).decode('utf-8')
+except Exception as e:
+    raise ValueError(f"Error al decodificar la cadena base64: {e}")
+
+# Carga las credenciales
+try:
+    gcloud_credentials = json.loads(gcloud_credentials_json)
+except json.JSONDecodeError as e:
+    raise ValueError(f"Error al decodificar el JSON: {e}")
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(gcloud_credentials)
 
 # Nombre del bucket
 GS_BUCKET_NAME = 'bucket-django-pronta-entrega'
@@ -38,12 +58,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z(fv!69g=(omoc8se6)lz*v#2nta9!5rjk$6uuz++x(i=b81=i'
-
+SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-#&')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -102,6 +127,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -126,7 +152,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 DATABASES = {
-    "default": {
+    "default":{
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('mysqldatabase'),
         'USER': os.getenv('mysqluser'),
