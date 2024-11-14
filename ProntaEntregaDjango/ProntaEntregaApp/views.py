@@ -27,7 +27,7 @@ from ProntaEntregaApp.serializers.deliverySerializers import *
 from ProntaEntregaApp.funciones_varias import *
 from ProntaEntregaApp.models import CustomUsuario
 from django.http import JsonResponse
-from django.db.models import Count
+from django.db.models import Count, Case, When, IntegerField
 from django.views.decorators.http import require_http_methods
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -442,8 +442,17 @@ class UserByObra(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, id_obra):
-        detalles = Detalleobrausuario.objects.filter(id_obra=id_obra).values_list('id_usuario', flat=True)
-        usuarios = CustomUsuario.objects.filter(id_usuario__in=detalles)
+        detalles = Detalleobrausuario.objects.filter(id_obra=id_obra).values('id_usuario', 'id_tipousuario')
+        usuarios = CustomUsuario.objects.filter(id_usuario__in=[detalle['id_usuario'] for detalle in detalles])
+        
+        usuarios = usuarios.annotate(
+            tipo_order=Case(
+                When(id_usuario__in=[detalle['id_usuario'] for detalle in detalles if detalle['id_tipousuario'] == 2], then=0),
+                default=1,
+                output_field=IntegerField(),
+            )
+        ).order_by('tipo_order')
+
         serializer = UsuarioSerializer(usuarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
