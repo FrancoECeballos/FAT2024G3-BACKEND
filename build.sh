@@ -6,3 +6,6 @@ cd ProntaEntregaDjango
 
 ./manage.py makemigrations
 ./manage.py migrate    
+
+../end_cron.sh
+../start_cron.sh 
