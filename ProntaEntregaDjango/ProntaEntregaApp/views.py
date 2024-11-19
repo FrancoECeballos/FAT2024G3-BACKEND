@@ -2133,14 +2133,22 @@ class GetPedidoCreadoPorUsuario(APIView):
             serializer = PedidoSerializer(p)
 
             total = 0
-            aportes = AportePedido.objects.filter(id_pedido = p.id_pedido)
+            aportes = AportePedido.objects.filter(id_pedido=p.id_pedido)
+            stocks = Detalleobrapedido.objects.filter(id_pedido=p.id_pedido)
 
             for a in aportes:
-                total = total + a.cantidad
+                total += a.cantidad
+
+            obras = []
+            for stock in stocks:
+                aux = Stock.objects.get(id_stock=stock.id_stock.id_stock)
+                obra = Obra.objects.get(id_obra=aux.id_obra.id_obra)
+                obras.append(ObraSerializer(obra).data)
 
             s = serializer.data
-            s.update({"progreso":total})
-            s.update({"aportes":AportePedidoSerializer(aportes, many=True).data})
+            s.update({"progreso": total})
+            s.update({"aportes": AportePedidoSerializer(aportes, many=True).data})
+            s.update({"obras": obras})
             all.append(s)
 
         return Response(all, status=status.HTTP_200_OK)
