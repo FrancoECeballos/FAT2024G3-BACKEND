@@ -14,6 +14,8 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from django.contrib.auth.decorators import login_required
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 
 
@@ -699,6 +701,7 @@ class EditarProducto(APIView):
 
 class GetPedido(APIView):
     permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         pedidos = Pedido.objects.all()
         all = []
@@ -1864,7 +1867,7 @@ class DeleteDetallestockproductoView(APIView):
             return Response({'error': 'DetalleStockProducto no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
 class PedidoInformePDFView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         pedidos = Pedido.objects.all()
@@ -1884,7 +1887,7 @@ class PedidoInformePDFView(APIView):
         return response
 
 class StockInformePDFView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request, id_stock, id_producto, token):
 
@@ -1969,7 +1972,7 @@ class GetDetallesProductoObra(APIView):
 
 class GetPedidosRecibidosByUser(APIView):
     permission_classes = [IsAuthenticated]
-
+    
     def get(self, request, token):
         user = CustomUsuario.objects.get(auth_token=token)
 
@@ -2011,7 +2014,7 @@ class GetPedidosRecibidosByUser(APIView):
 
 class GetPedidosRecibidosForAdmin(APIView):
     permission_classes = [IsAuthenticated]
-
+    @method_decorator(cache_page(60 * 15))
     def get(self, request):
         obras = Obra.objects.all()
         obras_con_pedidos = []
