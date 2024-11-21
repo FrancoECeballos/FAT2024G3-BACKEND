@@ -1,11 +1,6 @@
-
 # API Documentation
 
-  
-
 ## Índice
-
-  
 
 1. [Register User](#register-user)
 
@@ -43,21 +38,19 @@
 
 18. [Update User](#update-user)
 
-
-
 ## Register User
-
 
 ### URL
 
 `/register/`
+
 ### Method
 
 `POST`
+
 ### Description
 
 Registers a new user.
-  
 
 ### Parameters
 
@@ -87,25 +80,21 @@ Registers a new user.
 
 ```json
 {
-"nombre": "example",
-"apellido": "example",
-"nombreusuario": "example",
-"password": "example",
-"genero": 1,
-"documento": "11111111",
-"telefono": "3510000000",
-"email": "example@gmail.com",
-"id_direccion": 1,
-"id_tipousuario": 1,
-"id_tipodocumento": 1
+  "nombre": "example",
+  "apellido": "example",
+  "nombreusuario": "example",
+  "password": "example",
+  "genero": 1,
+  "documento": "11111111",
+  "telefono": "3510000000",
+  "email": "example@gmail.com",
+  "id_direccion": 1,
+  "id_tipousuario": 1,
+  "id_tipodocumento": 1
 }
 ```
 
-  
-
 ### Possible Errors
-
-  
 
 #### 400 Bad Request
 
@@ -115,14 +104,12 @@ Registers a new user.
 
 ```json
 {
-"nombreusuario": ["This field is required."],
-"password": ["This field is required."]
+  "nombreusuario": ["This field is required."],
+  "password": ["This field is required."]
 }
 ```
 
 - **Cause**: One or more required fields (`nombreusuario`, `password`) are missing or empty.
-
-  
 
 - **Email Already Exists**: If a user with the same email already exists.
 
@@ -130,13 +117,11 @@ Registers a new user.
 
 ```json
 {
-"email": ["A user with that email already exists."]
+  "email": ["A user with that email already exists."]
 }
 ```
 
 - **Cause**: The email provided is already associated with another user.
-
-  
 
 - **Username Already Exists**: If a user with the same username already exists.
 
@@ -144,13 +129,11 @@ Registers a new user.
 
 ```json
 {
-"nombreusuario": ["A user with that username already exists."]
+  "nombreusuario": ["A user with that username already exists."]
 }
 ```
 
 - **Cause**: The username provided is already associated with another user.
-
-  
 
 - **Validation Errors**: If any data provided does not meet the validation criteria.
 
@@ -158,13 +141,11 @@ Registers a new user.
 
 ```json
 {
-"password": ["Ensure this field has at least 8 characters."]
+  "password": ["Ensure this field has at least 8 characters."]
 }
 ```
 
 - **Cause**: The password provided does not meet the minimum length requirement.
-
-  
 
 #### 409 Conflict
 
@@ -174,13 +155,11 @@ Registers a new user.
 
 ```json
 {
-"error": "A user with this email or username already exists."
+  "error": "A user with this email or username already exists."
 }
 ```
 
 - **Cause**: An attempt to register with an email or username that is already taken by another user.
-
-  
 
 #### 500 Internal Server Error
 
@@ -190,45 +169,40 @@ Registers a new user.
 
 ```json
 {
-"error": "An unexpected error occurred. Please try again later."
+  "error": "An unexpected error occurred. Please try again later."
 }
-
 ```
 
 - **Cause**: This can be due to a variety of reasons, such as database issues, server misconfigurations, etc.
 
-  
 ## Login User
 
-  
 ### URL
 
 `/login/`
+
 ### Method
 
 `POST`
+
 ### Description
 
 User Login.
 
 ### Parameters
 
-
 - `email` (str, required): The email of the user.
-- 
+-
 - `password` (str, required): The password for the user.
-
 
 ### Request Body Example
 
 ```json
 {
-"email": "example@gmail.com",
-"password": "example"
+  "email": "example@gmail.com",
+  "password": "example"
 }
 ```
-
-  
 
 ### Possible Errors
 
@@ -240,8 +214,8 @@ User Login.
 
 ```json
 {
-"email": ["This field is required."],
-"password": ["This field is required."]
+  "email": ["This field is required."],
+  "password": ["This field is required."]
 }
 ```
 
@@ -255,13 +229,11 @@ User Login.
 
 ```json
 {
-"error": "El usuario o la contraseña es incorrecta."
+  "error": "El usuario o la contraseña es incorrecta."
 }
 ```
 
 - **Cause**: An attempt to login with a password that is not correct.
-
-  
 
 #### 404 Not Found
 
@@ -271,26 +243,27 @@ User Login.
 
 ```json
 {
-"error": 'El usuario no fue encontrado'
+  "error": "El usuario no fue encontrado"
 }
 ```
 
-- **Cause**:  An attempt to login with a mail that is not correct.
+- **Cause**: An attempt to login with a mail that is not correct.
+
 ## User Token
 
-  
 ### URL
 
 `/userToken/<str:token>`
+
 ### Method
 
 `GET`
+
 ### Description
 
 User Login.
 
 ### Parameters
-
 
 - `email` (str, required): The email of the user.
 
@@ -300,12 +273,10 @@ User Login.
 
 ```json
 {
-"email": "example@gmail.com",
-"password": "example"
+  "email": "example@gmail.com",
+  "password": "example"
 }
 ```
-
-  
 
 ### Possible Errors
 
@@ -317,8 +288,8 @@ User Login.
 
 ```json
 {
-"email": ["This field is required."],
-"password": ["This field is required."]
+  "email": ["This field is required."],
+  "password": ["This field is required."]
 }
 ```
 
@@ -332,13 +303,11 @@ User Login.
 
 ```json
 {
-"error": "El usuario o la contraseña es incorrecta."
+  "error": "El usuario o la contraseña es incorrecta."
 }
 ```
 
 - **Cause**: An attempt to login with a password that is not correct.
-
-  
 
 #### 404 Not Found
 
@@ -348,21 +317,22 @@ User Login.
 
 ```json
 {
-"error": 'El usuario no fue encontrado'
+  "error": "El usuario no fue encontrado"
 }
 ```
 
-- **Cause**:  An attempt to login with a mail that is not correct.
+- **Cause**: An attempt to login with a mail that is not correct.
 
 ## User Profile
 
-  
 ### URL
 
 `/profile/`
+
 ### Method
 
 `GET`
+
 ### Description
 
 Obtener la información del perfil del usuario autenticado.
@@ -378,11 +348,8 @@ Ninguno.
 ### Request Body Example
 
 ```json
-{
- 
-}
+{}
 ```
-
 
 ### Possible Errors
 
@@ -395,15 +362,17 @@ Ninguno.
   "detail": "Authentication credentials were not provided."
 }
 ```
+
 ## View Users
 
-  
 ### URL
 
 `/user/`
+
 ### Method
 
 `GET`
+
 ### Description
 
 Obtener la lista de todos los usuarios. Necesitas estar autenticado.
@@ -420,26 +389,24 @@ Ninguno.
 
 ```json
 [
-    {
-        "id": 1,
-        "nombre": "John",
-        "apellido": "Doe",
-        "nombre_usuario": "johndoe",
-        "documento": "12345678",
-        "telefono": "3510000000",
-        "email": "johndoe@example.com",
-        "genero": 1,
-        "fecha_union": "2023-01-01",
-        "last_login": "2023-01-10",
-        "is_superuser": false,
-        "id_direccion": 1,
-        "id_tipo_usuario": 1,
-        "id_tipo_documento": 1
-    }
+  {
+    "id": 1,
+    "nombre": "John",
+    "apellido": "Doe",
+    "nombre_usuario": "johndoe",
+    "documento": "12345678",
+    "telefono": "3510000000",
+    "email": "johndoe@example.com",
+    "genero": 1,
+    "fecha_union": "2023-01-01",
+    "last_login": "2023-01-10",
+    "is_superuser": false,
+    "id_direccion": 1,
+    "id_tipo_usuario": 1,
+    "id_tipo_documento": 1
+  }
 ]
-
 ```
-
 
 ### Possible Errors
 
@@ -455,13 +422,14 @@ Ninguno.
 
 ## View Users by Email
 
-  
 ### URL
 
 `/user/<str:email>`
+
 ### Method
 
 `GET`
+
 ### Description
 
 Obtener información de un usuario específico por su email.
@@ -478,23 +446,22 @@ Obtener información de un usuario específico por su email.
 
 ```json
 {
-    "id": 1,
-    "nombre": "John",
-    "apellido": "Doe",
-    "nombre_usuario": "johndoe",
-    "documento": "12345678",
-    "telefono": "3510000000",
-    "email": "johndoe@example.com",
-    "genero": 1,
-    "fecha_union": "2023-01-01",
-    "last_login": "2023-01-10",
-    "is_superuser": false,
-    "id_direccion": 1,
-    "id_tipo_usuario": 1,
-    "id_tipo_documento": 1
+  "id": 1,
+  "nombre": "John",
+  "apellido": "Doe",
+  "nombre_usuario": "johndoe",
+  "documento": "12345678",
+  "telefono": "3510000000",
+  "email": "johndoe@example.com",
+  "genero": 1,
+  "fecha_union": "2023-01-01",
+  "last_login": "2023-01-10",
+  "is_superuser": false,
+  "id_direccion": 1,
+  "id_tipo_usuario": 1,
+  "id_tipo_documento": 1
 }
 ```
-
 
 ### Possible Errors
 
@@ -510,13 +477,14 @@ Obtener información de un usuario específico por su email.
 
 ## Change Password
 
-  
 ### URL
 
 `/cambiar_contrasenia/`
+
 ### Method
 
 `POST`
+
 ### Description
 
 Cambiar la contraseña del usuario autenticado.
@@ -535,12 +503,11 @@ Cambiar la contraseña del usuario autenticado.
 
 ```json
 {
-    "old_password": "oldpass",
-    "new_password": "newpass",
-    "new_password_repeat": "newpass"
+  "old_password": "oldpass",
+  "new_password": "newpass",
+  "new_password_repeat": "newpass"
 }
 ```
-
 
 ### Possible Errors
 
@@ -558,7 +525,7 @@ Cambiar la contraseña del usuario autenticado.
 
 ```json
 {
-    "error": "Las nuevas contraseñas no coinciden."
+  "error": "Las nuevas contraseñas no coinciden."
 }
 ```
 
@@ -566,7 +533,7 @@ Cambiar la contraseña del usuario autenticado.
 
 ```json
 {
-    "error": "La contraseña antigua es incorrecta."
+  "error": "La contraseña antigua es incorrecta."
 }
 ```
 
@@ -576,20 +543,20 @@ Cambiar la contraseña del usuario autenticado.
 
 ```json
 {
-    "detail": "Las credenciales de autenticación no se proveyeron."
+  "detail": "Las credenciales de autenticación no se proveyeron."
 }
 ```
 
-
 ## View Stock and Products by Category
 
-  
 ### URL
 
 `/stock/<int:categoria_id>/
+
 ### Method
 
 `GET`
+
 ### Description
 
 Obtener los productos y el stock disponible de una categoría específica.
@@ -601,23 +568,23 @@ Obtener los productos y el stock disponible de una categoría específica.
 ### Headers
 
 - `Authorization` (str, requerido): Token de autenticación del usuario.
+
 ### Request Body Example
 
 ```json
 [
-    {
-        "nombre_producto": "Producto 1",
-        "descripcion": "Descripción del producto 1",
-        "stock_disponible": 10
-    },
-    {
-        "nombre_producto": "Producto 2",
-        "descripcion": "Descripción del producto 2",
-        "stock_disponible": 5
-    }
+  {
+    "nombre_producto": "Producto 1",
+    "descripcion": "Descripción del producto 1",
+    "stock_disponible": 10
+  },
+  {
+    "nombre_producto": "Producto 2",
+    "descripcion": "Descripción del producto 2",
+    "stock_disponible": 5
+  }
 ]
 ```
-
 
 ### Possible Errors
 
@@ -637,13 +604,14 @@ Obtener los productos y el stock disponible de una categoría específica.
 
 ## View Document Types
 
-  
 ### URL
 
 `tipo_documento`
+
 ### Method
 
 `GET`
+
 ### Description
 
 Obtener todos los tipos de documentos disponibles.
@@ -656,31 +624,31 @@ Ninguno.
 
 ```json
 [
-    {
-        "id": 1,
-        "nombre": "DNI"
-    },
-    {
-        "id": 2,
-        "nombre": "Pasaporte"
-    }
+  {
+    "id": 1,
+    "nombre": "DNI"
+  },
+  {
+    "id": 2,
+    "nombre": "Pasaporte"
+  }
 ]
-
 ```
-
 
 ### Possible Errors
 
 #### Ninguno
+
 ## Create House
 
-  
 ### URL
 
 `/crear_casa/`
+
 ### Method
 
 `POST`
+
 ### Description
 
 Crear una nueva casa.
@@ -693,14 +661,15 @@ Crear una nueva casa.
 ### Headers
 
 - `Authorization` (str, requerido): Token de autenticación del usuario.
+
 ### Request Body Example
 
 ```json
 {
-    "nombre": "Casa ejemplo",
-    "descripcion": "Descripcion ejemplo",
-    "id_organizacion": 1,
-    "id_direccion": 1
+  "nombre": "Casa ejemplo",
+  "descripcion": "Descripcion ejemplo",
+  "id_organizacion": 1,
+  "id_direccion": 1
 }
 ```
 
@@ -722,6 +691,7 @@ Crear una nueva casa.
 
 - **Datos inválidos**: Si algún campo requerido falta o es inválido.
 -
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
@@ -733,13 +703,15 @@ Crear una nueva casa.
 - **Error**: Id de categoria no proporcionado.
 
 ## Get Houses
-  
+
 ### URL
 
 `/casa/`
+
 ### Method
 
 `GET`
+
 ### Description
 
 Obtener la lista de todos las casas. Necesitas estar autenticado.
@@ -797,9 +769,11 @@ Ninguno.
 ### URL
 
 `/editar_casa/<int:pk>/`
+
 ### Method
 
 `PUT`
+
 ### Description
 
 Editar una casa.
@@ -812,14 +786,15 @@ Editar una casa.
 ### Headers
 
 - `Authorization` (str, requerido): Token de autenticación del usuario.
+
 ### Request Body Example
 
 ```json
 {
-    "nombre": "Casa ejemplo",
-    "descripcion": "Descripcion ejemplo",
-    "id_organizacion": 1,
-    "id_direccion": 1
+  "nombre": "Casa ejemplo",
+  "descripcion": "Descripcion ejemplo",
+  "id_organizacion": 1,
+  "id_direccion": 1
 }
 ```
 
@@ -841,6 +816,7 @@ Editar una casa.
 
 - **Datos inválidos**: Si algún campo requerido falta o es inválido.
 -
+
 ```json
 {
   "detail": "Authentication credentials were not provided."

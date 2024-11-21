@@ -1,85 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Informe Stock</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        .logo-img {
-            width: 100px;
-            height: 100px;
-        }
-        .table-inside {
-            width: 100%;
-            margin: 0px !important;
-            padding: 0px !important;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 25px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+      }
+      .logo-img {
+        width: 100px;
+        height: 100px;
+      }
+      .table-inside {
+        width: 100%;
+        margin: 0px !important;
+        padding: 0px !important;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <table>
-            <tr>
-                <th>
-                    <img class="logo-img" src="https://storage.googleapis.com/bucket-django-pronta-entrega/obras/logo.png">
-                </th>
-                <th class="table-inside">
-                    <h2>Informe del producto - {{ obra }}</h2>
-                    <table class="table-inside">
-                        <tbody>
-                            <tr>
-                                <td><strong>Nombre:</strong> {{ producto.nombre }}</td>
-                                <td><strong>Descripción:</strong> {{ producto.descripcion }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><strong>Fecha de generación:</strong> {{ fecha_generacion }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><strong>Usuario:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </th>
-            </tr>
-        </table>
+      <table>
+        <tr>
+          <th>
+            <img
+              class="logo-img"
+              src="https://storage.googleapis.com/bucket-django-pronta-entrega/obras/logo.png"
+            />
+          </th>
+          <th class="table-inside">
+            <h2>Informe del producto - {{ obra }}</h2>
+            <table class="table-inside">
+              <tbody>
+                <tr>
+                  <td><strong>Nombre:</strong> {{ producto.nombre }}</td>
+                  <td>
+                    <strong>Descripción:</strong> {{ producto.descripcion }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <strong>Fecha de generación:</strong> {{ fecha_generacion }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <strong>Usuario:</strong> {{ usuario.nombre }} {{
+                    usuario.apellido }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </th>
+        </tr>
+      </table>
     </header>
     <h1>Informe Stock</h1>
     <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Fecha de carga</th>
-            <th>Cantidad</th>
-            <th>Usuario</th>
-            <th>Cantidad con Unidad</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for detalle in detalles %}
-            <tr>
-                <td>{{ detalle.id_detallestockproducto }}</td>
-                <td>{{ detalle.fecha_creacion }}</td>
-                <td>{{ detalle.cantidad }}</td>
-                <td>{{ detalle.id_usuario.nombre }}</td>
-                <td>{{ detalle.cantidad }} {{ detalle.id_producto.unidadmedida.nombre }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha de carga</th>
+          <th>Cantidad</th>
+          <th>Usuario</th>
+          <th>Cantidad con Unidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for detalle in detalles %}
+        <tr>
+          <td>{{ detalle.id_detallestockproducto }}</td>
+          <td>{{ detalle.fecha_creacion }}</td>
+          <td>{{ detalle.cantidad }}</td>
+          <td>{{ detalle.id_usuario.nombre }}</td>
+          <td>
+            {{ detalle.cantidad }} {{ detalle.id_producto.unidadmedida.nombre }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-</body>
+  </body>
 </html>
