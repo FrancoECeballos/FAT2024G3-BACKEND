@@ -88,7 +88,7 @@
           <td>{{ detalle.id_detallestockproducto }}</td>
           <td>{{ detalle.fecha_creacion }}</td>
           <td>{{ detalle.cantidad }}</td>
-          <td>{{ detalle.id_usuario.nombre }}</td>
+          <td>{{ detalle.id_usuario.nombre|slice:":10" }}</td>
           <td>
             {{ detalle.cantidad }} {{ detalle.id_producto.unidadmedida.nombre }}
           </td>
